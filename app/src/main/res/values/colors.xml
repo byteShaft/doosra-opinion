@@ -4,6 +4,9 @@
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
 
+    <color name="greeb_button_color">#4ca64c</color>
+    <color name="blue_button_color">#92b4f2</color>
+
     <color name="screen_background_color">#efefef</color>
     <color name="text_color">#0026ca</color>
 </resources>
