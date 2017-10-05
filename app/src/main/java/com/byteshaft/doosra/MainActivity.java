@@ -7,6 +7,8 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
+import com.byteshaft.doosra.accounts.AccountManager;
+
 public class MainActivity extends Activity implements View.OnClickListener {
 
     private Button buttonHowItWorks;
@@ -41,7 +43,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
                 System.out.println("About Us");
                 break;
             case R.id.button_board_of_doctors:
-                System.out.println("BoD");
+                startActivity(new Intent(MainActivity.this, AccountManager.class));
                 break;
             case R.id.button_get_a_second_opinion:
                 startActivity(new Intent(MainActivity.this, OpinionActivity.class));
