@@ -2,7 +2,6 @@ package com.byteshaft.doosra;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -45,7 +44,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.button_how_it_works:
-                System.out.println("how it works");
+                startActivity(new Intent(MainActivity.this, MedicalReports.class));
                 break;
             case R.id.button_about_us:
                 System.out.println("About Us");
