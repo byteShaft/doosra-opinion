@@ -1,5 +1,6 @@
 package com.byteshaft.doosra.accounts;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -14,6 +15,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.byteshaft.doosra.MainActivity;
 import com.byteshaft.doosra.R;
 import com.byteshaft.doosra.utils.AppGlobals;
 import com.byteshaft.doosra.utils.Helpers;
@@ -44,11 +46,19 @@ public class AccountActivationCode extends Fragment implements View.OnClickListe
         ((AppCompatActivity) getActivity()).getSupportActionBar()
                 .setTitle(getResources().getString(R.string.account_activation));
         setHasOptionsMenu(true);
+
         mEmail = mBaseView.findViewById(R.id.email_edit_text);
         mVerificationCode = mBaseView.findViewById(R.id.verification_code);
         mLoginButton = mBaseView.findViewById(R.id.button_activate);
         mResendTextView = mBaseView.findViewById(R.id.resend_text_view);
 
+        /// Set Typeface
+        mEmail.setTypeface(AppGlobals.typeface);
+        mVerificationCode.setTypeface(AppGlobals.typeface);
+        mLoginButton.setTypeface(AppGlobals.typeface);
+        mResendTextView.setTypeface(AppGlobals.typeface);
+        mEmail.setText(AppGlobals.getStringFromSharedPreferences(AppGlobals.KEY_EMAIL));
+        mEmailString = AppGlobals.getStringFromSharedPreferences(AppGlobals.KEY_EMAIL);
         mLoginButton.setOnClickListener(this);
         mResendTextView.setOnClickListener(this);
         return mBaseView;
@@ -155,6 +165,31 @@ public class AccountActivationCode extends Fragment implements View.OnClickListe
                         break;
                     case HttpURLConnection.HTTP_OK:
                         Log.i("TAG", request.getResponseText());
+                        try {
+                            JSONObject jsonObject = new JSONObject(request.getResponseText());
+                            String firstName = jsonObject.getString(AppGlobals.KEY_FIRST_NAME);
+                            String lastName = jsonObject.getString(AppGlobals.KEY_LAST_NAME);
+                            String gender = jsonObject.getString(AppGlobals.KEY_GENDER);
+                            String userId = jsonObject.getString(AppGlobals.KEY_USER_ID);
+                            String token = jsonObject.getString(AppGlobals.KEY_TOKEN);
+                            String email = jsonObject.getString(AppGlobals.KEY_EMAIL);
+                            String mobileNumber = jsonObject.getString(AppGlobals.KEY_MOBILE_NUMBER);
+
+
+                            //saving values
+                            AppGlobals.saveDataToSharedPreferences(AppGlobals.KEY_FIRST_NAME, firstName);
+                            AppGlobals.saveDataToSharedPreferences(AppGlobals.KEY_LAST_NAME, lastName);
+                            AppGlobals.saveDataToSharedPreferences(AppGlobals.KEY_GENDER, gender);
+                            AppGlobals.saveDataToSharedPreferences(AppGlobals.KEY_TOKEN, token);
+                            AppGlobals.saveDataToSharedPreferences(AppGlobals.KEY_MOBILE_NUMBER, mobileNumber);
+                            AppGlobals.saveDataToSharedPreferences(AppGlobals.KEY_EMAIL, email);
+                            AppGlobals.saveDataToSharedPreferences(AppGlobals.KEY_USER_ID, userId);
+                            AppGlobals.loginState(true);
+                            startActivity(new Intent(getActivity(), MainActivity.class));
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
                 }
         }
 

@@ -136,28 +136,6 @@ public class Helpers {
         return gps_enabled || network_enabled;
     }
 
-    public static void dialogForLocationEnableManually(final Activity activity) {
-        AlertDialog.Builder dialog = new AlertDialog.Builder(activity);
-        dialog.setMessage("Location is not enabled");
-        dialog.setPositiveButton("Turn on", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface paramDialogInterface, int paramInt) {
-                // TODO Auto-generated method stub
-                Intent myIntent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
-                activity.startActivityForResult(myIntent, AppGlobals.LOCATION_ENABLE);
-                //get gps
-            }
-        });
-        dialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-
-            @Override
-            public void onClick(DialogInterface paramDialogInterface, int paramInt) {
-                // TODO Auto-generated method stub
-
-            }
-        });
-        dialog.show();
-    }
 
     public static String getAge(int year, int month, int day) {
         Calendar dob = Calendar.getInstance();

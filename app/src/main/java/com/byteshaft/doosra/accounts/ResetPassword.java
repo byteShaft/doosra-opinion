@@ -42,15 +42,17 @@ public class ResetPassword extends Fragment implements View.OnClickListener, Htt
         ((AppCompatActivity) getActivity()).getSupportActionBar()
                 .setTitle(getResources().getString(R.string.reset_password));
         setHasOptionsMenu(true);
+
         mEmail = mBaseView.findViewById(R.id.email_edit_text);
         mOldPassword = mBaseView.findViewById(R.id.old_password_edit_text);
         mNewPassword = mBaseView.findViewById(R.id.new_password_edit_text);
         mResetButton = mBaseView.findViewById(R.id.button_reset);
 
-        mEmail.setTypeface(AppGlobals.typefaceNormal);
-        mOldPassword.setTypeface(AppGlobals.typefaceNormal);
-        mNewPassword.setTypeface(AppGlobals.typefaceNormal);
-        mResetButton.setTypeface(AppGlobals.typefaceNormal);
+        // set typeface
+        mEmail.setTypeface(AppGlobals.typeface);
+        mOldPassword.setTypeface(AppGlobals.typeface);
+        mNewPassword.setTypeface(AppGlobals.typeface);
+        mResetButton.setTypeface(AppGlobals.typeface);
 
         mEmail.setText(AppGlobals.getStringFromSharedPreferences(AppGlobals.KEY_EMAIL));
         mEmailString = AppGlobals.getStringFromSharedPreferences(AppGlobals.KEY_EMAIL);

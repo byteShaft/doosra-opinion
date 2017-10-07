@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.Button;
 
 import com.byteshaft.doosra.accounts.AccountManager;
+import com.byteshaft.doosra.utils.AppGlobals;
 
 public class MainActivity extends Activity implements View.OnClickListener {
 
@@ -19,12 +20,19 @@ public class MainActivity extends Activity implements View.OnClickListener {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if (AccountManager.getInstance() != null) {
+            AccountManager.getInstance().finish();
+        }
         setContentView(R.layout.activity_main);
-
         buttonHowItWorks = findViewById(R.id.button_how_it_works);
         buttonAboutUs = findViewById(R.id.button_about_us);
         buttonBoD = findViewById(R.id.button_board_of_doctors);
         buttonGetSecOpinion = findViewById(R.id.button_get_a_second_opinion);
+
+        buttonHowItWorks.setTypeface(AppGlobals.typeface);
+        buttonAboutUs.setTypeface(AppGlobals.typeface);
+        buttonBoD.setTypeface(AppGlobals.typeface);
+        buttonGetSecOpinion.setTypeface(AppGlobals.typeface);
 
         buttonHowItWorks.setOnClickListener(this);
         buttonAboutUs.setOnClickListener(this);
@@ -43,7 +51,6 @@ public class MainActivity extends Activity implements View.OnClickListener {
                 System.out.println("About Us");
                 break;
             case R.id.button_board_of_doctors:
-                startActivity(new Intent(MainActivity.this, AccountManager.class));
                 break;
             case R.id.button_get_a_second_opinion:
                 startActivity(new Intent(MainActivity.this, OpinionActivity.class));

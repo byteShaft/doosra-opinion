@@ -37,9 +37,15 @@ public class ForgotPassword extends Fragment implements View.OnClickListener, Ht
         ((AppCompatActivity) getActivity()).getSupportActionBar()
                 .setTitle(getResources().getString(R.string.forgot_password));
         setHasOptionsMenu(true);
-        mEmail = (EditText) mBaseView.findViewById(R.id.email_edit_text);
-        mRecoverButton = (Button) mBaseView.findViewById(R.id.button_recover);
+        mEmail = mBaseView.findViewById(R.id.email_edit_text);
+        mRecoverButton = mBaseView.findViewById(R.id.button_recover);
+
+        //set typeface
+        mEmail.setTypeface(AppGlobals.typeface);
+        mRecoverButton.setTypeface(AppGlobals.typeface);
+
         mRecoverButton.setOnClickListener(this);
+
         return mBaseView;
     }
 

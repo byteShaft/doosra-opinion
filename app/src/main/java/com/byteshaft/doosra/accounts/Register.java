@@ -1,6 +1,7 @@
 package com.byteshaft.doosra.accounts;
 
 import android.os.Bundle;
+import android.support.annotation.IdRes;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
@@ -10,9 +11,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -26,21 +27,33 @@ import org.json.JSONObject;
 
 import java.net.HttpURLConnection;
 
-public class SignUp extends Fragment implements View.OnClickListener, HttpRequest.OnReadyStateChangeListener, HttpRequest.OnErrorListener {
+public class Register extends Fragment implements View.OnClickListener,
+        HttpRequest.OnReadyStateChangeListener, HttpRequest.OnErrorListener, RadioGroup.OnCheckedChangeListener {
 
     private View mBaseView;
     private EditText mEmail;
     private EditText mPassword;
+
+    private EditText mFirstName;
+    private EditText mLastName;
+    private EditText mPhoneNumber;
+
     private EditText mVerifyPassword;
-    //    private CheckBox mDoctorsCheckBox;
     private Button mSignUpButton;
     private TextView mLoginTextView;
-    private String mUserNameString;
+
+    private String firstNameString;
+    private String lastNameString;
+    private String mPhoneNumberString;
+
     private String mEmailAddressString;
     private String mPasswordString;
     private String mVerifyPasswordString;
-    private String mCheckBoxString = "patient";
+    private String mGenderString = "Male";
     private HttpRequest request;
+    private RadioGroup mGenderRadioGroup;
+    private RadioButton mMale;
+    private RadioButton mFemale;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -48,15 +61,35 @@ public class SignUp extends Fragment implements View.OnClickListener, HttpReques
         ((AppCompatActivity) getActivity()).getSupportActionBar()
                 .setTitle(getResources().getString(R.string.sign_up));
         setHasOptionsMenu(true);
+
+        mFirstName = mBaseView.findViewById(R.id.first_name_edit_text);
+        mLastName = mBaseView.findViewById(R.id.last_name_edit_text);
+        mPhoneNumber = mBaseView.findViewById(R.id.phone_number_edit_text);
         mEmail = mBaseView.findViewById(R.id.email_edit_text);
         mPassword = mBaseView.findViewById(R.id.password_edit_text);
         mVerifyPassword = mBaseView.findViewById(R.id.verify_password_edit_text);
         mSignUpButton = mBaseView.findViewById(R.id.sign_up_button);
         mLoginTextView = mBaseView.findViewById(R.id.login_text_view);
+        mGenderRadioGroup = mBaseView.findViewById(R.id.gender_group);
+        mMale = mBaseView.findViewById(R.id.male);
+        mFemale = mBaseView.findViewById(R.id.female);
+
+        // set typeface
+        mFirstName.setTypeface(AppGlobals.typeface);
+        mLastName.setTypeface(AppGlobals.typeface);
+        mPhoneNumber.setTypeface(AppGlobals.typeface);
+        mEmail.setTypeface(AppGlobals.typeface);
+        mPassword.setTypeface(AppGlobals.typeface);
+        mVerifyPassword.setTypeface(AppGlobals.typeface);
+        mSignUpButton.setTypeface(AppGlobals.typeface);
+        mLoginTextView.setTypeface(AppGlobals.typeface);
+        mMale.setTypeface(AppGlobals.typeface);
+        mFemale.setTypeface(AppGlobals.typeface);
 
         mSignUpButton.setOnClickListener(this);
         mLoginTextView.setOnClickListener(this);
-//        mDoctorsCheckBox.setOnCheckedChangeListener(this);
+        mGenderRadioGroup.setOnCheckedChangeListener(this);
+
         return mBaseView;
     }
 
@@ -64,7 +97,6 @@ public class SignUp extends Fragment implements View.OnClickListener, HttpReques
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
-
                 return true;
             default:
                 return false;
@@ -77,10 +109,10 @@ public class SignUp extends Fragment implements View.OnClickListener, HttpReques
             case R.id.sign_up_button:
                 System.out.println("signUp button");
                 if (validateEditText()) {
-                    registerUser(mPasswordString, mEmailAddressString, mCheckBoxString);
+                    registerUser(firstNameString, lastNameString, mPhoneNumberString,
+                            mPasswordString, mEmailAddressString, mGenderString);
                 }
-                System.out.println("signUp button" + mUserNameString);
-                System.out.println("checkbox text" + mCheckBoxString);
+                System.out.println("radio text   " + mGenderString);
                 break;
             case R.id.login_text_view:
                 AccountManager.getInstance().loadFragment(new Login());
@@ -88,22 +120,38 @@ public class SignUp extends Fragment implements View.OnClickListener, HttpReques
         }
     }
 
-//    @Override
-//    public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-//        if (mDoctorsCheckBox.isChecked()) {
-//            mCheckBoxString = "doctor";
-//            System.out.println(mCheckBoxString + "working");
-//        } else if (!mDoctorsCheckBox.isChecked()) {
-//            mCheckBoxString = "patient";
-//        }
-//
-//    }
 
     private boolean validateEditText() {
         boolean valid = true;
+
+        firstNameString = mFirstName.getText().toString();
+        lastNameString = mLastName.getText().toString();
+        mPhoneNumberString = mPhoneNumber.getText().toString();
+
         mEmailAddressString = mEmail.getText().toString();
         mPasswordString = mPassword.getText().toString();
         mVerifyPasswordString = mVerifyPassword.getText().toString();
+
+        if (firstNameString.trim().isEmpty()) {
+            mFirstName.setError("Required");
+            valid = false;
+        } else {
+            mEmail.setError(null);
+        }
+
+        if (lastNameString.trim().isEmpty()) {
+            mLastName.setError("Required");
+            valid = false;
+        } else {
+            mLastName.setError(null);
+        }
+
+        if (mPhoneNumberString.trim().isEmpty()) {
+            mPhoneNumber.setError("Required");
+            valid = false;
+        } else {
+            mPhoneNumber.setError(null);
+        }
 
         if (mEmailAddressString.trim().isEmpty() || !android.util.Patterns.EMAIL_ADDRESS.matcher(mEmailAddressString).matches()) {
             mEmail.setError("please provide a valid email");
@@ -147,18 +195,14 @@ public class SignUp extends Fragment implements View.OnClickListener, HttpReques
                         try {
                             JSONObject jsonObject = new JSONObject(request.getResponseText());
                             System.out.println(jsonObject + "working ");
+
                             String userId = jsonObject.getString(AppGlobals.KEY_USER_ID);
                             String email = jsonObject.getString(AppGlobals.KEY_EMAIL);
-                            String accountType = jsonObject.getString(AppGlobals.KEY_ACCOUNT_TYPE);
-                            //saving values
-//                            AppGlobals.saveDataToSharedPreferences(AppGlobals.KEY_USER_NAME, username);
+
+                            // saving values
                             AppGlobals.saveDataToSharedPreferences(AppGlobals.KEY_EMAIL, email);
-                            if (accountType.equals("doctor")) {
-                                AppGlobals.userType(true);
-                            } else {
-                                AppGlobals.userType(false);
-                            }
                             AppGlobals.saveDataToSharedPreferences(AppGlobals.KEY_USER_ID, userId);
+
                             FragmentManager fragmentManager = getFragmentManager();
                             fragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
                             AccountManager.getInstance().loadFragment(new AccountActivationCode());
@@ -173,29 +217,43 @@ public class SignUp extends Fragment implements View.OnClickListener, HttpReques
     @Override
     public void onError(HttpRequest request, int readyState, short error, Exception exception) {
         Helpers.dismissProgressDialog();
-
     }
 
-    private void registerUser(String password, String email, String accountType) {
+    private void registerUser(String firstName, String lastName, String mobileNumber
+            , String password, String email, String gender) {
         request = new HttpRequest(getActivity());
         request.setOnReadyStateChangeListener(this);
         request.setOnErrorListener(this);
         request.open("POST", String.format("%sregister", AppGlobals.BASE_URL));
-        request.send(getRegisterData(password, email, accountType));
-        Helpers.showProgressDialog(getActivity(), "Registering User ");
+        request.send(getRegisterData(firstName, lastName, mobileNumber, password, email, gender));
+        Helpers.showProgressDialog(getActivity(), "Pleas wait...");
     }
 
 
-    private String getRegisterData(String password, String email, String accountType) {
+    private String getRegisterData(String firstName, String lastName, String mobileNumber,
+                                   String password, String email, String gender) {
         JSONObject jsonObject = new JSONObject();
         try {
+            jsonObject.put("first_name", firstName);
+            jsonObject.put("last_name", lastName);
+            jsonObject.put("mobile_number", mobileNumber);
             jsonObject.put("email", email);
-            jsonObject.put("account_type", accountType);
+            jsonObject.put("gender", gender);
             jsonObject.put("password", password);
+
         } catch (JSONException e) {
             e.printStackTrace();
         }
         return jsonObject.toString();
 
+    }
+
+    @Override
+    public void onCheckedChanged(RadioGroup group, @IdRes int checkedId) {
+        if (checkedId == R.id.female) {
+            mGenderString = "Female";
+        } else if (checkedId == R.id.male) {
+            mGenderString = "Male";
+        }
     }
 }

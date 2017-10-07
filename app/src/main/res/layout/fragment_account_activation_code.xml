@@ -24,6 +24,8 @@
             android:layout_marginTop="8dp">
 
             <EditText
+                android:focusableInTouchMode="false"
+                android:editable="false"
                 android:id="@+id/email_edit_text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
