@@ -52,11 +52,10 @@ public class AppGlobals extends Application {
         return getContext().getSharedPreferences("shared_prefs", MODE_PRIVATE);
     }
 
-//    public static void clearSettings() {
-//        SharedPreferences sharedPreferences = getPreferenceManager();
-//        sharedPreferences.edit().clear().commit();
-//        new GetToken().execute();
-//    }
+    public static void clearSettings() {
+        SharedPreferences sharedPreferences = getPreferenceManager();
+        sharedPreferences.edit().clear().commit();
+    }
 
     public static void saveDataToSharedPreferences(String key, String value) {
         SharedPreferences sharedPreferences = getPreferenceManager();
