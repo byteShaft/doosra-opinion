@@ -31,4 +31,8 @@
     <string name="check_internet">Please check your internet connection</string>
     <string name="login_faild">Login Failed!</string>
     <string name="account_activation">Account Activation</string>
+    <string name="short_history">Short history of complaints</string>
+    <string name="disease_details">Existing Disease if any</string>
+    <string name="concern_details">Write your concern</string>
+    <string name="next_button">NEXT</string>
 </resources>
