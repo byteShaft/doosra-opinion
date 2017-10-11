@@ -17,6 +17,7 @@
             app:cardCornerRadius="5dp">
 
             <RelativeLayout
+                android:id="@+id/image_view_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
@@ -88,7 +89,6 @@
                         android:textColor="#000"
                         android:textSize="16sp" />
                 </RelativeLayout>
-
             </RelativeLayout>
         </android.support.v7.widget.CardView>
     </RelativeLayout>
@@ -97,7 +97,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/card_view_layout"
-        android:layout_marginTop="5dp">
+        android:layout_marginTop="15dp">
 
         <ScrollView
             android:layout_width="match_parent"
@@ -107,7 +107,6 @@
             <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
                 android:layout_margin="5dp"
                 android:orientation="vertical">
 
@@ -123,11 +122,11 @@
                         android:layout_height="wrap_content"
                         android:background="@drawable/edit_text_background"
                         android:gravity="top|left"
-                        android:paddingTop="5dp"
                         android:hint="@string/short_history"
                         android:inputType="textMultiLine"
                         android:maxLines="10"
-                        android:paddingLeft="10dp"
+                        android:paddingTop="@dimen/floating_hint_margin"
+                        android:paddingLeft="5dp"
                         android:textColor="@color/greeb_button_color"
                         android:textColorHint="@color/greeb_button_color"
                         android:textSize="15dp" />
@@ -145,11 +144,11 @@
                         android:layout_height="wrap_content"
                         android:background="@drawable/edit_text_background"
                         android:gravity="top|left"
-                        android:paddingTop="5dp"
+                        android:paddingTop="@dimen/floating_hint_margin"
+                        android:paddingLeft="5dp"
                         android:hint="@string/disease_details"
                         android:inputType="textMultiLine"
                         android:maxLines="10"
-                        android:paddingLeft="10dp"
                         android:textColor="@color/greeb_button_color"
                         android:textColorHint="@color/greeb_button_color"/>
                 </android.support.design.widget.TextInputLayout>
@@ -166,11 +165,11 @@
                     android:layout_height="wrap_content"
                     android:background="@drawable/edit_text_background"
                     android:gravity="top|left"
-                    android:paddingTop="5dp"
                     android:hint="@string/concern_details"
                     android:inputType="textMultiLine"
                     android:maxLines="10"
-                    android:paddingLeft="10dp"
+                    android:paddingTop="@dimen/floating_hint_margin"
+                    android:paddingLeft="5dp"
                     android:textColor="@color/greeb_button_color"
                     android:textColorHint="@color/greeb_button_color"/>
             </android.support.design.widget.TextInputLayout>

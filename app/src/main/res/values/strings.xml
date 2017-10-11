@@ -2,6 +2,11 @@
     <string name="app_name">Doosra</string>
     <string name="splash_screen_txt">Medical Second Opinion</string>
 
+    <string name="home">Home</string>
+    <string name="my_profile">My Profile</string>
+    <string name="history">History</string>
+    <string name="log_out">Logout</string>
+
 
     <string name="forgot_password">Forgot Password</string>
     <string name="login">Login</string>
@@ -35,4 +40,11 @@
     <string name="disease_details">Existing Disease if any</string>
     <string name="concern_details">Write your concern</string>
     <string name="next_button">NEXT</string>
+    <string name="title_activity_main2">MainActivity2</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_settings">Settings</string>
+    <string name="edit_save">Edit/Save</string>
 </resources>
