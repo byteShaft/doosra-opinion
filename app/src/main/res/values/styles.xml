@@ -13,6 +13,10 @@
         <item name="android:textColor">@android:color/white</item>
     </style>
 
+    <style name="EditTextStyle">
+        <item name="colorControlNormal">@color/greeb_button_color</item>
+    </style>
+
     <style name="AppTheme.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>

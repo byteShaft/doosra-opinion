@@ -128,8 +128,8 @@
                         android:paddingTop="@dimen/floating_hint_margin"
                         android:paddingLeft="5dp"
                         android:textColor="@color/greeb_button_color"
-                        android:textColorHint="@color/greeb_button_color"
-                        android:textSize="15dp" />
+                        android:textSize="15dp"
+                        android:theme="@style/EditTextStyle"/>
                 </android.support.design.widget.TextInputLayout>
 
                 <android.support.design.widget.TextInputLayout
@@ -150,7 +150,7 @@
                         android:inputType="textMultiLine"
                         android:maxLines="10"
                         android:textColor="@color/greeb_button_color"
-                        android:textColorHint="@color/greeb_button_color"/>
+                        android:textColorHint="#4ca64c"/>
                 </android.support.design.widget.TextInputLayout>
 
                 <android.support.design.widget.TextInputLayout
@@ -171,7 +171,7 @@
                     android:paddingTop="@dimen/floating_hint_margin"
                     android:paddingLeft="5dp"
                     android:textColor="@color/greeb_button_color"
-                    android:textColorHint="@color/greeb_button_color"/>
+                    android:textColorHint="#4ca64c"/>
             </android.support.design.widget.TextInputLayout>
 
                 <android.support.v7.widget.AppCompatButton
