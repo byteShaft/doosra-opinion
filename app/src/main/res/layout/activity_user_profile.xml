@@ -138,7 +138,7 @@
 
                     <EditText
                         android:id="@+id/disease_details_edit_text"
-                        android:lines="6"
+                        android:lines="3"
                         android:maxLength="120"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -159,7 +159,7 @@
 
                 <EditText
                     android:id="@+id/concerns_details_edit_text"
-                    android:lines="8"
+                    android:lines="3"
                     android:maxLength="120"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

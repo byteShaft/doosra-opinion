@@ -14,6 +14,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.TextView;
 
 import com.byteshaft.doosra.accounts.AccountManager;
 import com.byteshaft.doosra.fragments.Dashboard;
@@ -30,7 +32,6 @@ public class MainActivity extends AppCompatActivity
         if (AccountManager.getInstance() != null) {
             AccountManager.getInstance().finish();
         }
-
         setContentView(R.layout.activity_main2);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -44,6 +45,15 @@ public class MainActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
         navigationView.getMenu().getItem(0).setChecked(true);
+        View headerView = navigationView.getHeaderView(0);
+
+        // navigation header items//
+        TextView userName = headerView.findViewById(R.id.nav_text_name);
+        TextView userEmail = headerView.findViewById(R.id.nav_text_email);
+
+        userName.setText(AppGlobals.getStringFromSharedPreferences(AppGlobals.KEY_FIRST_NAME) + " " +
+                AppGlobals.getStringFromSharedPreferences(AppGlobals.KEY_LAST_NAME));
+        userEmail.setText(AppGlobals.getStringFromSharedPreferences(AppGlobals.KEY_EMAIL));
         loadFragment(new Dashboard());
     }
 
