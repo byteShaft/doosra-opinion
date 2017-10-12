@@ -36,9 +36,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 
-/**
- * Created by s9iper1 on 2/20/17.
- */
+
 
 public class Helpers {
 
