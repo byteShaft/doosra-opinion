@@ -26,12 +26,22 @@ import com.byteshaft.doosra.utils.AppGlobals;
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
+    private static MainActivity sInstance;
+
+    public static MainActivity getInstance() {
+        return sInstance;
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (AccountManager.getInstance() != null) {
             AccountManager.getInstance().finish();
         }
+        if (!AppGlobals.isLogin()) {
+            startActivity(new Intent(MainActivity.this, AccountManager.class));
+        }
+        sInstance = this;
         setContentView(R.layout.activity_main2);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
