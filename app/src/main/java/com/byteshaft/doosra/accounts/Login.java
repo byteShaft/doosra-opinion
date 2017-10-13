@@ -41,6 +41,9 @@ public class Login extends Fragment implements View.OnClickListener, HttpRequest
         mBaseView = inflater.inflate(R.layout.fragment_login, container, false);
         ((AppCompatActivity) getActivity()).getSupportActionBar()
                 .setTitle(getResources().getString(R.string.login));
+        if (MainActivity.getInstance() != null) {
+            MainActivity.getInstance().finish();
+        }
         mEmail = mBaseView.findViewById(R.id.email_edit_text);
         mPassword = mBaseView.findViewById(R.id.password_edit_text);
         mLoginButton = mBaseView.findViewById(R.id.button_login);
