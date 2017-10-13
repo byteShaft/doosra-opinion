@@ -18,10 +18,14 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.byteshaft.doosra.accounts.AccountManager;
+import com.byteshaft.doosra.accounts.Register;
 import com.byteshaft.doosra.fragments.Dashboard;
 import com.byteshaft.doosra.fragments.History;
 import com.byteshaft.doosra.fragments.MyProfile;
 import com.byteshaft.doosra.utils.AppGlobals;
+import com.byteshaft.doosra.utils.Helpers;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -45,6 +49,7 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.activity_main2);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        View headerView;
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -55,15 +60,18 @@ public class MainActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
         navigationView.getMenu().getItem(0).setChecked(true);
-        View headerView = navigationView.getHeaderView(0);
-
-        // navigation header items//
-        TextView userName = headerView.findViewById(R.id.nav_text_name);
-        TextView userEmail = headerView.findViewById(R.id.nav_text_email);
-
-        userName.setText(AppGlobals.getStringFromSharedPreferences(AppGlobals.KEY_FIRST_NAME) + " " +
+        headerView = navigationView.getHeaderView(0);
+        TextView name = headerView.findViewById(R.id.name);
+        TextView email = headerView.findViewById(R.id.email);
+        CircleImageView kitchenImage = headerView.findViewById(R.id.nav_imageView);
+        name.setText(AppGlobals.getStringFromSharedPreferences(AppGlobals.KEY_FIRST_NAME) + " " +
                 AppGlobals.getStringFromSharedPreferences(AppGlobals.KEY_LAST_NAME));
-        userEmail.setText(AppGlobals.getStringFromSharedPreferences(AppGlobals.KEY_EMAIL));
+        email.setText(AppGlobals.getStringFromSharedPreferences(AppGlobals.KEY_EMAIL));
+
+        if (AppGlobals.isLogin() && AppGlobals.getStringFromSharedPreferences(AppGlobals.KEY_SERVER_IMAGE) != null) {
+            String url =  AppGlobals.getStringFromSharedPreferences(AppGlobals.KEY_SERVER_IMAGE);
+            Helpers.getBitMap(url, kitchenImage);
+        }
         loadFragment(new Dashboard());
     }
 
@@ -112,6 +120,7 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.nav_history) {
             loadFragment(new History());
         } else if (id == R.id.nav_edit_save) {
+            loadFragment(new Register());
 
         } else if (id == R.id.nav_logout) {
             AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);

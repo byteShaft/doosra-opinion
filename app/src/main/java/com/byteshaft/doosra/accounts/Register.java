@@ -99,10 +99,8 @@ public class Register extends Fragment implements View.OnClickListener,
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         mBaseView = inflater.inflate(R.layout.fragment_sign_up, container, false);
-        ((AppCompatActivity) getActivity()).getSupportActionBar()
-                .setTitle(getResources().getString(R.string.sign_up));
         setHasOptionsMenu(true);
-        mProfilePicture = (CircleImageView) mBaseView.findViewById(R.id.profile_image);
+        mProfilePicture = mBaseView.findViewById(R.id.profile_image);
         mFirstName = mBaseView.findViewById(R.id.first_name_edit_text);
         mLastName = mBaseView.findViewById(R.id.last_name_edit_text);
         mPhoneNumber = mBaseView.findViewById(R.id.phone_number_edit_text);
@@ -126,6 +124,29 @@ public class Register extends Fragment implements View.OnClickListener,
         mLoginTextView.setTypeface(AppGlobals.typeface);
         mMale.setTypeface(AppGlobals.typeface);
         mFemale.setTypeface(AppGlobals.typeface);
+
+        if (AppGlobals.isLogin()) {
+            System.out.println("update chea");
+            ((AppCompatActivity) getActivity()).getSupportActionBar()
+                    .setTitle(getResources().getString(R.string.update_profile));
+            String url = AppGlobals.getStringFromSharedPreferences(AppGlobals.KEY_SERVER_IMAGE);
+            Helpers.getBitMap(url , mProfilePicture);
+            mFirstName.setText(AppGlobals.getStringFromSharedPreferences(AppGlobals.KEY_FIRST_NAME));
+            mLastName.setText(AppGlobals.getStringFromSharedPreferences(AppGlobals.KEY_LAST_NAME));
+//            mEmail.setText(AppGlobals.getStringFromSharedPreferences(AppGlobals.KEY_EMAIL));
+            mEmail.setEnabled(false);
+            mPhoneNumber.setText(AppGlobals.getStringFromSharedPreferences(AppGlobals.KEY_MOBILE_NUMBER));
+            if (AppGlobals.getGender().equals("Male")) {
+                mGenderRadioGroup.check(R.id.male);
+            } else {
+                mGenderRadioGroup.check(R.id.female);
+            }
+            mSignUpButton.setText("Update");
+
+        } else {
+            ((AppCompatActivity) getActivity()).getSupportActionBar()
+                    .setTitle(getResources().getString(R.string.sign_up));
+        }
 
         mSignUpButton.setOnClickListener(this);
         mLoginTextView.setOnClickListener(this);
@@ -245,11 +266,15 @@ public class Register extends Fragment implements View.OnClickListener,
                             String userId = jsonObject.getString(AppGlobals.KEY_USER_ID);
                             String email = jsonObject.getString(AppGlobals.KEY_EMAIL);
                             String profileImage = jsonObject.getString(AppGlobals.KEY_SERVER_IMAGE);
+                            String firstName = jsonObject.getString(AppGlobals.KEY_SERVER_IMAGE);
+                            String lastName = jsonObject.getString(AppGlobals.KEY_SERVER_IMAGE);
 
                             // saving values
                             AppGlobals.saveDataToSharedPreferences(AppGlobals.KEY_EMAIL, email);
+                            AppGlobals.saveDataToSharedPreferences(AppGlobals.KEY_FIRST_NAME, firstName);
+                            AppGlobals.saveDataToSharedPreferences(AppGlobals.KEY_LAST_NAME, lastName);
                             AppGlobals.saveDataToSharedPreferences(AppGlobals.KEY_USER_ID, userId);
-                            AppGlobals.saveDataToSharedPreferences(AppGlobals.KEY_SERVER_IMAGE, userId);
+                            AppGlobals.saveDataToSharedPreferences(AppGlobals.KEY_SERVER_IMAGE, profileImage);
                             Log.i("image", " " + AppGlobals.getStringFromSharedPreferences(AppGlobals.KEY_SERVER_IMAGE));
 
                             FragmentManager fragmentManager = getFragmentManager();
@@ -273,9 +298,22 @@ public class Register extends Fragment implements View.OnClickListener,
         request = new HttpRequest(getActivity());
         request.setOnReadyStateChangeListener(this);
         request.setOnErrorListener(this);
-        request.open("POST", String.format("%sregister", AppGlobals.BASE_URL));
-        request.send(getRegisterData(profilePicture, firstName, lastName, mobileNumber, password, email, gender));
-        Helpers.showProgressDialog(getActivity(), "Pleas wait...");
+        String method = "POST";
+        if (AppGlobals.isLogin()) {
+            method = "PUT";
+            System.out.println("update chea");
+            request.open(method, String.format("%sme", AppGlobals.BASE_URL));
+            request.setRequestHeader("Authorization", "Token " +
+                    AppGlobals.getStringFromSharedPreferences(AppGlobals.KEY_TOKEN));
+            request.send(getRegisterData(profilePicture, firstName, lastName, mobileNumber, password, email, gender));
+            Helpers.showProgressDialog(getActivity(), "Updating Profile...");
+
+        } else {
+            request.open(method, String.format("%sregister", AppGlobals.BASE_URL));
+            request.send(getRegisterData(profilePicture, firstName, lastName, mobileNumber, password, email, gender));
+            Helpers.showProgressDialog(getActivity(), "Registering User ...");
+
+        }
     }
 
 
@@ -303,6 +341,7 @@ public class Register extends Fragment implements View.OnClickListener,
         } else if (checkedId == R.id.male) {
             mGenderString = "Male";
         }
+       AppGlobals.saveGender(mGenderString);
     }
 
     @Override

@@ -11,6 +11,9 @@ import android.support.v7.app.AlertDialog;
 import android.view.MotionEvent;
 import android.view.View;
 
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
+
 public class AppGlobals extends Application {
 
     private static final String IS_FIRST_TIME_LAUNCH = "IsFirstTimeLaunch";
@@ -18,6 +21,7 @@ public class AppGlobals extends Application {
 
     public static Typeface typeface;
     public static final String SERVER_IP = "http://139.59.167.40";
+    public static final String SERVER_IP_FOR_IMAGE = "http://139.59.167.40/";
     public static final String BASE_URL = String.format("%s/api/", SERVER_IP);
     public static final String KEY_USER_NAME = "user_name";
     public static final String KEY_FIRST_NAME = "first_name";
@@ -30,10 +34,14 @@ public class AppGlobals extends Application {
     public static final String KEY_EMAIL = "email";
     public static final String KEY_USER_ID = "id";
     public static final String KEY_TOKEN = "token";
+    public static final String KEY_GOT_INFO = "got_info";
+    public static ImageLoader sImageLoader;
 
     @Override
     public void onCreate() {
         super.onCreate();
+        sImageLoader = ImageLoader.getInstance();
+        sImageLoader.init(ImageLoaderConfiguration.createDefault(getApplicationContext()));
         sContext = getApplicationContext();
         typeface = Typeface.createFromAsset(getApplicationContext().getAssets(), "fonts/pixchrome.ttf");
     }
@@ -48,6 +56,25 @@ public class AppGlobals extends Application {
         return sharedPreferences.getBoolean(KEY_LOGIN, false);
     }
 
+    public static void saveGender(String type) {
+        SharedPreferences sharedPreferences = getPreferenceManager();
+        sharedPreferences.edit().putString(KEY_GENDER, type).apply();
+    }
+
+    public static String getGender() {
+        SharedPreferences sharedPreferences = getPreferenceManager();
+        return sharedPreferences.getString(KEY_GENDER, "");
+    }
+
+    public static void gotInfo(boolean type) {
+        SharedPreferences sharedPreferences = getPreferenceManager();
+        sharedPreferences.edit().putBoolean(KEY_GOT_INFO, type).apply();
+    }
+
+    public static boolean isInfoAvailable() {
+        SharedPreferences sharedPreferences = getPreferenceManager();
+        return sharedPreferences.getBoolean(KEY_GOT_INFO, false);
+    }
 
     public static SharedPreferences getPreferenceManager() {
         return getContext().getSharedPreferences("shared_prefs", MODE_PRIVATE);
