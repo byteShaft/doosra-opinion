@@ -10,7 +10,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
-import com.byteshaft.doosra.MedicalReports;
+import com.byteshaft.doosra.AboutUs;
+import com.byteshaft.doosra.BOD;
+import com.byteshaft.doosra.HowItWorks;
 import com.byteshaft.doosra.OpinionActivity;
 import com.byteshaft.doosra.R;
 import com.byteshaft.doosra.utils.AppGlobals;
@@ -53,12 +55,13 @@ public class Dashboard extends Fragment implements View.OnClickListener {
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.button_how_it_works:
-                startActivity(new Intent(getActivity(), MedicalReports.class));
+                startActivity(new Intent(getActivity(), HowItWorks.class));
                 break;
             case R.id.button_about_us:
-                System.out.println("About Us");
+                startActivity(new Intent(getActivity(), AboutUs.class));
                 break;
             case R.id.button_board_of_doctors:
+                startActivity(new Intent(getActivity(), BOD.class));
                 break;
             case R.id.button_get_a_second_opinion:
                 startActivity(new Intent(getActivity(), OpinionActivity.class));
