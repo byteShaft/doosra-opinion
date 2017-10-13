@@ -148,13 +148,14 @@ public class Login extends Fragment implements View.OnClickListener, HttpRequest
                             String token = jsonObject.getString(AppGlobals.KEY_TOKEN);
                             String userId = jsonObject.getString(AppGlobals.KEY_USER_ID);
                             String email = jsonObject.getString(AppGlobals.KEY_EMAIL);
+                            String profileImage = jsonObject.getString(AppGlobals.KEY_SERVER_IMAGE);
 
                             AppGlobals.saveDataToSharedPreferences(AppGlobals.KEY_FIRST_NAME, firstName);
                             AppGlobals.saveDataToSharedPreferences(AppGlobals.KEY_LAST_NAME, lastName);
                             AppGlobals.saveDataToSharedPreferences(AppGlobals.KEY_TOKEN, token);
                             AppGlobals.saveDataToSharedPreferences(AppGlobals.KEY_EMAIL, email);
                             AppGlobals.saveDataToSharedPreferences(AppGlobals.KEY_USER_ID, userId);
-                            Log.i("token", " " + AppGlobals.getStringFromSharedPreferences(AppGlobals.KEY_TOKEN));
+                            AppGlobals.saveDataToSharedPreferences(AppGlobals.KEY_SERVER_IMAGE, profileImage);
                             AppGlobals.loginState(true);
                             startActivity(new Intent(getActivity(), MainActivity.class));
                         } catch (JSONException e) {
