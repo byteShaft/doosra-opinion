@@ -12,8 +12,8 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:gravity="center"
-        android:text="Board of Doctors"
-        android:textColor="@android:color/black"
+        android:text="@string/board_of_doctors"
+        android:textColor="@color/text_color"
         android:textSize="28sp"
         android:textStyle="bold" />
 

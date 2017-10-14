@@ -27,7 +27,7 @@ public class AboutUs extends Activity {
         tvAboutUs = (findViewById(R.id.title_about_us));
 
         aboutUsText.setTypeface(AppGlobals.typeface);
-        aboutUsText.setTypeface(AppGlobals.typeface);
+        tvAboutUs.setTypeface(AppGlobals.typeface);
 
         aboutUsText.setMovementMethod(new ScrollingMovementMethod());
         request = new HttpRequest(getApplicationContext());

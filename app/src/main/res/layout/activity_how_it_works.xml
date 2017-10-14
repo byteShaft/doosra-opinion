@@ -11,8 +11,8 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:gravity="center"
-        android:text="How It Works"
-        android:textColor="@android:color/black"
+        android:text="@string/how_it_works"
+        android:textColor="@color/text_color"
         android:textSize="28sp"
         android:textStyle="bold" />
 

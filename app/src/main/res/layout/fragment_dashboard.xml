@@ -104,7 +104,7 @@
                 android:text="Get a Second opinion"
                 android:textAllCaps="false"
                 android:textColor="@android:color/white"
-                android:textSize="12sp"
+                android:textSize="18sp"
                 android:textStyle="bold" />
         </LinearLayout>
 
