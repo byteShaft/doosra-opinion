@@ -14,7 +14,7 @@
     </style>
 
     <style name="EditTextStyle">
-        <item name="colorControlNormal">@color/greeb_button_color</item>
+        <item name="colorControlNormal">@color/green_button_color</item>
     </style>
 
     <style name="AppTheme.NoActionBar">

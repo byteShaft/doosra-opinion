@@ -1,7 +1,7 @@
 package com.byteshaft.doosra;
 
 import android.app.Activity;
-import android.support.v7.app.AppCompatActivity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -46,13 +46,13 @@ public class OpinionActivity extends Activity implements View.OnClickListener {
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.button_diagnosis:
-                System.out.println("Dia");
+                startActivity(new Intent(OpinionActivity.this, UserProfile.class));
                 break;
             case R.id.button_treatment:
-                System.out.println("tre");
+                startActivity(new Intent(OpinionActivity.this, UserProfile.class));
                 break;
             case R.id.button_surgery:
-                System.out.println("sur");
+                startActivity(new Intent(OpinionActivity.this, UserProfile.class));
                 break;
         }
     }

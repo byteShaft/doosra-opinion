@@ -29,7 +29,7 @@
                     android:layout_marginLeft="5dp"
                     android:layout_marginTop="5dp"
                     android:src="@mipmap/ic_launcher"
-                    app:civ_border_color="@color/greeb_button_color"
+                    app:civ_border_color="@color/green_button_color"
                     app:civ_border_width="1dp" />
 
                 <View
@@ -116,20 +116,20 @@
 
                     <EditText
                         android:id="@+id/short_history_edit_text"
-                        android:lines="4"
-                        android:maxLength="120"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:background="@drawable/edit_text_background"
                         android:gravity="top|left"
                         android:hint="@string/short_history"
                         android:inputType="textMultiLine"
+                        android:lines="4"
+                        android:maxLength="120"
                         android:maxLines="10"
-                        android:paddingTop="@dimen/floating_hint_margin"
                         android:paddingLeft="5dp"
-                        android:textColor="@color/greeb_button_color"
+                        android:paddingTop="@dimen/floating_hint_margin"
+                        android:textColor="@color/green_button_color"
                         android:textSize="15dp"
-                        android:theme="@style/EditTextStyle"/>
+                        android:theme="@style/EditTextStyle" />
                 </android.support.design.widget.TextInputLayout>
 
                 <android.support.design.widget.TextInputLayout
@@ -138,51 +138,51 @@
 
                     <EditText
                         android:id="@+id/disease_details_edit_text"
-                        android:lines="3"
-                        android:maxLength="120"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:background="@drawable/edit_text_background"
                         android:gravity="top|left"
-                        android:paddingTop="@dimen/floating_hint_margin"
-                        android:paddingLeft="5dp"
                         android:hint="@string/disease_details"
                         android:inputType="textMultiLine"
+                        android:lines="3"
+                        android:maxLength="120"
                         android:maxLines="10"
-                        android:textColor="@color/greeb_button_color"
-                        android:textColorHint="#4ca64c"/>
+                        android:paddingLeft="5dp"
+                        android:paddingTop="@dimen/floating_hint_margin"
+                        android:textColor="@color/green_button_color"
+                        android:textColorHint="#4ca64c" />
                 </android.support.design.widget.TextInputLayout>
 
                 <android.support.design.widget.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
 
-                <EditText
-                    android:id="@+id/concerns_details_edit_text"
-                    android:lines="3"
-                    android:maxLength="120"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/edit_text_background"
-                    android:gravity="top|left"
-                    android:hint="@string/concern_details"
-                    android:inputType="textMultiLine"
-                    android:maxLines="10"
-                    android:paddingTop="@dimen/floating_hint_margin"
-                    android:paddingLeft="5dp"
-                    android:textColor="@color/greeb_button_color"
-                    android:textColorHint="#4ca64c"/>
-            </android.support.design.widget.TextInputLayout>
+                    <EditText
+                        android:id="@+id/concerns_details_edit_text"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/edit_text_background"
+                        android:gravity="top|left"
+                        android:hint="@string/concern_details"
+                        android:inputType="textMultiLine"
+                        android:lines="3"
+                        android:maxLength="120"
+                        android:maxLines="10"
+                        android:paddingLeft="5dp"
+                        android:paddingTop="@dimen/floating_hint_margin"
+                        android:textColor="@color/green_button_color"
+                        android:textColorHint="#4ca64c" />
+                </android.support.design.widget.TextInputLayout>
 
                 <android.support.v7.widget.AppCompatButton
-                    android:id="@+id/button_login"
+                    android:id="@+id/button_next"
                     android:layout_width="fill_parent"
                     android:layout_height="50dp"
                     android:layout_marginBottom="16dp"
                     android:layout_marginTop="10dp"
                     android:backgroundTint="@color/blue_button_color"
-                    android:textAllCaps="false"
-                    android:text="@string/next_button" />
+                    android:text="@string/next_button"
+                    android:textAllCaps="false" />
             </LinearLayout>
         </ScrollView>
     </RelativeLayout>
