@@ -18,6 +18,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.byteshaft.doosra.accounts.AccountManager;
+import com.byteshaft.doosra.accounts.EditProfile;
 import com.byteshaft.doosra.accounts.Register;
 import com.byteshaft.doosra.fragments.Dashboard;
 import com.byteshaft.doosra.fragments.History;
@@ -120,7 +121,7 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.nav_history) {
             loadFragment(new History());
         } else if (id == R.id.nav_edit_save) {
-            loadFragment(new Register());
+            loadFragment(new EditProfile());
 
         } else if (id == R.id.nav_logout) {
             AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
