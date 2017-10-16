@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="fill_parent"
-    android:layout_height="fill_parent">
+    android:layout_height="fill_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
@@ -14,11 +14,11 @@
             android:id="@+id/profile_image"
             android:layout_width="80dp"
             android:layout_height="80dp"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="10dp"
             android:src="@drawable/camera"
-            app:civ_border_color="@color/greeb_button_color"
-            app:civ_border_width="2dp" />
+            android:layout_marginTop="10dp"
+            android:layout_gravity="center_horizontal"
+            app:civ_border_width="2dp"
+            app:civ_border_color="@color/greeb_button_color" />
 
         <LinearLayout
             android:id="@+id/name_edit_text_layout"
@@ -156,7 +156,6 @@
                 android:inputType="phone" />
         </android.support.design.widget.TextInputLayout>
 
-
         <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -186,47 +185,38 @@
 
         </android.support.design.widget.TextInputLayout>
 
+
         <RadioGroup
             android:id="@+id/gender_group"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/text"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:layout_below="@+id/text" >
 
             <RadioButton
-                android:id="@+id/male"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:id="@+id/male"
                 android:checked="true"
                 android:text="Male" />
 
             <RadioButton
-                android:id="@+id/female"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:id="@+id/female"
                 android:text="Female" />
 
         </RadioGroup>
 
 
         <android.support.v7.widget.AppCompatButton
-            android:id="@+id/sign_up_button"
+            android:id="@+id/update_button"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
             android:layout_marginTop="15dp"
-            android:text="@string/create_account"
+            android:text="@string/update_profile"
             android:textAllCaps="false" />
-
-
-        <TextView
-            android:id="@+id/login_text_view"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginBottom="20dp"
-            android:text="@string/already_have_an_account_login"
-            android:textSize="15sp" />
 
     </LinearLayout>
 
