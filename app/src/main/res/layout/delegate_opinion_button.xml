@@ -9,9 +9,10 @@
         android:layout_height="60dp"
         android:background="@color/green_button_color"
         android:gravity="center"
-        android:text=""
+        android:padding="10dp"
+        android:text="test"
         android:textAllCaps="false"
         android:textColor="@android:color/white"
-        android:textSize="16sp" />
+        android:textSize="18sp" />
 
 </LinearLayout>

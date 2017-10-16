@@ -63,6 +63,7 @@ public class MainActivity extends AppCompatActivity
         headerView = navigationView.getHeaderView(0);
         TextView name = headerView.findViewById(R.id.name);
         TextView email = headerView.findViewById(R.id.email);
+
         CircleImageView kitchenImage = headerView.findViewById(R.id.nav_imageView);
         name.setText(AppGlobals.getStringFromSharedPreferences(AppGlobals.KEY_FIRST_NAME) + " " +
                 AppGlobals.getStringFromSharedPreferences(AppGlobals.KEY_LAST_NAME));

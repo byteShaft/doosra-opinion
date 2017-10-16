@@ -1,10 +1,12 @@
 package com.byteshaft.doosra;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -26,7 +28,6 @@ public class OpinionActivity extends Activity {
     private TextView motoLineTwo;
     private ListView listView;
 
-
     private ArrayList<DiagnosisOpinion> opinionArrayList;
     private OpinionAdapter opinionAdapter;
 
@@ -45,7 +46,16 @@ public class OpinionActivity extends Activity {
         motoLineTwo.setTypeface(AppGlobals.typeface);
 
         listView = findViewById(R.id.opinion_list);
-
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                System.out.println("clicked Item");
+                DiagnosisOpinion opinion = opinionArrayList.get(position);
+                Intent intent = new Intent(OpinionActivity.this, MedicalReports.class);
+                intent.putExtra("id", opinion.getId());
+                startActivity(intent);
+            }
+        });
         getOpinions();
 
     }

@@ -20,6 +20,9 @@ public class AppGlobals extends Application {
     private static Context sContext;
 
     public static Typeface typeface;
+    public static Typeface typefaceForHeading;
+
+
     public static final String SERVER_IP = "http://139.59.167.40";
     public static final String SERVER_IP_FOR_IMAGE = "http://139.59.167.40/";
     public static final String BASE_URL = String.format("%s/api/", SERVER_IP);
@@ -43,7 +46,8 @@ public class AppGlobals extends Application {
         sImageLoader = ImageLoader.getInstance();
         sImageLoader.init(ImageLoaderConfiguration.createDefault(getApplicationContext()));
         sContext = getApplicationContext();
-        typeface = Typeface.createFromAsset(getApplicationContext().getAssets(), "fonts/pixchrome.ttf");
+        typefaceForHeading = Typeface.createFromAsset(getApplicationContext().getAssets(), "fonts/pixchrome.ttf");
+        typeface = Typeface.createFromAsset(getApplicationContext().getAssets(), "fonts/forApp.ttf");
     }
 
     public static void loginState(boolean type) {
