@@ -60,4 +60,7 @@
 
     <string name="action_settings">Settings</string>
     <string name="edit_save">Edit/Save</string>
+    <string name="how_it_works"><u>How It Works</u></string>
+    <string name="about_us"><u>About Us</u></string>
+    <string name="board_of_doctors"><u>Board of Doctors</u></string>
 </resources>
