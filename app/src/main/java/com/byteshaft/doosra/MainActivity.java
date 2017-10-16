@@ -43,9 +43,9 @@ public class MainActivity extends AppCompatActivity
         if (AccountManager.getInstance() != null) {
             AccountManager.getInstance().finish();
         }
-        if (!AppGlobals.isLogin()) {
-            startActivity(new Intent(MainActivity.this, AccountManager.class));
-        }
+//        if (!AppGlobals.isLogin()) {
+//            startActivity(new Intent(MainActivity.this, AccountManager.class));
+//        }
         sInstance = this;
         setContentView(R.layout.activity_main2);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);

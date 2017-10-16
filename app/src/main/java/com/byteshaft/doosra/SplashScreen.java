@@ -2,12 +2,10 @@ package com.byteshaft.doosra;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.os.Handler;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.os.Handler;
 import android.widget.TextView;
 
-import com.byteshaft.doosra.accounts.AccountManager;
 import com.byteshaft.doosra.utils.AppGlobals;
 
 public class SplashScreen extends Activity {
@@ -28,7 +26,7 @@ public class SplashScreen extends Activity {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                Intent mainIntent = new Intent(SplashScreen.this, AccountManager.class);
+                Intent mainIntent = new Intent(SplashScreen.this, MainActivity.class);
                 startActivity(mainIntent);
                 finish();
             }
