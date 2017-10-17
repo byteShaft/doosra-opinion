@@ -370,6 +370,7 @@ public class Register extends Fragment implements View.OnClickListener,
                     if (perms.get(Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED
                             && perms.get(Manifest.permission.READ_EXTERNAL_STORAGE)
                             == PackageManager.PERMISSION_GRANTED) {
+                        selectImage();
                         // process the normal flow
                         //else any one or both the permissions are not granted
                     } else {
@@ -437,7 +438,7 @@ public class Register extends Fragment implements View.OnClickListener,
                     new String[listPermissionsNeeded.size()]), STORAGE_CAMERA_PERMISSION);
         }
 
-        if (listPermissionsNeeded.size() > 0) {
+        if (listPermissionsNeeded.size() == 0) {
             System.out.println("working image");
             selectImage();
         }

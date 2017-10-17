@@ -19,7 +19,6 @@ import android.widget.TextView;
 
 import com.byteshaft.doosra.accounts.AccountManager;
 import com.byteshaft.doosra.accounts.EditProfile;
-import com.byteshaft.doosra.accounts.Register;
 import com.byteshaft.doosra.fragments.Dashboard;
 import com.byteshaft.doosra.fragments.History;
 import com.byteshaft.doosra.fragments.MyProfile;
@@ -71,7 +70,7 @@ public class MainActivity extends AppCompatActivity
         email.setText(AppGlobals.getStringFromSharedPreferences(AppGlobals.KEY_EMAIL));
 
         if (AppGlobals.isLogin() && AppGlobals.getStringFromSharedPreferences(AppGlobals.KEY_SERVER_IMAGE) != null) {
-            String url =  AppGlobals.getStringFromSharedPreferences(AppGlobals.KEY_SERVER_IMAGE);
+            String url = AppGlobals.getStringFromSharedPreferences(AppGlobals.KEY_SERVER_IMAGE);
             Helpers.getBitMap(url, kitchenImage);
         }
         loadFragment(new Dashboard());
@@ -146,7 +145,6 @@ public class MainActivity extends AppCompatActivity
             });
             AlertDialog alertDialog = alertDialogBuilder.create();
             alertDialog.show();
-
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

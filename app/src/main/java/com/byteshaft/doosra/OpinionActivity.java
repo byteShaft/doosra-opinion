@@ -1,9 +1,11 @@
 package com.byteshaft.doosra;
 
-import android.app.Activity;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v7.app.AlertDialog;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -11,6 +13,7 @@ import android.widget.BaseAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.byteshaft.doosra.accounts.AccountManager;
 import com.byteshaft.doosra.gettersetter.DiagnosisOpinion;
 import com.byteshaft.doosra.utils.AppGlobals;
 import com.byteshaft.requests.HttpRequest;
@@ -22,7 +25,7 @@ import org.json.JSONObject;
 import java.net.HttpURLConnection;
 import java.util.ArrayList;
 
-public class OpinionActivity extends Activity {
+public class OpinionActivity extends AppCompatActivity {
 
     private TextView motoLineOne;
     private TextView motoLineTwo;
@@ -35,25 +38,42 @@ public class OpinionActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_opinion);
-        motoLineOne = findViewById(R.id.text_line_one);
-        motoLineTwo = findViewById(R.id.text_line_two);
-        listView = findViewById(R.id.opinion_list);
+        motoLineOne = (TextView) findViewById(R.id.text_line_one);
+        motoLineTwo = (TextView) findViewById(R.id.text_line_two);
+        listView = (ListView) findViewById(R.id.opinion_list);
 
         opinionArrayList = new ArrayList<>();
 
         // set typeface
         motoLineOne.setTypeface(AppGlobals.typeface);
         motoLineTwo.setTypeface(AppGlobals.typeface);
-
-        listView = findViewById(R.id.opinion_list);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                System.out.println("clicked Item");
-                DiagnosisOpinion opinion = opinionArrayList.get(position);
-                Intent intent = new Intent(OpinionActivity.this, MedicalReports.class);
-                intent.putExtra("id", opinion.getId());
-                startActivity(intent);
+                if (AppGlobals.isLogin()) {
+                    DiagnosisOpinion opinion = opinionArrayList.get(position);
+                    Intent intent = new Intent(OpinionActivity.this, MedicalReports.class);
+                    intent.putExtra("id", opinion.getId());
+                    startActivity(intent);
+                } else {
+                    AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(OpinionActivity.this);
+                    alertDialogBuilder.setTitle("Login Required");
+                    alertDialogBuilder.setMessage("Please login to proceed further\ndo you want to login?")
+                            .setCancelable(false).setPositiveButton("YES",
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    startActivity(new Intent(OpinionActivity.this, AccountManager.class));
+                                }
+                            });
+                    alertDialogBuilder.setNegativeButton("NO", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            dialogInterface.dismiss();
+                        }
+                    });
+                    AlertDialog alertDialog = alertDialogBuilder.create();
+                    alertDialog.show();
+                }
             }
         });
         getOpinions();
