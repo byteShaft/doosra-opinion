@@ -57,8 +57,8 @@ public class OpinionActivity extends AppCompatActivity {
                     startActivity(intent);
                 } else {
                     AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(OpinionActivity.this);
-                    alertDialogBuilder.setTitle("Login Required");
-                    alertDialogBuilder.setMessage("Please login to proceed further\ndo you want to login?")
+                    alertDialogBuilder.setTitle("Login Required!");
+                    alertDialogBuilder.setMessage("Please login to proceed further\nDo you want to login?")
                             .setCancelable(false).setPositiveButton("YES",
                             new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int id) {

@@ -1,6 +1,5 @@
 package com.byteshaft.doosra.accounts;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -8,9 +7,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 
-import com.byteshaft.doosra.MainActivity;
 import com.byteshaft.doosra.R;
-import com.byteshaft.doosra.utils.AppGlobals;
 
 public class AccountManager extends AppCompatActivity {
 
@@ -23,13 +20,10 @@ public class AccountManager extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (AppGlobals.isLogin()) {
-            startActivity(new Intent(AccountManager.this, MainActivity.class));
-        } else {
-            loadLoginFragment(new Login());
-        }
         setContentView(R.layout.activity_account_manager);
         sInstance = this;
+        loadLoginFragment(new Login());
+
     }
 
     private void loadLoginFragment(Fragment fragment) {

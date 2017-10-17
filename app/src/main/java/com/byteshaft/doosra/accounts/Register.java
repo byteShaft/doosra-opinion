@@ -16,7 +16,6 @@ import android.support.annotation.IdRes;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -94,7 +93,6 @@ public class Register extends Fragment implements View.OnClickListener,
     private int locationCounter = 0;
     private static final int STORAGE_CAMERA_PERMISSION = 1;
     private static final int SELECT_FILE = 2;
-    private static final int LOCATION_PERMISSION = 4;
     private static final int REQUEST_CAMERA = 3;
 
     private File destination;
@@ -174,7 +172,6 @@ public class Register extends Fragment implements View.OnClickListener,
                 AccountManager.getInstance().loadFragment(new Login());
                 break;
             case R.id.profile_image:
-                System.out.println("ok kro");
                 checkPermissions();
                 break;
         }
@@ -263,6 +260,7 @@ public class Register extends Fragment implements View.OnClickListener,
                         AppGlobals.alertDialog(getActivity(), "Registration Failed!", "please check your internet connection");
                         break;
                     case HttpURLConnection.HTTP_BAD_REQUEST:
+                        System.out.println(request.getResponseText());
                         AppGlobals.alertDialog(getActivity(), "Registration Failed!", "Email already in use");
                         break;
                     case HttpURLConnection.HTTP_CREATED:
@@ -294,10 +292,8 @@ public class Register extends Fragment implements View.OnClickListener,
                             AppGlobals.saveDataToSharedPreferences(AppGlobals.KEY_COUNTRY, userCountry);
                             AppGlobals.saveDataToSharedPreferences(AppGlobals.KEY_SERVER_IMAGE, profileImage);
                             Log.i("image", " " + AppGlobals.getStringFromSharedPreferences(AppGlobals.KEY_SERVER_IMAGE));
-
-                            FragmentManager fragmentManager = getFragmentManager();
-                            fragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
                             AccountManager.getInstance().loadFragment(new AccountActivationCode());
+
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
@@ -312,7 +308,7 @@ public class Register extends Fragment implements View.OnClickListener,
     }
 
     private void registerUser(String profilePicture, String firstName, String lastName, String mobileNumber
-                              , String dob, String country,  String password, String email, String gender) {
+            , String dob, String country, String password, String email, String gender) {
         request = new HttpRequest(getActivity());
         request.setOnReadyStateChangeListener(this);
         request.setOnErrorListener(this);
@@ -325,7 +321,7 @@ public class Register extends Fragment implements View.OnClickListener,
 
 
     private FormData getRegisterData(String profilePicture, String firstName, String lastName, String mobileNumber,
-            String dob, String country, String password, String email, String gender) {
+                                     String dob, String country, String password, String email, String gender) {
         FormData formData = new FormData();
         if (imageUrl != null && !imageUrl.trim().isEmpty()) {
             formData.append(FormData.TYPE_CONTENT_FILE, "photo", profilePicture);
@@ -334,7 +330,7 @@ public class Register extends Fragment implements View.OnClickListener,
         formData.append(FormData.TYPE_CONTENT_TEXT, "last_name", lastName);
         formData.append(FormData.TYPE_CONTENT_TEXT, "email", email);
         formData.append(FormData.TYPE_CONTENT_TEXT, "mobile_number", mobileNumber);
-        formData.append(FormData.TYPE_CONTENT_TEXT, "dob", dob);
+        formData.append(FormData.TYPE_CONTENT_TEXT, "date_of_birth", dob);
         formData.append(FormData.TYPE_CONTENT_TEXT, "country", country);
         formData.append(FormData.TYPE_CONTENT_TEXT, "gender", gender);
         formData.append(FormData.TYPE_CONTENT_TEXT, "password", password);
@@ -360,16 +356,15 @@ public class Register extends Fragment implements View.OnClickListener,
             case STORAGE_CAMERA_PERMISSION:
                 Map<String, Integer> perms = new HashMap<>();
                 // Initialize the map with both permissions
-                perms.put(Manifest.permission.CAMERA, PackageManager.PERMISSION_GRANTED);
-                perms.put(Manifest.permission.READ_EXTERNAL_STORAGE, PackageManager.PERMISSION_GRANTED);
+                perms.put(Manifest.permission.WRITE_EXTERNAL_STORAGE, PackageManager.PERMISSION_GRANTED);
                 // Fill with actual results from user
                 if (grantResults.length > 0) {
                     for (int i = 0; i < permissions.length; i++)
                         perms.put(permissions[i], grantResults[i]);
                     // Check for both permissions
-                    if (perms.get(Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED
-                            && perms.get(Manifest.permission.READ_EXTERNAL_STORAGE)
+                    if (perms.get(Manifest.permission.WRITE_EXTERNAL_STORAGE)
                             == PackageManager.PERMISSION_GRANTED) {
+                        Log.i("PermissionTag", "okokokokokokok");
                         selectImage();
                         // process the normal flow
                         //else any one or both the permissions are not granted
@@ -378,8 +373,7 @@ public class Register extends Fragment implements View.OnClickListener,
 //                        // shouldShowRequestPermissionRationale will return true
                         //show the dialog or snackbar saying its necessary and try again otherwise proceed with setup.
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                            if (shouldShowRequestPermissionRationale(Manifest.permission.CAMERA) ||
-                                    shouldShowRequestPermissionRationale(Manifest.permission.READ_EXTERNAL_STORAGE)) {
+                            if (shouldShowRequestPermissionRationale(Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
                                 showDialogOK(getString(R.string.camera_storage_permission),
                                         new DialogInterface.OnClickListener() {
                                             @Override
@@ -428,18 +422,12 @@ public class Register extends Fragment implements View.OnClickListener,
                 != PackageManager.PERMISSION_GRANTED) {
             listPermissionsNeeded.add(Manifest.permission.WRITE_EXTERNAL_STORAGE);
         }
-        if (ContextCompat.checkSelfPermission(getActivity(),
-                Manifest.permission.CAMERA)
-                != PackageManager.PERMISSION_GRANTED) {
-            listPermissionsNeeded.add(Manifest.permission.CAMERA);
-        }
         if (!listPermissionsNeeded.isEmpty()) {
             ActivityCompat.requestPermissions(getActivity(), listPermissionsNeeded.toArray(
                     new String[listPermissionsNeeded.size()]), STORAGE_CAMERA_PERMISSION);
         }
 
         if (listPermissionsNeeded.size() == 0) {
-            System.out.println("working image");
             selectImage();
         }
     }

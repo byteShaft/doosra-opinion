@@ -117,34 +117,30 @@ public class MainActivity extends AppCompatActivity
         if (id == R.id.nav_home) {
             loadFragment(new Dashboard());
         } else if (id == R.id.nav_my_profile) {
-            loadFragment(new MyProfile());
+            if (AppGlobals.isLogin()) {
+                loadFragment(new MyProfile());
+            } else {
+                loginRequiredDialog();
+            }
         } else if (id == R.id.nav_history) {
-            loadFragment(new History());
+            if (AppGlobals.isLogin()) {
+                loadFragment(new History());
+            } else {
+                loginRequiredDialog();
+            }
         } else if (id == R.id.nav_edit_save) {
-            loadFragment(new EditProfile());
+            if (AppGlobals.isLogin()) {
+                loadFragment(new EditProfile());
+            } else {
+                loginRequiredDialog();
+            }
 
         } else if (id == R.id.nav_logout) {
-            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
-            alertDialogBuilder.setTitle("Confirmation");
-            alertDialogBuilder.setMessage("Do you really want to logout?")
-                    .setCancelable(false).setPositiveButton("Yes",
-                    new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int id) {
-                            AppGlobals.clearSettings();
-                            AppGlobals.firstTimeLaunch(true);
-                            dialog.dismiss();
-                            startActivity(new Intent(getApplicationContext(), SplashScreen.class));
-                            finish();
-                        }
-                    });
-            alertDialogBuilder.setNegativeButton("No", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialogInterface, int i) {
-                    dialogInterface.dismiss();
-                }
-            });
-            AlertDialog alertDialog = alertDialogBuilder.create();
-            alertDialog.show();
+            if (AppGlobals.isLogin()) {
+                logOutDialog();
+            } else {
+                loginRequiredDialog();
+            }
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -152,9 +148,53 @@ public class MainActivity extends AppCompatActivity
         return true;
     }
 
+    private void logOutDialog() {
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+        alertDialogBuilder.setTitle("Confirmation");
+        alertDialogBuilder.setMessage("Do you really want to logout?")
+                .setCancelable(false).setPositiveButton("Yes",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        AppGlobals.clearSettings();
+                        AppGlobals.firstTimeLaunch(true);
+                        dialog.dismiss();
+                        startActivity(new Intent(getApplicationContext(), SplashScreen.class));
+                        finish();
+                    }
+                });
+        alertDialogBuilder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogInterface.dismiss();
+            }
+        });
+        AlertDialog alertDialog = alertDialogBuilder.create();
+        alertDialog.show();
+    }
+
     public void loadFragment(Fragment fragment) {
         FragmentTransaction tx = getSupportFragmentManager().beginTransaction();
         tx.replace(R.id.fragment_container, fragment);
         tx.commit();
+    }
+
+    private void loginRequiredDialog() {
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(MainActivity.this);
+        alertDialogBuilder.setTitle("Login Required!");
+        alertDialogBuilder.setMessage("You are not Logged in. Do you want to Login?")
+                .setCancelable(false).setPositiveButton("YES",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        startActivity(new Intent(MainActivity.this, AccountManager.class));
+                    }
+                });
+        alertDialogBuilder.setNegativeButton("NO", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogInterface.dismiss();
+            }
+        });
+        AlertDialog alertDialog = alertDialogBuilder.create();
+        alertDialog.show();
     }
 }
