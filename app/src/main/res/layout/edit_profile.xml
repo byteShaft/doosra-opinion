@@ -18,7 +18,7 @@
             android:layout_marginTop="10dp"
             android:layout_gravity="center_horizontal"
             app:civ_border_width="2dp"
-            app:civ_border_color="@color/greeb_button_color" />
+            app:civ_border_color="@color/green_button_color" />
 
         <LinearLayout
             android:id="@+id/name_edit_text_layout"
@@ -122,6 +122,61 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="Country name"
+                        android:inputType="number"
+                        android:maxLength="3" />
+                </android.support.design.widget.TextInputLayout>
+            </RelativeLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/height_weight_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:weightSum="2.0">
+
+            <RelativeLayout
+                android:id="@+id/height_layout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1.0"
+                android:padding="5dp">
+
+                <android.support.design.widget.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    android:layout_marginTop="8dp">
+
+                    <EditText
+                        android:id="@+id/height_edit_text"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Your height"
+                        android:inputType="number"
+                        android:maxLength="3" />
+                </android.support.design.widget.TextInputLayout>
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/weight_layout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1.0"
+                android:padding="5dp">
+
+                <android.support.design.widget.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    android:layout_marginTop="8dp">
+
+                    <EditText
+                        android:id="@+id/weight_edit_text"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Your weight"
                         android:inputType="number"
                         android:maxLength="3" />
                 </android.support.design.widget.TextInputLayout>

@@ -70,6 +70,8 @@ public class Register extends Fragment implements View.OnClickListener,
 
     private EditText mCountry;
     private EditText mUserAge;
+    private EditText mWeight;
+    private EditText mUserHeight;
 
     private EditText mVerifyPassword;
     private Button mSignUpButton;
@@ -79,6 +81,8 @@ public class Register extends Fragment implements View.OnClickListener,
     private String lastNameString;
     private String mPhoneNumberString;
 
+    private String mWeightString;
+    private String mUserHeightString;
     private String mCountryString;
     private String mUserAgeString;
 
@@ -114,8 +118,11 @@ public class Register extends Fragment implements View.OnClickListener,
 
         mLastName = mBaseView.findViewById(R.id.last_name_edit_text);
         mPhoneNumber = mBaseView.findViewById(R.id.phone_number_edit_text);
+
         mCountry = mBaseView.findViewById(R.id.country_edit_text);
         mUserAge = mBaseView.findViewById(R.id.age_edit_text);
+        mWeight = mBaseView.findViewById(R.id.weight_edit_text);
+        mUserHeight = mBaseView.findViewById(R.id.height_edit_text);
 
         mEmail = mBaseView.findViewById(R.id.email_edit_text);
         mPassword = mBaseView.findViewById(R.id.password_edit_text);
@@ -132,6 +139,12 @@ public class Register extends Fragment implements View.OnClickListener,
         mLastName.setTypeface(AppGlobals.typeface);
         mPhoneNumber.setTypeface(AppGlobals.typeface);
         mEmail.setTypeface(AppGlobals.typeface);
+
+        mCountry.setTypeface(AppGlobals.typeface);
+        mUserAge.setTypeface(AppGlobals.typeface);
+        mWeight.setTypeface(AppGlobals.typeface);
+        mUserHeight.setTypeface(AppGlobals.typeface);
+
 
         mPassword.setTypeface(AppGlobals.typeface);
         mVerifyPassword.setTypeface(AppGlobals.typeface);
@@ -163,18 +176,18 @@ public class Register extends Fragment implements View.OnClickListener,
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.sign_up_button:
-                System.out.println("signUp button");
+                mWeightString = mWeight.getText().toString();
+                mUserHeightString = mUserHeight.getText().toString();
                 if (validateEditText()) {
                     registerUser(imageUrl, firstNameString, lastNameString, mPhoneNumberString,
-                            mUserAgeString, mCountryString, mPasswordString, mEmailAddressString, mGenderString);
+                            mUserAgeString, mCountryString, mUserHeightString, mWeightString,
+                            mPasswordString, mEmailAddressString, mGenderString);
                 }
-                System.out.println("radio text   " + mGenderString);
                 break;
             case R.id.login_text_view:
                 AccountManager.getInstance().loadFragment(new Login());
                 break;
             case R.id.profile_image:
-                System.out.println("ok kro");
                 checkPermissions();
                 break;
         }
@@ -282,14 +295,20 @@ public class Register extends Fragment implements View.OnClickListener,
                             String userAge = jsonObject.getString(AppGlobals.KEY_USER_AGE);
                             String userCountry = jsonObject.getString(AppGlobals.KEY_COUNTRY);
 
+                            String userWeight = jsonObject.getString(AppGlobals.KEY_WEIGHT);
+                            String userHeight = jsonObject.getString(AppGlobals.KEY_HEIGHT);
+
 
                             // saving values
                             AppGlobals.saveDataToSharedPreferences(AppGlobals.KEY_EMAIL, email);
                             AppGlobals.saveDataToSharedPreferences(AppGlobals.KEY_FIRST_NAME, firstName);
                             AppGlobals.saveDataToSharedPreferences(AppGlobals.KEY_LAST_NAME, lastName);
                             AppGlobals.saveDataToSharedPreferences(AppGlobals.KEY_USER_ID, userId);
-
                             AppGlobals.saveDataToSharedPreferences(AppGlobals.KEY_MOBILE_NUMBER, phoneNumber);
+
+                            AppGlobals.saveDataToSharedPreferences(AppGlobals.KEY_WEIGHT, userWeight);
+                            AppGlobals.saveDataToSharedPreferences(AppGlobals.KEY_HEIGHT, userHeight);
+
                             AppGlobals.saveDataToSharedPreferences(AppGlobals.KEY_USER_AGE, userAge);
                             AppGlobals.saveDataToSharedPreferences(AppGlobals.KEY_COUNTRY, userCountry);
                             AppGlobals.saveDataToSharedPreferences(AppGlobals.KEY_SERVER_IMAGE, profileImage);
@@ -312,12 +331,13 @@ public class Register extends Fragment implements View.OnClickListener,
     }
 
     private void registerUser(String profilePicture, String firstName, String lastName, String mobileNumber
-                              , String dob, String country,  String password, String email, String gender) {
+                              , String dob, String country,  String height, String weight, String password, String email, String gender) {
         request = new HttpRequest(getActivity());
         request.setOnReadyStateChangeListener(this);
         request.setOnErrorListener(this);
         request.open("POST", String.format("%sregister", AppGlobals.BASE_URL));
-        request.send(getRegisterData(profilePicture, firstName, lastName, mobileNumber, dob, country, password, email, gender));
+        request.send(getRegisterData(profilePicture, firstName, lastName, mobileNumber, dob,
+                country, height, weight, password, email, gender));
         Helpers.showProgressDialog(getActivity(), "Registering User ...");
 
 
@@ -325,7 +345,7 @@ public class Register extends Fragment implements View.OnClickListener,
 
 
     private FormData getRegisterData(String profilePicture, String firstName, String lastName, String mobileNumber,
-            String dob, String country, String password, String email, String gender) {
+            String dob, String country, String height, String weight, String password, String email, String gender) {
         FormData formData = new FormData();
         if (imageUrl != null && !imageUrl.trim().isEmpty()) {
             formData.append(FormData.TYPE_CONTENT_FILE, "photo", profilePicture);
@@ -333,10 +353,12 @@ public class Register extends Fragment implements View.OnClickListener,
         formData.append(FormData.TYPE_CONTENT_TEXT, "first_name", firstName);
         formData.append(FormData.TYPE_CONTENT_TEXT, "last_name", lastName);
         formData.append(FormData.TYPE_CONTENT_TEXT, "email", email);
-        formData.append(FormData.TYPE_CONTENT_TEXT, "mobile_number", mobileNumber);
-        formData.append(FormData.TYPE_CONTENT_TEXT, "dob", dob);
-        formData.append(FormData.TYPE_CONTENT_TEXT, "country", country);
         formData.append(FormData.TYPE_CONTENT_TEXT, "gender", gender);
+        formData.append(FormData.TYPE_CONTENT_TEXT, "mobile_number", mobileNumber);
+        formData.append(FormData.TYPE_CONTENT_TEXT, "date_of_birth", dob);
+        formData.append(FormData.TYPE_CONTENT_TEXT, "country", country);
+        formData.append(FormData.TYPE_CONTENT_TEXT, "height", height);
+        formData.append(FormData.TYPE_CONTENT_TEXT, "weight", weight);
         formData.append(FormData.TYPE_CONTENT_TEXT, "password", password);
 
         return formData;

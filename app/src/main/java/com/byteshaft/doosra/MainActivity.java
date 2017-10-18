@@ -73,7 +73,7 @@ public class MainActivity extends AppCompatActivity
             String url =  AppGlobals.getStringFromSharedPreferences(AppGlobals.KEY_SERVER_IMAGE);
             Helpers.getBitMap(url, kitchenImage);
         }
-        loadFragment(new Dashboard());
+        loadFragment(new Register());
     }
 
     @Override

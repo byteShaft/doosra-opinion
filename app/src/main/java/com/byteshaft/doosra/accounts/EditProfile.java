@@ -68,6 +68,8 @@ public class EditProfile extends Fragment implements View.OnClickListener,
 
     private EditText mCountry;
     private EditText mUserAge;
+    private EditText mWeight;
+    private EditText mUserHeight;
 
     private EditText mFirstName;
     private EditText mLastName;
@@ -76,6 +78,8 @@ public class EditProfile extends Fragment implements View.OnClickListener,
     private EditText mVerifyPassword;
     private Button mUpdateButton;
 
+    private String mWeightString;
+    private String mUserheightString;
     private String mCountryString;
     private String mUserAgeString;
 
@@ -114,6 +118,8 @@ public class EditProfile extends Fragment implements View.OnClickListener,
 
         mCountry = mBaseView.findViewById(R.id.country_edit_text);
         mUserAge = mBaseView.findViewById(R.id.age_edit_text);
+        mWeight = mBaseView.findViewById(R.id.weight_edit_text);
+        mUserHeight = mBaseView.findViewById(R.id.height_edit_text);
 
         mEmail = mBaseView.findViewById(R.id.email_edit_text);
         mPassword = mBaseView.findViewById(R.id.password_edit_text);
@@ -129,10 +135,16 @@ public class EditProfile extends Fragment implements View.OnClickListener,
         mLastName.setTypeface(AppGlobals.typeface);
         mPhoneNumber.setTypeface(AppGlobals.typeface);
         mEmail.setTypeface(AppGlobals.typeface);
+
         mPassword.setTypeface(AppGlobals.typeface);
         mVerifyPassword.setTypeface(AppGlobals.typeface);
         mUpdateButton.setTypeface(AppGlobals.typeface);
         mMale.setTypeface(AppGlobals.typeface);
+
+        mCountry.setTypeface(AppGlobals.typeface);
+        mUserAge.setTypeface(AppGlobals.typeface);
+        mWeight.setTypeface(AppGlobals.typeface);
+        mUserHeight.setTypeface(AppGlobals.typeface);
         mFemale.setTypeface(AppGlobals.typeface);
 
         if (AppGlobals.isLogin()) {
@@ -170,11 +182,14 @@ public class EditProfile extends Fragment implements View.OnClickListener,
 
                 mCountryString = mCountry.getText().toString();
                 mUserAgeString = mUserAge.getText().toString();
+                mUserheightString = mUserHeight.getText().toString();
+                mWeightString = mWeight.getText().toString();
+
                 mPasswordString = mPassword.getText().toString();
                 mVerifyPasswordString = mVerifyPassword.getText().toString();
 
                 updateUserProfile(imageUrl, firstNameString, lastNameString, mPhoneNumberString,
-                           mUserAgeString, mCountryString, mPasswordString, mEmailAddressString, mGenderString);
+                           mUserAgeString, mCountryString, mUserheightString, mWeightString, mPasswordString, mEmailAddressString, mGenderString);
                 break;
             case R.id.profile_image:
                 checkPermissions();
@@ -208,6 +223,8 @@ public class EditProfile extends Fragment implements View.OnClickListener,
                             String phoneNumber = jsonObject.getString(AppGlobals.KEY_MOBILE_NUMBER);
                             String userAge = jsonObject.getString(AppGlobals.KEY_USER_AGE);
                             String userCountry = jsonObject.getString(AppGlobals.KEY_COUNTRY);
+                            String userWeight = jsonObject.getString(AppGlobals.KEY_WEIGHT);
+                            String userHeight = jsonObject.getString(AppGlobals.KEY_HEIGHT);
 
                             // saving values
                             AppGlobals.saveDataToSharedPreferences(AppGlobals.KEY_EMAIL, email);
@@ -215,6 +232,8 @@ public class EditProfile extends Fragment implements View.OnClickListener,
                             AppGlobals.saveDataToSharedPreferences(AppGlobals.KEY_LAST_NAME, lastName);
                             AppGlobals.saveDataToSharedPreferences(AppGlobals.KEY_USER_ID, userId);
 
+                            AppGlobals.saveDataToSharedPreferences(AppGlobals.KEY_WEIGHT, userWeight);
+                            AppGlobals.saveDataToSharedPreferences(AppGlobals.KEY_HEIGHT, userHeight);
                             AppGlobals.saveDataToSharedPreferences(AppGlobals.KEY_MOBILE_NUMBER, phoneNumber);
                             AppGlobals.saveDataToSharedPreferences(AppGlobals.KEY_USER_AGE, userAge);
                             AppGlobals.saveDataToSharedPreferences(AppGlobals.KEY_COUNTRY, userCountry);
@@ -237,20 +256,21 @@ public class EditProfile extends Fragment implements View.OnClickListener,
     }
 
     private void updateUserProfile(String profilePicture, String firstName, String lastName, String mobileNumber,
-                                   String dob, String country, String password, String email, String gender) {
+                                   String dob, String country, String height, String weight, String password, String email, String gender) {
         request = new HttpRequest(getActivity());
         request.setOnReadyStateChangeListener(this);
         request.setOnErrorListener(this);
             request.open("PUT", String.format("%sme", AppGlobals.BASE_URL));
         request.setRequestHeader("Authorization", "Token " +
                 AppGlobals.getStringFromSharedPreferences(AppGlobals.KEY_TOKEN));
-            request.send(getProfileData(profilePicture, firstName, lastName, mobileNumber, dob, country,  password, email, gender));
+            request.send(getProfileData(profilePicture, firstName, lastName, mobileNumber, dob, country,
+                    height, weight, password, email, gender));
             Helpers.showProgressDialog(getActivity(), "Updating Profile...");
 
     }
 
     private FormData getProfileData(String profilePicture, String firstName, String lastName, String mobileNumber,
-                                    String dob, String country, String password, String email, String gender) {
+                                    String dob, String country, String height, String weight, String password, String email, String gender) {
         FormData formData = new FormData();
         if (imageUrl != null && !imageUrl.trim().isEmpty()) {
             formData.append(FormData.TYPE_CONTENT_FILE, "photo", profilePicture);
@@ -259,9 +279,11 @@ public class EditProfile extends Fragment implements View.OnClickListener,
         formData.append(FormData.TYPE_CONTENT_TEXT, "last_name", lastName);
         formData.append(FormData.TYPE_CONTENT_TEXT, "email", email);
         formData.append(FormData.TYPE_CONTENT_TEXT, "mobile_number", mobileNumber);
-        formData.append(FormData.TYPE_CONTENT_TEXT, "dob", dob);
+        formData.append(FormData.TYPE_CONTENT_TEXT, "date_of_birth", dob);
         formData.append(FormData.TYPE_CONTENT_TEXT, "country", country);
         formData.append(FormData.TYPE_CONTENT_TEXT, "gender", gender);
+        formData.append(FormData.TYPE_CONTENT_TEXT, "height", height);
+        formData.append(FormData.TYPE_CONTENT_TEXT, "weight", weight);
         formData.append(FormData.TYPE_CONTENT_TEXT, "password", password);
 
         return formData;
