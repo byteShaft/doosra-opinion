@@ -52,7 +52,7 @@ public class OpinionActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 if (AppGlobals.isLogin()) {
                     DiagnosisOpinion opinion = opinionArrayList.get(position);
-                    Intent intent = new Intent(OpinionActivity.this, MedicalReports.class);
+                    Intent intent = new Intent(OpinionActivity.this, UserProfile.class);
                     intent.putExtra("id", opinion.getId());
                     startActivity(intent);
                 } else {

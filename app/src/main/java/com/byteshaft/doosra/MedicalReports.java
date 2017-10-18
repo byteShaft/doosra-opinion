@@ -15,6 +15,8 @@ import android.view.View;
 import android.widget.Button;
 
 import com.byteshaft.doosra.utils.AppGlobals;
+import com.byteshaft.requests.FormData;
+import com.byteshaft.requests.HttpRequest;
 import com.nbsp.materialfilepicker.MaterialFilePicker;
 import com.nbsp.materialfilepicker.ui.FilePickerActivity;
 
@@ -23,8 +25,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class MedicalReports extends AppCompatActivity implements View.OnClickListener {
-
+public class MedicalReports extends AppCompatActivity implements View.OnClickListener, HttpRequest.OnReadyStateChangeListener, HttpRequest.OnErrorListener {
 
     private static final int MEDICAL_CODE = 1;
     private static final int LAB_CODE = 2;
@@ -37,7 +38,20 @@ public class MedicalReports extends AppCompatActivity implements View.OnClickLis
     private Button buttonOthers;
     private Button buttonSubmit;
 
+    private HttpRequest request;
+
+    private String medicalFileUri;
+    private String labResultFileUri;
+    private String reportFileUri;
+    private String otherFileUri;
+
+
     private int opinionTypeID;
+    private String fullName = AppGlobals.getStringFromSharedPreferences(AppGlobals.KEY_FIRST_NAME)
+            + " " + AppGlobals.getStringFromSharedPreferences(AppGlobals.KEY_LAST_NAME);
+    private String shortHistoryString;
+    private String existingDiseaseString;
+    private String concernString;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,7 +60,13 @@ public class MedicalReports extends AppCompatActivity implements View.OnClickLis
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         opinionTypeID = getIntent().getIntExtra("id", 0);
-        System.out.println(opinionTypeID);
+
+        shortHistoryString = getIntent().getStringExtra("short_history");
+        existingDiseaseString = getIntent().getStringExtra("existing_disease");
+        concernString = getIntent().getStringExtra("concern");
+
+        System.out.println("Id is...." + opinionTypeID + " history: " +
+                shortHistoryString + " concern " + concernString + " Disease: " + existingDiseaseString);
 
         buttonMedical = (Button) findViewById(R.id.button_medical);
         buttonLabResult = (Button) findViewById(R.id.button_lab_result);
@@ -65,6 +85,77 @@ public class MedicalReports extends AppCompatActivity implements View.OnClickLis
     public boolean onSupportNavigateUp() {
         onBackPressed();
         return true;
+    }
+
+    private void submitReport(String medicalFile,
+                              String labFile,
+                              String reportFile,
+                              String otherFile,
+                              String age,
+                              String fullName,
+                              String weight,
+                              String height,
+                              String opinionId,
+                              String shortHistory, String existingDisease, String concern) {
+
+        request = new HttpRequest(MedicalReports.this);
+        request.setOnReadyStateChangeListener(this);
+        request.setOnErrorListener(this);
+        request.open("POST", String.format("%sopinion", AppGlobals.BASE_URL));
+        request.setRequestHeader("Authorization", "Token " +
+                AppGlobals.getStringFromSharedPreferences(AppGlobals.KEY_TOKEN));
+        request.send(getReportData(medicalFile, labFile, reportFile, otherFile, age, fullName,
+                weight, height, opinionId, shortHistory, existingDisease, concern));
+        request.send();
+    }
+
+    @Override
+    public void onReadyStateChange(HttpRequest request, int readyState) {
+    }
+
+    @Override
+    public void onError(HttpRequest request, int readyState, short error, Exception exception) {
+
+    }
+
+    private FormData getReportData(String medicalFile,
+                                   String labFile,
+                                   String reportFile,
+                                   String otherFile,
+                                   String age,
+                                   String fullName,
+                                   String weight,
+                                   String height,
+                                   String opinionId,
+                                   String shortHistory, String existingDisease, String concern) {
+
+        FormData formData = new FormData();
+
+        if (medicalFileUri != null && !medicalFileUri.trim().isEmpty()) {
+            formData.append(FormData.TYPE_CONTENT_FILE, "file1", medicalFile);
+        }
+        if (labResultFileUri != null && !labResultFileUri.trim().isEmpty()) {
+            formData.append(FormData.TYPE_CONTENT_FILE, "file2", labFile);
+        }
+        if (reportFileUri != null && !reportFileUri.trim().isEmpty()) {
+            formData.append(FormData.TYPE_CONTENT_FILE, "file1", reportFile);
+        }
+        if (otherFileUri != null && !otherFileUri.trim().isEmpty()) {
+            formData.append(FormData.TYPE_CONTENT_FILE, "file1", otherFile);
+        }
+
+        formData.append(FormData.TYPE_CONTENT_TEXT, "full_name", fullName);
+        formData.append(FormData.TYPE_CONTENT_TEXT, "age", age);
+        formData.append(FormData.TYPE_CONTENT_TEXT, "height", height);
+        formData.append(FormData.TYPE_CONTENT_TEXT, "weight", weight);
+        formData.append(FormData.TYPE_CONTENT_TEXT, "opinion_type", opinionId);
+
+        formData.append(FormData.TYPE_CONTENT_TEXT, "short_history", shortHistory);
+        formData.append(FormData.TYPE_CONTENT_TEXT, "existing_disease", existingDisease);
+        formData.append(FormData.TYPE_CONTENT_TEXT, "concern", concern);
+
+        return formData;
+
     }
 
     @Override
@@ -103,21 +194,15 @@ public class MedicalReports extends AppCompatActivity implements View.OnClickLis
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == MEDICAL_CODE && resultCode == RESULT_OK) {
-            String filePath = data.getStringExtra(FilePickerActivity.RESULT_FILE_PATH);
-            System.out.println(" Ok OK OK" + filePath);
-            // Do anything with file
+            medicalFileUri = data.getStringExtra(FilePickerActivity.RESULT_FILE_PATH);
         } else if (requestCode == LAB_CODE && resultCode == RESULT_OK) {
-            String filePath = data.getStringExtra(FilePickerActivity.RESULT_FILE_PATH);
-            System.out.println(" Ok OK OK" + filePath);
-            // Do anything with file
+            labResultFileUri = data.getStringExtra(FilePickerActivity.RESULT_FILE_PATH);
+
         } else if (requestCode == REPORT_CODE && resultCode == RESULT_OK) {
-            String filePath = data.getStringExtra(FilePickerActivity.RESULT_FILE_PATH);
-            System.out.println(" Ok OK OK" + filePath);
-            // Do anything with file
+            reportFileUri = data.getStringExtra(FilePickerActivity.RESULT_FILE_PATH);
+
         } else if (requestCode == OTHER_CODE && resultCode == RESULT_OK) {
-            String filePath = data.getStringExtra(FilePickerActivity.RESULT_FILE_PATH);
-            System.out.println(" Ok OK OK" + filePath);
-            // Do anything with file
+            otherFileUri = data.getStringExtra(FilePickerActivity.RESULT_FILE_PATH);
         }
     }
 
@@ -209,4 +294,5 @@ public class MedicalReports extends AppCompatActivity implements View.OnClickLis
                 .create()
                 .show();
     }
+
 }

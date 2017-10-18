@@ -22,7 +22,6 @@ public class AppGlobals extends Application {
     public static Typeface typeface;
     public static Typeface typefaceForHeading;
 
-
     public static final String SERVER_IP = "http://139.59.167.40";
     public static final String SERVER_IP_FOR_IMAGE = "http://139.59.167.40/";
     public static final String BASE_URL = String.format("%s/api/", SERVER_IP);
