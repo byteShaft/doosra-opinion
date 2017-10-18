@@ -97,9 +97,9 @@
                         android:id="@+id/age_edit_text"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="Your age"
+                        android:hint="Age"
                         android:inputType="numberDecimal"
-                        android:maxLength="4" />
+                        android:maxLength="3" />
                 </android.support.design.widget.TextInputLayout>
 
             </RelativeLayout>
@@ -121,9 +121,8 @@
                         android:id="@+id/country_edit_text"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="Country name"
-                        android:inputType="text"
-                        />
+                        android:hint="Country"
+                        android:inputType="text" />
                 </android.support.design.widget.TextInputLayout>
             </RelativeLayout>
         </LinearLayout>
@@ -152,7 +151,7 @@
                         android:id="@+id/height_edit_text"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="Your height"
+                        android:hint="Height (ft)"
                         android:inputType="numberDecimal"
                         android:maxLength="4" />
                 </android.support.design.widget.TextInputLayout>
@@ -176,7 +175,7 @@
                         android:id="@+id/weight_edit_text"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="Your weight"
+                        android:hint="Weight (kg)"
                         android:inputType="numberDecimal"
                         android:maxLength="4" />
                 </android.support.design.widget.TextInputLayout>

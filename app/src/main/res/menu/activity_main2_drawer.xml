@@ -6,10 +6,7 @@
             android:id="@+id/nav_home"
             android:icon="@mipmap/ic_home"
             android:title="@string/home" />
-        <item
-            android:id="@+id/nav_my_profile"
-            android:icon="@mipmap/user_profile"
-            android:title="@string/my_profile" />
+
         <item
             android:id="@+id/nav_history"
             android:icon="@mipmap/ic_history"

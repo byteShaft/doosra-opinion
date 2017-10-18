@@ -75,7 +75,6 @@
                 </RelativeLayout>
 
                 <RelativeLayout
-                    android:id="@+id/layout_phone_number"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/layout_user_name"

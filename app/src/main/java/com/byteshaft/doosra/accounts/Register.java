@@ -292,6 +292,7 @@ public class Register extends Fragment implements View.OnClickListener,
 
                             String phoneNumber = jsonObject.getString(AppGlobals.KEY_MOBILE_NUMBER);
                             String userAge = jsonObject.getString(AppGlobals.KEY_USER_AGE);
+                            String gender = jsonObject.getString(AppGlobals.KEY_GENDER);
                             String userCountry = jsonObject.getString(AppGlobals.KEY_COUNTRY);
 
                             String userWeight = jsonObject.getString(AppGlobals.KEY_WEIGHT);
@@ -304,7 +305,7 @@ public class Register extends Fragment implements View.OnClickListener,
                             AppGlobals.saveDataToSharedPreferences(AppGlobals.KEY_LAST_NAME, lastName);
                             AppGlobals.saveDataToSharedPreferences(AppGlobals.KEY_USER_ID, userId);
                             AppGlobals.saveDataToSharedPreferences(AppGlobals.KEY_MOBILE_NUMBER, phoneNumber);
-
+                            AppGlobals.saveDataToSharedPreferences(AppGlobals.KEY_GENDER, gender);
                             AppGlobals.saveDataToSharedPreferences(AppGlobals.KEY_WEIGHT, userWeight);
                             AppGlobals.saveDataToSharedPreferences(AppGlobals.KEY_HEIGHT, userHeight);
 
@@ -328,7 +329,7 @@ public class Register extends Fragment implements View.OnClickListener,
     }
 
     private void registerUser(String profilePicture, String firstName, String lastName, String mobileNumber
-                              , String dob, String country,  String height, String weight, String password,
+            , String dob, String country, String height, String weight, String password,
                               String email, String gender) {
         request = new HttpRequest(getActivity());
         request.setOnReadyStateChangeListener(this);
@@ -343,7 +344,7 @@ public class Register extends Fragment implements View.OnClickListener,
 
 
     private FormData getRegisterData(String profilePicture, String firstName, String lastName, String mobileNumber,
-            String dob, String country, String height, String weight, String password, String email, String gender) {
+                                     String dob, String country, String height, String weight, String password, String email, String gender) {
         FormData formData = new FormData();
         if (imageUrl != null && !imageUrl.trim().isEmpty()) {
             formData.append(FormData.TYPE_CONTENT_FILE, "photo", profilePicture);

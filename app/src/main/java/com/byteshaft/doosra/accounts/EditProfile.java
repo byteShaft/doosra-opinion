@@ -54,17 +54,12 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 import static android.app.Activity.RESULT_OK;
 
-/**
- * Created by husnain on 10/13/17.
- */
-
 public class EditProfile extends Fragment implements View.OnClickListener,
         HttpRequest.OnReadyStateChangeListener, HttpRequest.OnErrorListener, RadioGroup.OnCheckedChangeListener {
 
     private View mBaseView;
     private CircleImageView mProfilePicture;
     private EditText mEmail;
-    private EditText mPassword;
 
     private EditText mCountry;
     private EditText mUserAge;
@@ -75,7 +70,6 @@ public class EditProfile extends Fragment implements View.OnClickListener,
     private EditText mLastName;
     private EditText mPhoneNumber;
 
-    private EditText mVerifyPassword;
     private Button mUpdateButton;
 
     private String mWeightString;
@@ -88,18 +82,14 @@ public class EditProfile extends Fragment implements View.OnClickListener,
     private String mPhoneNumberString;
 
     private String mEmailAddressString;
-    private String mPasswordString;
-    private String mVerifyPasswordString;
     private String mGenderString = "Male";
     private HttpRequest request;
     private RadioGroup mGenderRadioGroup;
     private RadioButton mMale;
     private RadioButton mFemale;
 
-    private int locationCounter = 0;
     private static final int STORAGE_CAMERA_PERMISSION = 1;
     private static final int SELECT_FILE = 2;
-    private static final int LOCATION_PERMISSION = 4;
     private static final int REQUEST_CAMERA = 3;
 
     private File destination;
@@ -122,8 +112,6 @@ public class EditProfile extends Fragment implements View.OnClickListener,
         mUserHeight = mBaseView.findViewById(R.id.height_edit_text);
 
         mEmail = mBaseView.findViewById(R.id.email_edit_text);
-        mPassword = mBaseView.findViewById(R.id.password_edit_text);
-        mVerifyPassword = mBaseView.findViewById(R.id.verify_password_edit_text);
         mUpdateButton = mBaseView.findViewById(R.id.update_button);
 
         mGenderRadioGroup = mBaseView.findViewById(R.id.gender_group);
@@ -136,8 +124,6 @@ public class EditProfile extends Fragment implements View.OnClickListener,
         mPhoneNumber.setTypeface(AppGlobals.typeface);
         mEmail.setTypeface(AppGlobals.typeface);
 
-        mPassword.setTypeface(AppGlobals.typeface);
-        mVerifyPassword.setTypeface(AppGlobals.typeface);
         mUpdateButton.setTypeface(AppGlobals.typeface);
         mMale.setTypeface(AppGlobals.typeface);
 
@@ -151,7 +137,12 @@ public class EditProfile extends Fragment implements View.OnClickListener,
             ((AppCompatActivity) getActivity()).getSupportActionBar()
                     .setTitle(getResources().getString(R.string.update_profile));
             String url = AppGlobals.getStringFromSharedPreferences(AppGlobals.KEY_SERVER_IMAGE);
-            Helpers.getBitMap(url , mProfilePicture);
+            Helpers.getBitMap(url, mProfilePicture);
+            mCountry.setText(AppGlobals.getStringFromSharedPreferences(AppGlobals.KEY_COUNTRY));
+            mUserAge.setText(AppGlobals.getStringFromSharedPreferences(AppGlobals.KEY_USER_AGE));
+            mWeight.setText(AppGlobals.getStringFromSharedPreferences(AppGlobals.KEY_WEIGHT));
+            mUserHeight.setText(AppGlobals.getStringFromSharedPreferences(AppGlobals.KEY_HEIGHT));
+
             mFirstName.setText(AppGlobals.getStringFromSharedPreferences(AppGlobals.KEY_FIRST_NAME));
             mLastName.setText(AppGlobals.getStringFromSharedPreferences(AppGlobals.KEY_LAST_NAME));
             mEmail.setText(AppGlobals.getStringFromSharedPreferences(AppGlobals.KEY_EMAIL));
@@ -185,11 +176,8 @@ public class EditProfile extends Fragment implements View.OnClickListener,
                 mUserheightString = mUserHeight.getText().toString();
                 mWeightString = mWeight.getText().toString();
 
-                mPasswordString = mPassword.getText().toString();
-                mVerifyPasswordString = mVerifyPassword.getText().toString();
-
                 updateUserProfile(imageUrl, firstNameString, lastNameString, mPhoneNumberString,
-                           mUserAgeString, mCountryString, mUserheightString, mWeightString, mPasswordString, mEmailAddressString, mGenderString);
+                        mUserAgeString, mCountryString, mUserheightString, mWeightString, mEmailAddressString, mGenderString);
                 break;
             case R.id.profile_image:
                 checkPermissions();
@@ -256,21 +244,21 @@ public class EditProfile extends Fragment implements View.OnClickListener,
     }
 
     private void updateUserProfile(String profilePicture, String firstName, String lastName, String mobileNumber,
-                                   String dob, String country, String height, String weight, String password, String email, String gender) {
+                                   String dob, String country, String height, String weight, String email, String gender) {
         request = new HttpRequest(getActivity());
         request.setOnReadyStateChangeListener(this);
         request.setOnErrorListener(this);
-            request.open("PUT", String.format("%sme", AppGlobals.BASE_URL));
+        request.open("PUT", String.format("%sme", AppGlobals.BASE_URL));
         request.setRequestHeader("Authorization", "Token " +
                 AppGlobals.getStringFromSharedPreferences(AppGlobals.KEY_TOKEN));
-            request.send(getProfileData(profilePicture, firstName, lastName, mobileNumber, dob, country,
-                    height, weight, password, email, gender));
-            Helpers.showProgressDialog(getActivity(), "Updating Profile...");
+        request.send(getProfileData(profilePicture, firstName, lastName, mobileNumber, dob, country,
+                height, weight, email, gender));
+        Helpers.showProgressDialog(getActivity(), "Updating Profile...");
 
     }
 
     private FormData getProfileData(String profilePicture, String firstName, String lastName, String mobileNumber,
-                                    String dob, String country, String height, String weight, String password, String email, String gender) {
+                                    String dob, String country, String height, String weight, String email, String gender) {
         FormData formData = new FormData();
         if (imageUrl != null && !imageUrl.trim().isEmpty()) {
             formData.append(FormData.TYPE_CONTENT_FILE, "photo", profilePicture);
@@ -284,12 +272,10 @@ public class EditProfile extends Fragment implements View.OnClickListener,
         formData.append(FormData.TYPE_CONTENT_TEXT, "gender", gender);
         formData.append(FormData.TYPE_CONTENT_TEXT, "height", height);
         formData.append(FormData.TYPE_CONTENT_TEXT, "weight", weight);
-        formData.append(FormData.TYPE_CONTENT_TEXT, "password", password);
 
         return formData;
 
     }
-
 
 
     @Override

@@ -21,7 +21,6 @@ import com.byteshaft.doosra.accounts.AccountManager;
 import com.byteshaft.doosra.accounts.EditProfile;
 import com.byteshaft.doosra.fragments.Dashboard;
 import com.byteshaft.doosra.fragments.History;
-import com.byteshaft.doosra.fragments.MyProfile;
 import com.byteshaft.doosra.utils.AppGlobals;
 import com.byteshaft.doosra.utils.Helpers;
 
@@ -64,14 +63,14 @@ public class MainActivity extends AppCompatActivity
         TextView name = headerView.findViewById(R.id.name);
         TextView email = headerView.findViewById(R.id.email);
 
-        CircleImageView kitchenImage = headerView.findViewById(R.id.nav_imageView);
+        CircleImageView userImage = headerView.findViewById(R.id.nav_imageView);
         name.setText(AppGlobals.getStringFromSharedPreferences(AppGlobals.KEY_FIRST_NAME) + " " +
                 AppGlobals.getStringFromSharedPreferences(AppGlobals.KEY_LAST_NAME));
         email.setText(AppGlobals.getStringFromSharedPreferences(AppGlobals.KEY_EMAIL));
 
         if (AppGlobals.isLogin() && AppGlobals.getStringFromSharedPreferences(AppGlobals.KEY_SERVER_IMAGE) != null) {
             String url = AppGlobals.getStringFromSharedPreferences(AppGlobals.KEY_SERVER_IMAGE);
-            Helpers.getBitMap(url, kitchenImage);
+            Helpers.getBitMap(url, userImage);
         }
         loadFragment(new Dashboard());
     }
@@ -116,12 +115,6 @@ public class MainActivity extends AppCompatActivity
 
         if (id == R.id.nav_home) {
             loadFragment(new Dashboard());
-        } else if (id == R.id.nav_my_profile) {
-            if (AppGlobals.isLogin()) {
-                loadFragment(new MyProfile());
-            } else {
-                loginRequiredDialog();
-            }
         } else if (id == R.id.nav_history) {
             if (AppGlobals.isLogin()) {
                 loadFragment(new History());
