@@ -11,15 +11,18 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
 import com.byteshaft.doosra.utils.AppGlobals;
+import com.byteshaft.doosra.utils.Helpers;
 import com.byteshaft.requests.FormData;
 import com.byteshaft.requests.HttpRequest;
 import com.nbsp.materialfilepicker.MaterialFilePicker;
 import com.nbsp.materialfilepicker.ui.FilePickerActivity;
 
+import java.net.HttpURLConnection;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -48,8 +51,12 @@ public class MedicalReports extends AppCompatActivity implements View.OnClickLis
 
 
     private int opinionTypeID;
-    private String fullName = AppGlobals.getStringFromSharedPreferences(AppGlobals.KEY_FIRST_NAME)
+    private String name = AppGlobals.getStringFromSharedPreferences(AppGlobals.KEY_FIRST_NAME)
             + " " + AppGlobals.getStringFromSharedPreferences(AppGlobals.KEY_LAST_NAME);
+    String age = AppGlobals.getStringFromSharedPreferences(AppGlobals.KEY_USER_AGE);
+    String weight = AppGlobals.getStringFromSharedPreferences(AppGlobals.KEY_WEIGHT);
+    String height = AppGlobals.getStringFromSharedPreferences(AppGlobals.KEY_HEIGHT);
+
     private String shortHistoryString;
     private String existingDiseaseString;
     private String concernString;
@@ -107,16 +114,25 @@ public class MedicalReports extends AppCompatActivity implements View.OnClickLis
                 AppGlobals.getStringFromSharedPreferences(AppGlobals.KEY_TOKEN));
         request.send(getReportData(medicalFile, labFile, reportFile, otherFile, age, fullName,
                 weight, height, opinionId, shortHistory, existingDisease, concern));
-        request.send();
     }
 
     @Override
     public void onReadyStateChange(HttpRequest request, int readyState) {
+        switch (readyState) {
+            case HttpRequest.STATE_DONE:
+                Helpers.dismissProgressDialog();
+                Log.i("TAG", "Response " + request.getResponseText());
+                switch (request.getStatus()) {
+                    case HttpURLConnection.HTTP_CREATED:
+                        Helpers.alertDialog(MedicalReports.this,
+                                "Request Submitted!", "Your Request has been submitted", null);
+                }
+        }
     }
 
     @Override
     public void onError(HttpRequest request, int readyState, short error, Exception exception) {
-
+        Helpers.dismissProgressDialog();
     }
 
     private FormData getReportData(String medicalFile,
@@ -133,16 +149,16 @@ public class MedicalReports extends AppCompatActivity implements View.OnClickLis
         FormData formData = new FormData();
 
         if (medicalFileUri != null && !medicalFileUri.trim().isEmpty()) {
-            formData.append(FormData.TYPE_CONTENT_FILE, "file1", medicalFile);
+            formData.append(FormData.TYPE_CONTENT_FILE, "medical_file", medicalFile);
         }
         if (labResultFileUri != null && !labResultFileUri.trim().isEmpty()) {
-            formData.append(FormData.TYPE_CONTENT_FILE, "file2", labFile);
+            formData.append(FormData.TYPE_CONTENT_FILE, "lab_result_file", labFile);
         }
         if (reportFileUri != null && !reportFileUri.trim().isEmpty()) {
-            formData.append(FormData.TYPE_CONTENT_FILE, "file1", reportFile);
+            formData.append(FormData.TYPE_CONTENT_FILE, "xray_file", reportFile);
         }
         if (otherFileUri != null && !otherFileUri.trim().isEmpty()) {
-            formData.append(FormData.TYPE_CONTENT_FILE, "file1", otherFile);
+            formData.append(FormData.TYPE_CONTENT_FILE, "other_file", otherFile);
         }
 
         formData.append(FormData.TYPE_CONTENT_TEXT, "full_name", fullName);
@@ -178,6 +194,9 @@ public class MedicalReports extends AppCompatActivity implements View.OnClickLis
                 checkPermissions(OTHER_CODE);
                 break;
             case R.id.button_submit:
+                submitReport(medicalFileUri, labResultFileUri, reportFileUri, otherFileUri,
+                        age, name, weight, height, String.valueOf(opinionTypeID), shortHistoryString,
+                        existingDiseaseString, concernString);
                 break;
         }
     }

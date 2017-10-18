@@ -94,7 +94,6 @@ public class Register extends Fragment implements View.OnClickListener,
     private RadioButton mMale;
     private RadioButton mFemale;
 
-    private int locationCounter = 0;
     private static final int STORAGE_CAMERA_PERMISSION = 1;
     private static final int SELECT_FILE = 2;
     private static final int REQUEST_CAMERA = 3;
