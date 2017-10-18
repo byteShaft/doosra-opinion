@@ -25,7 +25,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class MedicalReports extends AppCompatActivity implements View.OnClickListener, HttpRequest.OnReadyStateChangeListener, HttpRequest.OnErrorListener {
+public class MedicalReports extends AppCompatActivity implements View.OnClickListener,
+        HttpRequest.OnReadyStateChangeListener, HttpRequest.OnErrorListener {
 
     private static final int MEDICAL_CODE = 1;
     private static final int LAB_CODE = 2;

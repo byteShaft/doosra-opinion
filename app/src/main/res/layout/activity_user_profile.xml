@@ -28,7 +28,7 @@
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="5dp"
                     android:layout_marginTop="5dp"
-                    android:src="@mipmap/ic_launcher"
+                    android:src="@drawable/ic_user_placeholder"
                     app:civ_border_color="@color/green_button_color"
                     app:civ_border_width="1dp" />
 
@@ -48,10 +48,10 @@
                     android:layout_toRightOf="@+id/image_view">
 
                     <TextView
-                        android:id="@+id/use_email"
+                        android:id="@+id/tv_name"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="husnain446@gmail.com"
+                        android:text="Full Name"
                         android:textColor="#000"
                         android:textSize="16sp" />
                 </RelativeLayout>
@@ -65,12 +65,13 @@
                     android:layout_toRightOf="@+id/image_view">
 
                     <TextView
-                        android:id="@+id/user_name_text_view"
+                        android:id="@+id/tv_age"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Husnain hussi"
+                        android:text="Age: 19"
                         android:textColor="#000"
                         android:textSize="16sp" />
+
                 </RelativeLayout>
 
                 <RelativeLayout
@@ -82,12 +83,23 @@
                     android:layout_toRightOf="@+id/image_view">
 
                     <TextView
-                        android:id="@+id/phone_number_text_view"
+                        android:id="@+id/tv_weight"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="+92 3120676767"
+                        android:text="weight: 80"
                         android:textColor="#000"
                         android:textSize="16sp" />
+
+                    <TextView
+                        android:id="@+id/tv_height"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginRight="20dp"
+                        android:text="Height : 6"
+                        android:textColor="#000"
+                        android:textSize="16sp" />
+
                 </RelativeLayout>
             </RelativeLayout>
         </android.support.v7.widget.CardView>
