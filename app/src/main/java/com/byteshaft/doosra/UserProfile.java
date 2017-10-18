@@ -52,7 +52,7 @@ public class UserProfile extends AppCompatActivity {
 
         age.setText("Age: " + AppGlobals.getStringFromSharedPreferences(AppGlobals.KEY_USER_AGE) + " Years");
         weight.setText("Weight: " + AppGlobals.getStringFromSharedPreferences(AppGlobals.KEY_WEIGHT) + " kg");
-        height.setText("Height: " + AppGlobals.getStringFromSharedPreferences(AppGlobals.KEY_WEIGHT) + " ft");
+        height.setText("Height: " + AppGlobals.getStringFromSharedPreferences(AppGlobals.KEY_HEIGHT) + " ft");
 
 
         concern.setTypeface(AppGlobals.typeface);

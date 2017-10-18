@@ -49,11 +49,12 @@
 
                     <TextView
                         android:id="@+id/tv_name"
+                        android:textStyle="bold"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Full Name"
                         android:textColor="#000"
-                        android:textSize="16sp" />
+                        android:textSize="24sp" />
                 </RelativeLayout>
 
                 <RelativeLayout
@@ -70,7 +71,7 @@
                         android:layout_height="wrap_content"
                         android:text="Age: 19"
                         android:textColor="#000"
-                        android:textSize="16sp" />
+                        android:textSize="18sp" />
 
                 </RelativeLayout>
 
@@ -87,7 +88,7 @@
                         android:layout_height="wrap_content"
                         android:text="weight: 80"
                         android:textColor="#000"
-                        android:textSize="16sp" />
+                        android:textSize="18sp" />
 
                     <TextView
                         android:id="@+id/tv_height"
@@ -97,7 +98,7 @@
                         android:layout_marginRight="20dp"
                         android:text="Height : 6"
                         android:textColor="#000"
-                        android:textSize="16sp" />
+                        android:textSize="18sp" />
 
                 </RelativeLayout>
             </RelativeLayout>
@@ -188,13 +189,17 @@
                 <android.support.v7.widget.AppCompatButton
                     android:id="@+id/button_next"
                     android:layout_width="fill_parent"
-                    android:layout_height="50dp"
-                    android:layout_marginBottom="16dp"
-                    android:layout_marginTop="10dp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginBottom="20dp"
+                    android:layout_marginTop="30dp"
                     android:backgroundTint="@color/blue_button_color"
                     android:text="@string/next_button"
-                    android:textAllCaps="false" />
+                    android:textAllCaps="false"
+                    android:textColor="@android:color/white"
+                    android:textSize="18sp" />
             </LinearLayout>
         </ScrollView>
     </RelativeLayout>
+
 </RelativeLayout>
