@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
 
 import com.byteshaft.doosra.AboutUs;
 import com.byteshaft.doosra.BOD;
@@ -25,6 +26,10 @@ public class Dashboard extends Fragment implements View.OnClickListener {
     private Button buttonBoD;
     private Button buttonGetSecOpinion;
 
+    private TextView lineOne;
+    private TextView appName;
+    private TextView lineTwo;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
@@ -32,6 +37,14 @@ public class Dashboard extends Fragment implements View.OnClickListener {
         mBaseView = inflater.inflate(R.layout.fragment_dashboard, container, false);
         ((AppCompatActivity) getActivity()).getSupportActionBar()
                 .setTitle(getResources().getString(R.string.home));
+
+        lineOne = mBaseView.findViewById(R.id.line_part_one);
+        lineTwo = mBaseView.findViewById(R.id.line_part_two);
+        appName = mBaseView.findViewById(R.id.app_name_doosra);
+
+        lineOne.setTypeface(AppGlobals.typeface);
+        lineTwo.setTypeface(AppGlobals.typeface);
+        appName.setTypeface(AppGlobals.typeface);
 
         buttonHowItWorks = mBaseView.findViewById(R.id.button_how_it_works);
         buttonAboutUs = mBaseView.findViewById(R.id.button_about_us);

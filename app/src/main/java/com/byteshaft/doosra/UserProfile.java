@@ -15,10 +15,13 @@ public class UserProfile extends AppCompatActivity {
 
     private Button buttonNext;
 
+    private int opinionTypeID;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_profile);
+        opinionTypeID = getIntent().getIntExtra("id", 0);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
@@ -29,7 +32,16 @@ public class UserProfile extends AppCompatActivity {
         buttonNext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(UserProfile.this, MedicalReports.class));
+                String shortHistoryString = shortHistory.getText().toString();
+                String existingDiseaseString = existingDisease.getText().toString();
+                String concernString = concern.getText().toString();
+
+                Intent intent = new Intent(UserProfile.this, MedicalReports.class);
+                intent.putExtra("id", opinionTypeID);
+                intent.putExtra("short_history", shortHistoryString);
+                intent.putExtra("existing_disease", existingDiseaseString);
+                intent.putExtra("concern", concernString);
+                startActivity(intent);
             }
         });
 

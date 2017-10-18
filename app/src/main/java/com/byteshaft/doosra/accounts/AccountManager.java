@@ -20,15 +20,10 @@ public class AccountManager extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        if (AppGlobals.isLogin()) {
-//            startActivity(new Intent(AccountManager.this, MainActivity.class));
-//        } else {
-        // setcontentview
-//            loadLoginFragment(new Login());
-//        }
-
         setContentView(R.layout.activity_account_manager);
         sInstance = this;
+        loadLoginFragment(new Login());
+
     }
 
     private void loadLoginFragment(Fragment fragment) {
@@ -36,7 +31,7 @@ public class AccountManager extends AppCompatActivity {
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         fragmentTransaction.setCustomAnimations(R.anim.enter, R.anim.exit, R.anim.pop_enter, R.anim.pop_exit);
         fragmentTransaction.replace(R.id.container, fragment, backStateName);
-            fragmentTransaction.commit();
+        fragmentTransaction.commit();
     }
 
     public void loadFragment(Fragment fragment) {
