@@ -130,7 +130,6 @@ public class ForgotPassword extends Fragment implements View.OnClickListener, Ht
         Helpers.showProgressDialog(getActivity(), "Sending Recovery Mail");
     }
 
-
     private String getUserPassword(String email) {
         JSONObject jsonObject = new JSONObject();
         try {
@@ -141,5 +140,4 @@ public class ForgotPassword extends Fragment implements View.OnClickListener, Ht
         return jsonObject.toString();
 
     }
-
 }

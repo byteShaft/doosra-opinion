@@ -31,6 +31,8 @@ public class AppGlobals extends Application {
     public static final String KEY_GENDER = "gender";
     public static final String KEY_USER_AGE = "date_of_birth";
     public static final String KEY_COUNTRY = "country";
+    public static final String KEY_HEIGHT = "height";
+    public static final String KEY_WEIGHT = "weight";
     public static final String KEY_MOBILE_NUMBER = "mobile_number";
     public static final String KEY_DATE_OF_BIRTH = "date_of_birth";
     public static final String KEY_SERVER_IMAGE = "photo";
