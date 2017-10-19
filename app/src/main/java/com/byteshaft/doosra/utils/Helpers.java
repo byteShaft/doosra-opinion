@@ -4,14 +4,11 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.location.LocationManager;
-import android.os.Environment;
 import android.preference.PreferenceManager;
-import android.provider.Settings;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.SwitchCompat;
@@ -26,14 +23,6 @@ import com.nostra13.universalimageloader.core.display.FadeInBitmapDisplayer;
 import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.net.HttpURLConnection;
-import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -100,7 +89,7 @@ public class Helpers {
             ImageLoadingListener animateFirstListener;
             DisplayImageOptions options;
             options = new DisplayImageOptions.Builder()
-                    .showImageOnFail(R.mipmap.ic_launcher_round)
+                    .showImageOnFail(R.mipmap.ic_launcher)
                     .showImageOnLoading(R.drawable.camera)
                     .imageScaleType(ImageScaleType.IN_SAMPLE_INT)
                     .cacheInMemory(false)
