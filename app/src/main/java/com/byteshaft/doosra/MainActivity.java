@@ -59,6 +59,17 @@ public class MainActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
         navigationView.getMenu().getItem(0).setChecked(true);
+
+        Menu menu = navigationView.getMenu();
+        MenuItem login_logout = menu.findItem(R.id.nav_logout);
+        if (AppGlobals.isLogin()) {
+            login_logout.setTitle("Logout");
+            login_logout.setIcon(getResources().getDrawable(R.drawable.ic_logout));
+        } else {
+            login_logout.setTitle("Login");
+            login_logout.setIcon(getResources().getDrawable(R.drawable.ic_login));
+        }
+
         headerView = navigationView.getHeaderView(0);
         TextView name = headerView.findViewById(R.id.name);
         TextView email = headerView.findViewById(R.id.email);
@@ -111,6 +122,7 @@ public class MainActivity extends AppCompatActivity
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
+
         int id = item.getItemId();
 
         if (id == R.id.nav_home) {
@@ -129,10 +141,11 @@ public class MainActivity extends AppCompatActivity
             }
 
         } else if (id == R.id.nav_logout) {
+
             if (AppGlobals.isLogin()) {
                 logOutDialog();
             } else {
-                loginRequiredDialog();
+                startActivity(new Intent(MainActivity.this, AccountManager.class));
             }
         }
 
@@ -173,15 +186,15 @@ public class MainActivity extends AppCompatActivity
 
     private void loginRequiredDialog() {
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(MainActivity.this);
-        alertDialogBuilder.setTitle("Login Required!");
-        alertDialogBuilder.setMessage("You are not Logged in. Do you want to Login?")
-                .setCancelable(false).setPositiveButton("YES",
+        alertDialogBuilder.setTitle("Access Denied!");
+        alertDialogBuilder.setMessage("Login is required.")
+                .setCancelable(false).setPositiveButton("Login",
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         startActivity(new Intent(MainActivity.this, AccountManager.class));
                     }
                 });
-        alertDialogBuilder.setNegativeButton("NO", new DialogInterface.OnClickListener() {
+        alertDialogBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 dialogInterface.dismiss();
