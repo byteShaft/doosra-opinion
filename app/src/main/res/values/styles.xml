@@ -13,6 +13,11 @@
         <item name="android:textColor">@android:color/white</item>
     </style>
 
+    <style name="ButtonGreen" parent="Widget.AppCompat.Button.Colored">
+        <item name="colorButtonNormal">@color/green_button_color</item>
+        <item name="android:textColor">@android:color/white</item>
+    </style>
+
     <style name="EditTextStyle">
         <item name="colorControlNormal">@color/green_button_color</item>
     </style>

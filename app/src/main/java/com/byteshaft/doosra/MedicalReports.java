@@ -4,6 +4,7 @@ import android.Manifest;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -27,6 +28,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import static android.os.Build.VERSION_CODES.M;
 
 public class MedicalReports extends AppCompatActivity implements View.OnClickListener,
         HttpRequest.OnReadyStateChangeListener, HttpRequest.OnErrorListener {
@@ -106,6 +109,7 @@ public class MedicalReports extends AppCompatActivity implements View.OnClickLis
                               String opinionId,
                               String shortHistory, String existingDisease, String concern) {
 
+        Helpers.showProgressDialog(MedicalReports.this, "Please wait...");
         request = new HttpRequest(MedicalReports.this);
         request.setOnReadyStateChangeListener(this);
         request.setOnErrorListener(this);
@@ -126,6 +130,7 @@ public class MedicalReports extends AppCompatActivity implements View.OnClickLis
                     case HttpURLConnection.HTTP_CREATED:
                         Helpers.alertDialog(MedicalReports.this,
                                 "Request Submitted!", "Your Request has been submitted", null);
+                        dialogForPayment();
                 }
         }
     }
@@ -133,6 +138,22 @@ public class MedicalReports extends AppCompatActivity implements View.OnClickLis
     @Override
     public void onError(HttpRequest request, int readyState, short error, Exception exception) {
         Helpers.dismissProgressDialog();
+    }
+
+    private void dialogForPayment() {
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+        alertDialogBuilder.setTitle("Request Submitted");
+        alertDialogBuilder.setMessage("Proceed for Payment")
+                .setCancelable(false).setPositiveButton("OK",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.dismiss();
+                        startActivity(new Intent(MedicalReports.this, PaymentActivity.class));
+                        finish();
+                    }
+                });
+        AlertDialog alertDialog = alertDialogBuilder.create();
+        alertDialog.show();
     }
 
     private FormData getReportData(String medicalFile,
@@ -215,14 +236,18 @@ public class MedicalReports extends AppCompatActivity implements View.OnClickLis
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == MEDICAL_CODE && resultCode == RESULT_OK) {
             medicalFileUri = data.getStringExtra(FilePickerActivity.RESULT_FILE_PATH);
+            buttonMedical.setBackgroundColor(Color.GREEN);
         } else if (requestCode == LAB_CODE && resultCode == RESULT_OK) {
             labResultFileUri = data.getStringExtra(FilePickerActivity.RESULT_FILE_PATH);
+            buttonLabResult.setBackgroundColor(Color.GREEN);
 
         } else if (requestCode == REPORT_CODE && resultCode == RESULT_OK) {
             reportFileUri = data.getStringExtra(FilePickerActivity.RESULT_FILE_PATH);
+            buttonReport.setBackgroundColor(Color.GREEN);
 
         } else if (requestCode == OTHER_CODE && resultCode == RESULT_OK) {
             otherFileUri = data.getStringExtra(FilePickerActivity.RESULT_FILE_PATH);
+            buttonOthers.setBackgroundColor(Color.GREEN);
         }
     }
 
@@ -271,7 +296,7 @@ public class MedicalReports extends AppCompatActivity implements View.OnClickLis
                         //permission is denied (this is the first time, when "never ask again" is not checked) so ask again explaining the usage of permission
 //                        // shouldShowRequestPermissionRationale will return true
                         //show the dialog or snackbar saying its necessary and try again otherwise proceed with setup.
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                        if (Build.VERSION.SDK_INT >= M) {
                             if (shouldShowRequestPermissionRationale(Manifest.permission.CAMERA) ||
                                     shouldShowRequestPermissionRationale(Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
                                 showDialogOK(getString(R.string.camera_storage_permission),

@@ -23,25 +23,20 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".OpinionActivity"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen" />
-
         <activity android:name=".accounts.AccountManager" />
         <activity android:name=".UserProfile" />
         <activity android:name=".MedicalReports" />
-
         <activity
             android:name=".MainActivity"
-            android:theme="@style/AppTheme.NoActionBar">
-
-        </activity>
-
+            android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity android:name=".AboutUs" />
         <activity android:name=".BOD" />
         <activity android:name=".HowItWorks" />
+        <activity android:name=".PaymentActivity"></activity>
     </application>
 
 </manifest>

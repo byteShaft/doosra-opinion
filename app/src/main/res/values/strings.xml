@@ -15,10 +15,10 @@
     <string name="update_profile">Update Profile</string>
     <string name="password">Password</string>
     <string name="password_forgot">Forgot Password?</string>
-    <string name="sign_up_string">Do not have an account? <i>Sign Up</i></string>
+    <string name="sign_up_string">Do not have an account? <i><u>Sign Up</u></i></string>
 
     <string name="confirm_password">Confirm Password</string>
-    <string name="create_account">Create account</string>
+    <string name="create_account">Create Account</string>
 
 
     <string name="reset_password">Reset Password</string>

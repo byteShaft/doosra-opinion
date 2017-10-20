@@ -29,6 +29,7 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Toast;
 
+import com.byteshaft.doosra.MainActivity;
 import com.byteshaft.doosra.R;
 import com.byteshaft.doosra.fragments.Dashboard;
 import com.byteshaft.doosra.utils.AppGlobals;
@@ -177,7 +178,7 @@ public class EditProfile extends Fragment implements View.OnClickListener,
                 mWeightString = mWeight.getText().toString();
 
                 updateUserProfile(imageUrl, firstNameString, lastNameString, mPhoneNumberString,
-                        mUserAgeString, mCountryString, mUserheightString, mWeightString, mEmailAddressString, mGenderString);
+                        mUserAgeString, mCountryString, mUserheightString, mWeightString, mGenderString);
                 break;
             case R.id.profile_image:
                 checkPermissions();
@@ -229,7 +230,7 @@ public class EditProfile extends Fragment implements View.OnClickListener,
 
                             FragmentManager fragmentManager = getFragmentManager();
                             fragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
-                            AccountManager.getInstance().loadFragment(new Dashboard());
+                            MainActivity.getInstance().loadFragment(new Dashboard());
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
@@ -244,7 +245,7 @@ public class EditProfile extends Fragment implements View.OnClickListener,
     }
 
     private void updateUserProfile(String profilePicture, String firstName, String lastName, String mobileNumber,
-                                   String dob, String country, String height, String weight, String email, String gender) {
+                                   String dob, String country, String height, String weight, String gender) {
         request = new HttpRequest(getActivity());
         request.setOnReadyStateChangeListener(this);
         request.setOnErrorListener(this);
@@ -252,20 +253,19 @@ public class EditProfile extends Fragment implements View.OnClickListener,
         request.setRequestHeader("Authorization", "Token " +
                 AppGlobals.getStringFromSharedPreferences(AppGlobals.KEY_TOKEN));
         request.send(getProfileData(profilePicture, firstName, lastName, mobileNumber, dob, country,
-                height, weight, email, gender));
+                height, weight, gender));
         Helpers.showProgressDialog(getActivity(), "Updating Profile...");
 
     }
 
     private FormData getProfileData(String profilePicture, String firstName, String lastName, String mobileNumber,
-                                    String dob, String country, String height, String weight, String email, String gender) {
+                                    String dob, String country, String height, String weight, String gender) {
         FormData formData = new FormData();
         if (imageUrl != null && !imageUrl.trim().isEmpty()) {
             formData.append(FormData.TYPE_CONTENT_FILE, "photo", profilePicture);
         }
         formData.append(FormData.TYPE_CONTENT_TEXT, "first_name", firstName);
         formData.append(FormData.TYPE_CONTENT_TEXT, "last_name", lastName);
-        formData.append(FormData.TYPE_CONTENT_TEXT, "email", email);
         formData.append(FormData.TYPE_CONTENT_TEXT, "mobile_number", mobileNumber);
         formData.append(FormData.TYPE_CONTENT_TEXT, "date_of_birth", dob);
         formData.append(FormData.TYPE_CONTENT_TEXT, "country", country);

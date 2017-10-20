@@ -77,23 +77,21 @@
                 android:id="@+id/button_how_it_works"
                 android:layout_width="130dp"
                 android:layout_height="130dp"
-                android:backgroundTint="@color/green_button_color"
                 android:text="How it Works"
                 android:textAllCaps="false"
-                android:textColor="@android:color/white"
                 android:textSize="12sp"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                android:theme="@style/ButtonGreen" />
 
             <Button
                 android:id="@+id/button_about_us"
                 android:layout_width="130dp"
                 android:layout_height="130dp"
-                android:backgroundTint="@color/blue_button_color"
                 android:text="About Us"
                 android:textAllCaps="false"
-                android:textColor="@android:color/white"
                 android:textSize="12sp"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                android:theme="@style/MyButton" />
 
         </LinearLayout>
 
@@ -118,12 +116,11 @@
                 android:id="@+id/button_get_a_second_opinion"
                 android:layout_width="130dp"
                 android:layout_height="130dp"
-                android:backgroundTint="@color/green_button_color"
                 android:text="Get a Second opinion"
                 android:textAllCaps="false"
-                android:textColor="@android:color/white"
                 android:textSize="18sp"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                android:theme="@style/ButtonGreen" />
         </LinearLayout>
 
     </LinearLayout>

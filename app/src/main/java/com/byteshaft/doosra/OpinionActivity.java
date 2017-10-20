@@ -50,6 +50,7 @@ public class OpinionActivity extends AppCompatActivity {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                System.out.println("test test");
                 if (AppGlobals.isLogin()) {
                     DiagnosisOpinion opinion = opinionArrayList.get(position);
                     Intent intent = new Intent(OpinionActivity.this, UserProfile.class);
@@ -57,15 +58,15 @@ public class OpinionActivity extends AppCompatActivity {
                     startActivity(intent);
                 } else {
                     AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(OpinionActivity.this);
-                    alertDialogBuilder.setTitle("Login Required!");
-                    alertDialogBuilder.setMessage("Please login to proceed further\nDo you want to login?")
-                            .setCancelable(false).setPositiveButton("YES",
+                    alertDialogBuilder.setTitle("Access Denied!");
+                    alertDialogBuilder.setMessage("Login is required.")
+                            .setCancelable(false).setPositiveButton("Login",
                             new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int id) {
                                     startActivity(new Intent(OpinionActivity.this, AccountManager.class));
                                 }
                             });
-                    alertDialogBuilder.setNegativeButton("NO", new DialogInterface.OnClickListener() {
+                    alertDialogBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {
                             dialogInterface.dismiss();
