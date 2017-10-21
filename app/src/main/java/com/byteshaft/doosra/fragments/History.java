@@ -23,7 +23,10 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.net.HttpURLConnection;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 public class History extends Fragment {
 
@@ -61,6 +64,7 @@ public class History extends Fragment {
                                         System.out.println("Test " + jsonArray.getJSONObject(i));
                                         JSONObject jsonObject = jsonArray.getJSONObject(i);
                                         OpinionHistory opinionHistory = new OpinionHistory();
+                                        opinionHistory.setDateCreated(jsonObject.getString("date_created"));
                                         opinionHistory.setFullName(jsonObject.getString("full_name"));
                                         opinionHistory.setConcern(jsonObject.getString("concern"));
                                         opinionHistory.setExistingDisease(jsonObject.getString("existing_disease"));
@@ -115,9 +119,11 @@ public class History extends Fragment {
         public View getView(int position, View convertView, ViewGroup parent) {
             if (convertView == null) {
                 convertView = getActivity().getLayoutInflater().inflate(
-                        R.layout.delegate_opinion_button, parent, false);  // TODO: 20/10/2017 Create Delegate for History
+                        R.layout.delegate_opinion_history, parent, false);
                 viewHolder = new ViewHolder();
-                viewHolder.button = convertView.findViewById(R.id.opinion_button);
+                viewHolder.name = convertView.findViewById(R.id.patient_name);
+                viewHolder.date = convertView.findViewById(R.id.date_created);
+                viewHolder.concern = convertView.findViewById(R.id.concern_text);
                 convertView.setTag(viewHolder);
             } else {
                 viewHolder = (ViewHolder) convertView.getTag();
@@ -125,9 +131,22 @@ public class History extends Fragment {
 
             // get data from getter/setters
             OpinionHistory history = opinionHistories.get(position);
-            viewHolder.button.setText(history.getFullName());
+            viewHolder.name.setText(history.getFullName());
+            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+            SimpleDateFormat newFormate = new SimpleDateFormat("dd MMM yyyy");
+            Date date = null;
+            try {
+                date = format.parse(history.getDateCreated());
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            newFormate.format(date);
+            viewHolder.date.setText(newFormate.format(date));
+            viewHolder.concern.setText(history.getConcern());
             // set Typeface
-            viewHolder.button.setTypeface(AppGlobals.typeface);
+            viewHolder.name.setTypeface(AppGlobals.typeface);
+            viewHolder.date.setTypeface(AppGlobals.typeface);
+            viewHolder.concern.setTypeface(AppGlobals.typeface);
             return convertView;
         }
 
@@ -150,7 +169,9 @@ public class History extends Fragment {
     // view holder
 
     class ViewHolder {
-        public TextView button;
+        private TextView name;
+        private TextView date;
+        private TextView concern;
     }
 
 }
