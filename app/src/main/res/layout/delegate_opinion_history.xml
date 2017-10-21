@@ -9,19 +9,19 @@
         android:layout_margin="10dp">
 
         <TextView
-            android:id="@+id/patient_name"
+            android:id="@+id/tv_opinion"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
             android:gravity="center"
-            android:text="Name "
+            android:text="Opinion"
             android:textSize="24sp" />
 
         <LinearLayout
             android:id="@+id/layout_date"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/patient_name"
+            android:layout_below="@+id/tv_opinion"
             android:orientation="horizontal"
             android:weightSum="2">
 
@@ -38,7 +38,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="27/2/2017"
+                android:text=""
                 android:textSize="20sp" />
         </LinearLayout>
 

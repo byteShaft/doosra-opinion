@@ -25,7 +25,6 @@ public class AppGlobals extends Application {
     public static final String SERVER_IP = "http://139.59.167.40";
     public static final String SERVER_IP_FOR_IMAGE = "http://139.59.167.40/";
     public static final String BASE_URL = String.format("%s/api/", SERVER_IP);
-    public static final String KEY_USER_NAME = "user_name";
     public static final String KEY_FIRST_NAME = "first_name";
     public static final String KEY_LAST_NAME = "last_name";
     public static final String KEY_GENDER = "gender";
@@ -34,13 +33,11 @@ public class AppGlobals extends Application {
     public static final String KEY_HEIGHT = "height";
     public static final String KEY_WEIGHT = "weight";
     public static final String KEY_MOBILE_NUMBER = "mobile_number";
-    public static final String KEY_DATE_OF_BIRTH = "date_of_birth";
     public static final String KEY_SERVER_IMAGE = "photo";
     public static final String KEY_LOGIN = "login";
     public static final String KEY_EMAIL = "email";
     public static final String KEY_USER_ID = "id";
-    public static final String KEY_TOKEN = "token";
-    public static final String KEY_GOT_INFO = "got_info";
+    public static final String KEY_TOKEN = "token"; 
     public static ImageLoader sImageLoader;
 
     @Override
@@ -71,16 +68,6 @@ public class AppGlobals extends Application {
     public static String getGender() {
         SharedPreferences sharedPreferences = getPreferenceManager();
         return sharedPreferences.getString(KEY_GENDER, "");
-    }
-
-    public static void gotInfo(boolean type) {
-        SharedPreferences sharedPreferences = getPreferenceManager();
-        sharedPreferences.edit().putBoolean(KEY_GOT_INFO, type).apply();
-    }
-
-    public static boolean isInfoAvailable() {
-        SharedPreferences sharedPreferences = getPreferenceManager();
-        return sharedPreferences.getBoolean(KEY_GOT_INFO, false);
     }
 
     public static SharedPreferences getPreferenceManager() {

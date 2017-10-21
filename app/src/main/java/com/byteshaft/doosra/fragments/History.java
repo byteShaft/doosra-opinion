@@ -64,6 +64,7 @@ public class History extends Fragment {
                                         System.out.println("Test " + jsonArray.getJSONObject(i));
                                         JSONObject jsonObject = jsonArray.getJSONObject(i);
                                         OpinionHistory opinionHistory = new OpinionHistory();
+                                        opinionHistory.setOpiniontyp(jsonObject.getString("type_name"));
                                         opinionHistory.setDateCreated(jsonObject.getString("date_created"));
                                         opinionHistory.setFullName(jsonObject.getString("full_name"));
                                         opinionHistory.setConcern(jsonObject.getString("concern"));
@@ -121,7 +122,7 @@ public class History extends Fragment {
                 convertView = getActivity().getLayoutInflater().inflate(
                         R.layout.delegate_opinion_history, parent, false);
                 viewHolder = new ViewHolder();
-                viewHolder.name = convertView.findViewById(R.id.patient_name);
+                viewHolder.name = convertView.findViewById(R.id.tv_opinion);
                 viewHolder.date = convertView.findViewById(R.id.date_created);
                 viewHolder.concern = convertView.findViewById(R.id.concern_text);
                 convertView.setTag(viewHolder);
@@ -131,7 +132,7 @@ public class History extends Fragment {
 
             // get data from getter/setters
             OpinionHistory history = opinionHistories.get(position);
-            viewHolder.name.setText(history.getFullName());
+            viewHolder.name.setText(history.getOpiniontyp());
             SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
             SimpleDateFormat newFormate = new SimpleDateFormat("dd MMM yyyy");
             Date date = null;

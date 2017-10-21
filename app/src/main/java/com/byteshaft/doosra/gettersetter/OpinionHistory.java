@@ -19,6 +19,16 @@ public class OpinionHistory {
     private String weight;
     private String xrayFileUrl;
 
+    public String getOpiniontyp() {
+        return opiniontyp;
+    }
+
+    public void setOpiniontyp(String opiniontyp) {
+        this.opiniontyp = opiniontyp;
+    }
+
+    private String opiniontyp;
+
     public String getAge() {
         return age;
     }
