@@ -23,7 +23,8 @@
 
         <RelativeLayout
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp">
 
             <TextView
                 android:id="@+id/line_part_one"
@@ -53,6 +54,7 @@
             android:id="@+id/line_part_two"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
             android:text="Opinion At Your Finger"
             android:textAllCaps="true"
             android:textColor="@color/text_color"

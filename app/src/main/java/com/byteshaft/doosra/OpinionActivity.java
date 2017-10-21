@@ -29,6 +29,7 @@ public class OpinionActivity extends AppCompatActivity {
 
     private TextView motoLineOne;
     private TextView motoLineTwo;
+    private TextView tvAppName;
     private ListView listView;
 
     private ArrayList<DiagnosisOpinion> opinionArrayList;
@@ -38,6 +39,7 @@ public class OpinionActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_opinion);
+        tvAppName = (TextView) findViewById(R.id.app_name_doosra);
         motoLineOne = (TextView) findViewById(R.id.text_line_one);
         motoLineTwo = (TextView) findViewById(R.id.text_line_two);
         listView = (ListView) findViewById(R.id.opinion_list);
@@ -47,6 +49,8 @@ public class OpinionActivity extends AppCompatActivity {
         // set typeface
         motoLineOne.setTypeface(AppGlobals.typeface);
         motoLineTwo.setTypeface(AppGlobals.typeface);
+        tvAppName.setTypeface(AppGlobals.typefaceForHeading);
+
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {

@@ -185,37 +185,4 @@ public class Login extends Fragment implements View.OnClickListener, HttpRequest
         Helpers.dismissProgressDialog();
         AppGlobals.alertDialog(getActivity(), getString(R.string.login_faild), getResources().getString(R.string.check_internet));
     }
-
-    public static void gettingUserData(final boolean callActivity) {
-        HttpRequest request = new HttpRequest(AppGlobals.getContext());
-        request.setOnReadyStateChangeListener(new HttpRequest.OnReadyStateChangeListener() {
-            @Override
-            public void onReadyStateChange(HttpRequest request, int readyState) {
-                switch (readyState) {
-                    case HttpRequest.STATE_DONE:
-                        switch (request.getStatus()) {
-                            case HttpURLConnection.HTTP_OK:
-                                try {
-                                    JSONObject jsonObject = new JSONObject(request.getResponseText());
-                                } catch (JSONException e) {
-                                    e.printStackTrace();
-                                }
-
-                        }
-                }
-
-            }
-        });
-        request.setOnErrorListener(new HttpRequest.OnErrorListener() {
-            @Override
-            public void onError(HttpRequest request, int readyState, short error, Exception exception) {
-
-            }
-        });
-        request.open("GET", String.format("%sprofile", AppGlobals.BASE_URL));
-        request.setRequestHeader("Authorization", "Token " +
-                AppGlobals.getStringFromSharedPreferences(AppGlobals.KEY_TOKEN));
-        request.send();
-    }
-
 }

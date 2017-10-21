@@ -22,7 +22,7 @@
 
 
     <string name="reset_password">Reset Password</string>
-    <string name="already_have_an_account_login">Already have an account? <i>Login</i></string>
+    <string name="already_have_an_account_login">Already have an account? <i><u>Login</u></i></string>
     <string name="activate_your_account">Please activate your account !</string>
     <string name="check_password">Please enter correct password</string>
     <string name="email_not_exist">Email does not exist on server</string>

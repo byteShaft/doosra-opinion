@@ -10,7 +10,7 @@
         android:id="@+id/logo_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="35dp"
+        android:layout_marginTop="40dp"
         android:gravity="center"
         android:orientation="vertical">
 
@@ -20,38 +20,56 @@
             android:layout_height="100dp"
             android:src="@drawable/logo" />
 
-        <TextView
-            android:id="@+id/text_line_one"
+        <RelativeLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:text="Medical Second (Doosra)"
-            android:textAllCaps="true"
-            android:textColor="@color/text_color"
-            android:textSize="20sp"
-            android:textStyle="bold" />
+            android:layout_marginTop="10dp">
+
+            <TextView
+                android:id="@+id/text_line_one"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="Medical Second"
+                android:textAllCaps="true"
+                android:textColor="@color/text_color"
+                android:textSize="20sp" />
+
+            <TextView
+                android:id="@+id/app_name_doosra"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_toRightOf="@+id/text_line_one"
+                android:text=" (Doosra)"
+                android:textAllCaps="true"
+                android:textColor="@color/text_color"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
+        </RelativeLayout>
 
         <TextView
             android:id="@+id/text_line_two"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
             android:text="Opinion At Your Finger"
             android:textAllCaps="true"
             android:textColor="@color/text_color"
-            android:textSize="20sp"
-            android:textStyle="bold" />
+            android:textSize="20sp" />
     </LinearLayout>
 
     <ListView
         android:id="@+id/opinion_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:padding="16sp"
-        android:drawSelectorOnTop="true"
         android:layout_below="@+id/logo_layout"
         android:layout_marginTop="10dp"
         android:divider="@android:color/transparent"
         android:dividerHeight="10sp"
+        android:drawSelectorOnTop="true"
+        android:padding="16sp"
         android:scrollbars="none" />
 
 </RelativeLayout>

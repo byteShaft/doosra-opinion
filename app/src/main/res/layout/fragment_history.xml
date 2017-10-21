@@ -5,8 +5,9 @@
     android:background="@color/screen_background_color"
     android:orientation="vertical">
 
-    <TextView
+    <ListView
+        android:id="@+id/list_opinion_history"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="History" />
+        android:layout_height="wrap_content" />
+
 </RelativeLayout>
