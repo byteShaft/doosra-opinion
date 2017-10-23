@@ -82,7 +82,6 @@ public class EditProfile extends Fragment implements View.OnClickListener,
     private String lastNameString;
     private String mPhoneNumberString;
 
-    private String mEmailAddressString;
     private String mGenderString = "Male";
     private HttpRequest request;
     private RadioGroup mGenderRadioGroup;
@@ -170,7 +169,6 @@ public class EditProfile extends Fragment implements View.OnClickListener,
                 firstNameString = mFirstName.getText().toString();
                 lastNameString = mLastName.getText().toString();
                 mPhoneNumberString = mPhoneNumber.getText().toString();
-                mEmailAddressString = mEmail.getText().toString();
 
                 mCountryString = mCountry.getText().toString();
                 mUserAgeString = mUserAge.getText().toString();
@@ -408,6 +406,7 @@ public class EditProfile extends Fragment implements View.OnClickListener,
                 destination = new File(Environment.getExternalStorageDirectory(),
                         System.currentTimeMillis() + ".jpg");
                 imageUrl = destination.getAbsolutePath();
+                System.out.println(imageUrl +  " test test test test test test test test");
                 FileOutputStream fileOutputStream;
                 try {
                     destination.createNewFile();

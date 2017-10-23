@@ -4,7 +4,6 @@ import android.Manifest;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -236,18 +235,18 @@ public class MedicalReports extends AppCompatActivity implements View.OnClickLis
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == MEDICAL_CODE && resultCode == RESULT_OK) {
             medicalFileUri = data.getStringExtra(FilePickerActivity.RESULT_FILE_PATH);
-            buttonMedical.setBackgroundColor(Color.GREEN);
+            buttonMedical.setBackgroundColor(getResources().getColor(R.color.green_button_color));
         } else if (requestCode == LAB_CODE && resultCode == RESULT_OK) {
             labResultFileUri = data.getStringExtra(FilePickerActivity.RESULT_FILE_PATH);
-            buttonLabResult.setBackgroundColor(Color.GREEN);
+            buttonLabResult.setBackgroundColor(getResources().getColor(R.color.green_button_color));
 
         } else if (requestCode == REPORT_CODE && resultCode == RESULT_OK) {
             reportFileUri = data.getStringExtra(FilePickerActivity.RESULT_FILE_PATH);
-            buttonReport.setBackgroundColor(Color.GREEN);
+            buttonReport.setBackgroundColor(getResources().getColor(R.color.green_button_color));
 
         } else if (requestCode == OTHER_CODE && resultCode == RESULT_OK) {
             otherFileUri = data.getStringExtra(FilePickerActivity.RESULT_FILE_PATH);
-            buttonOthers.setBackgroundColor(Color.GREEN);
+            buttonOthers.setBackgroundColor(getResources().getColor(R.color.green_button_color));
         }
     }
 

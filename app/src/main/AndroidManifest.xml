@@ -30,13 +30,21 @@
         <activity android:name=".accounts.AccountManager" />
         <activity android:name=".UserProfile" />
         <activity android:name=".MedicalReports" />
+
         <activity
             android:name=".MainActivity"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
+
         <activity android:name=".AboutUs" />
         <activity android:name=".BOD" />
         <activity android:name=".HowItWorks" />
-        <activity android:name=".PaymentActivity"></activity>
+        <activity android:name=".PaymentActivity" />
+        <activity android:name=".OpinionDetail" />
+
+        <activity
+            android:name=".Webview"
+            android:theme="@style/AppTheme.NoActionBar" />
+
     </application>
 
 </manifest>

@@ -1,5 +1,6 @@
 package com.byteshaft.doosra.fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -9,10 +10,12 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.byteshaft.doosra.OpinionDetail;
 import com.byteshaft.doosra.R;
 import com.byteshaft.doosra.gettersetter.OpinionHistory;
 import com.byteshaft.doosra.utils.AppGlobals;
@@ -32,6 +35,7 @@ public class History extends Fragment {
 
     private View mBaseView;
     private ListView listView;
+    private TextView tvHistory;
     private ArrayList<OpinionHistory> opinionHistoryArrayList;
     private HistoryAdapter adapter;
 
@@ -43,8 +47,34 @@ public class History extends Fragment {
         ((AppCompatActivity) getActivity()).getSupportActionBar()
                 .setTitle(getResources().getString(R.string.history));
         listView = mBaseView.findViewById(R.id.list_opinion_history);
+        tvHistory = mBaseView.findViewById(R.id.text_history);
         getOpinionHistory();
         opinionHistoryArrayList = new ArrayList<>();
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                OpinionHistory history = opinionHistoryArrayList.get(position);
+                Intent intent = new Intent(getActivity(), OpinionDetail.class);
+
+                intent.putExtra("full_name", history.getFullName());
+                intent.putExtra("type_name", history.getOpiniontyp());
+
+                intent.putExtra("medical_file", history.getMedicalFileUrl());
+                intent.putExtra("lab_file", history.getLabResultImageUrl());
+                intent.putExtra("xray_file", history.getXrayFileUrl());
+                intent.putExtra("other_file", history.getXrayFileUrl());
+
+                intent.putExtra("concern", history.getConcern());
+                intent.putExtra("disease", history.getExistingDisease());
+                intent.putExtra("short_history", history.getShortHistory());
+
+                intent.putExtra("height", history.getHeigh());
+                intent.putExtra("weight", history.getWeight());
+
+                startActivity(intent);
+
+            }
+        });
         return mBaseView;
     }
 
@@ -81,6 +111,11 @@ public class History extends Fragment {
 
                                     }
                                     System.out.println("length is : " + jsonArray.length());
+                                    if (jsonArray.length() == 0) {
+                                        tvHistory.setVisibility(View.VISIBLE);
+                                    } else {
+                                        tvHistory.setVisibility(View.GONE);
+                                    }
                                     adapter = new HistoryAdapter(opinionHistoryArrayList);
                                     listView.setAdapter(adapter);
 
