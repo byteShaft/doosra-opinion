@@ -33,6 +33,12 @@ import static android.os.Build.VERSION_CODES.M;
 public class MedicalReports extends AppCompatActivity implements View.OnClickListener,
         HttpRequest.OnReadyStateChangeListener, HttpRequest.OnErrorListener {
 
+    private static MedicalReports sInstance;
+
+    public static MedicalReports getInstance() {
+        return sInstance;
+    }
+
     private static final int MEDICAL_CODE = 1;
     private static final int LAB_CODE = 2;
     private static final int REPORT_CODE = 3;
@@ -66,6 +72,7 @@ public class MedicalReports extends AppCompatActivity implements View.OnClickLis
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        sInstance = this;
         setContentView(R.layout.activity_medical_reports);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
@@ -148,6 +155,8 @@ public class MedicalReports extends AppCompatActivity implements View.OnClickLis
                     public void onClick(DialogInterface dialog, int id) {
                         dialog.dismiss();
                         startActivity(new Intent(MedicalReports.this, PaymentActivity.class));
+                        UserProfile.getInstance().finish();
+                        OpinionActivity.getInstance().finish();
                         finish();
                     }
                 });

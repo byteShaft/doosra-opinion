@@ -27,6 +27,12 @@ import java.util.ArrayList;
 
 public class OpinionActivity extends AppCompatActivity {
 
+    private static OpinionActivity sInstance;
+
+    public static OpinionActivity getInstance() {
+        return sInstance;
+    }
+
     private TextView motoLineOne;
     private TextView motoLineTwo;
     private TextView tvAppName;
@@ -38,6 +44,7 @@ public class OpinionActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        sInstance = this;
         setContentView(R.layout.activity_opinion);
         tvAppName = (TextView) findViewById(R.id.app_name_doosra);
         motoLineOne = (TextView) findViewById(R.id.text_line_one);

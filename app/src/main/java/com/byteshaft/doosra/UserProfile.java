@@ -15,6 +15,12 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class UserProfile extends AppCompatActivity {
 
+    private static UserProfile sInstance;
+
+    public static UserProfile getInstance() {
+        return sInstance;
+    }
+
     private EditText shortHistory;
     private EditText existingDisease;
     private EditText concern;
@@ -32,6 +38,8 @@ public class UserProfile extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        sInstance = this;
+
         setContentView(R.layout.activity_user_profile);
         opinionTypeID = getIntent().getIntExtra("id", 0);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);

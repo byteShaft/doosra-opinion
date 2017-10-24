@@ -151,7 +151,9 @@ public class Login extends Fragment implements View.OnClickListener, HttpRequest
                             String token = jsonObject.getString(AppGlobals.KEY_TOKEN);
                             String userId = jsonObject.getString(AppGlobals.KEY_USER_ID);
                             String email = jsonObject.getString(AppGlobals.KEY_EMAIL);
+                            String age = jsonObject.getString(AppGlobals.KEY_USER_AGE);
                             String profileImage = jsonObject.getString(AppGlobals.KEY_SERVER_IMAGE);
+                            String phoneNumber = jsonObject.getString(AppGlobals.KEY_MOBILE_NUMBER);
 
                             String height = jsonObject.getString(AppGlobals.KEY_HEIGHT);
                             String weight = jsonObject.getString(AppGlobals.KEY_WEIGHT);
@@ -163,8 +165,10 @@ public class Login extends Fragment implements View.OnClickListener, HttpRequest
                             AppGlobals.saveDataToSharedPreferences(AppGlobals.KEY_TOKEN, token);
                             AppGlobals.saveDataToSharedPreferences(AppGlobals.KEY_EMAIL, email);
                             AppGlobals.saveDataToSharedPreferences(AppGlobals.KEY_USER_ID, userId);
-                            AppGlobals.saveDataToSharedPreferences(AppGlobals.KEY_SERVER_IMAGE, profileImage);
+                            AppGlobals.saveDataToSharedPreferences(AppGlobals.KEY_SERVER_IMAGE, AppGlobals.SERVER_IP + profileImage);
                             AppGlobals.saveDataToSharedPreferences(AppGlobals.KEY_HEIGHT, height);
+                            AppGlobals.saveDataToSharedPreferences(AppGlobals.KEY_USER_AGE, age);
+                            AppGlobals.saveDataToSharedPreferences(AppGlobals.KEY_MOBILE_NUMBER, phoneNumber);
 
                             AppGlobals.saveDataToSharedPreferences(AppGlobals.KEY_WEIGHT, weight);
                             AppGlobals.saveDataToSharedPreferences(AppGlobals.KEY_GENDER, gender);

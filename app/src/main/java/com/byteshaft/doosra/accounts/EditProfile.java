@@ -224,7 +224,7 @@ public class EditProfile extends Fragment implements View.OnClickListener,
                             AppGlobals.saveDataToSharedPreferences(AppGlobals.KEY_MOBILE_NUMBER, phoneNumber);
                             AppGlobals.saveDataToSharedPreferences(AppGlobals.KEY_USER_AGE, userAge);
                             AppGlobals.saveDataToSharedPreferences(AppGlobals.KEY_COUNTRY, userCountry);
-                            AppGlobals.saveDataToSharedPreferences(AppGlobals.KEY_SERVER_IMAGE, profileImage);
+                            AppGlobals.saveDataToSharedPreferences(AppGlobals.KEY_SERVER_IMAGE, AppGlobals.SERVER_IP + profileImage);
 
                             FragmentManager fragmentManager = getFragmentManager();
                             fragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);

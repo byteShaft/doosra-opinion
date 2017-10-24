@@ -14,7 +14,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
             android:gravity="center"
-            android:text="Opinion"
+            android:text="Name"
             android:textSize="24sp" />
 
         <LinearLayout
@@ -29,6 +29,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:gravity="center"
                 android:text="Date"
                 android:textSize="20sp"
                 android:textStyle="bold" />
@@ -38,7 +39,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text=""
+                android:gravity="center"
+                android:text="000"
                 android:textSize="20sp" />
         </LinearLayout>
 
@@ -47,6 +49,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/layout_date"
+            android:layout_marginTop="10dp"
             android:orientation="vertical">
 
             <TextView
@@ -61,6 +64,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="20dp"
+                android:layout_marginTop="10dp"
                 android:ellipsize="end"
                 android:maxLines="2"
                 android:text="Concern text goes here"

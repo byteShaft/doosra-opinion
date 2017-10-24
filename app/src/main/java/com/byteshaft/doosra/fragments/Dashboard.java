@@ -14,6 +14,7 @@ import android.widget.TextView;
 import com.byteshaft.doosra.AboutUs;
 import com.byteshaft.doosra.BOD;
 import com.byteshaft.doosra.HowItWorks;
+import com.byteshaft.doosra.MainActivity;
 import com.byteshaft.doosra.OpinionActivity;
 import com.byteshaft.doosra.R;
 import com.byteshaft.doosra.utils.AppGlobals;
@@ -37,7 +38,7 @@ public class Dashboard extends Fragment implements View.OnClickListener {
         mBaseView = inflater.inflate(R.layout.fragment_dashboard, container, false);
         ((AppCompatActivity) getActivity()).getSupportActionBar()
                 .setTitle(getResources().getString(R.string.home));
-
+        MainActivity.getInstance().updateProfilePic();
         lineOne = mBaseView.findViewById(R.id.line_part_one);
         lineTwo = mBaseView.findViewById(R.id.line_part_two);
         appName = mBaseView.findViewById(R.id.app_name_doosra);

@@ -30,6 +30,7 @@ public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     private static MainActivity sInstance;
+    private CircleImageView userImage;
 
     public static MainActivity getInstance() {
         return sInstance;
@@ -74,7 +75,7 @@ public class MainActivity extends AppCompatActivity
         TextView name = headerView.findViewById(R.id.name);
         TextView email = headerView.findViewById(R.id.email);
 
-        CircleImageView userImage = headerView.findViewById(R.id.nav_imageView);
+        userImage = headerView.findViewById(R.id.nav_imageView);
         name.setText(AppGlobals.getStringFromSharedPreferences(AppGlobals.KEY_FIRST_NAME) + " " +
                 AppGlobals.getStringFromSharedPreferences(AppGlobals.KEY_LAST_NAME));
         email.setText(AppGlobals.getStringFromSharedPreferences(AppGlobals.KEY_EMAIL));
@@ -84,6 +85,13 @@ public class MainActivity extends AppCompatActivity
             Helpers.getBitMap(url, userImage);
         }
         loadFragment(new Dashboard());
+    }
+
+    public void updateProfilePic() {
+        if (AppGlobals.isLogin() && AppGlobals.getStringFromSharedPreferences(AppGlobals.KEY_SERVER_IMAGE) != null) {
+            String url = AppGlobals.getStringFromSharedPreferences(AppGlobals.KEY_SERVER_IMAGE);
+            Helpers.getBitMap(url, userImage);
+        }
     }
 
     @Override
