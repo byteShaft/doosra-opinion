@@ -60,13 +60,24 @@ public class OpinionActivity extends AppCompatActivity {
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
                 System.out.println("test test");
                 if (AppGlobals.isLogin()) {
-                    DiagnosisOpinion opinion = opinionArrayList.get(position);
-                    Intent intent = new Intent(OpinionActivity.this, UserProfile.class);
-                    intent.putExtra("id", opinion.getId());
-                    startActivity(intent);
+                    AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(OpinionActivity.this);
+                    alertDialogBuilder.setTitle("Offer!");
+                    alertDialogBuilder.setMessage("Actual price is 5000INR, we are offering  introductory price 2000INR")
+                            .setCancelable(false).setPositiveButton("OK",
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    dialog.dismiss();
+                                    DiagnosisOpinion opinion = opinionArrayList.get(position);
+                                    Intent intent = new Intent(OpinionActivity.this, UserProfile.class);
+                                    intent.putExtra("id", opinion.getId());
+                                    startActivity(intent);
+                                }
+                            });
+                    AlertDialog alertDialog = alertDialogBuilder.create();
+                    alertDialog.show();
                 } else {
                     AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(OpinionActivity.this);
                     alertDialogBuilder.setTitle("Access Denied!");
@@ -91,7 +102,6 @@ public class OpinionActivity extends AppCompatActivity {
         getOpinions();
 
     }
-
 
     private void getOpinions() {
         HttpRequest getStateRequest = new HttpRequest(getApplicationContext());

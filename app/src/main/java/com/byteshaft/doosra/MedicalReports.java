@@ -14,6 +14,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 
 import com.byteshaft.doosra.utils.AppGlobals;
 import com.byteshaft.doosra.utils.Helpers;
@@ -44,10 +45,10 @@ public class MedicalReports extends AppCompatActivity implements View.OnClickLis
     private static final int REPORT_CODE = 3;
     private static final int OTHER_CODE = 4;
 
-    private Button buttonMedical;
-    private Button buttonLabResult;
-    private Button buttonReport;
-    private Button buttonOthers;
+    private ImageButton buttonMedical;
+    private ImageButton buttonLabResult;
+    private ImageButton buttonReport;
+    private ImageButton buttonOthers;
     private Button buttonSubmit;
 
     private HttpRequest request;
@@ -85,10 +86,10 @@ public class MedicalReports extends AppCompatActivity implements View.OnClickLis
         System.out.println("Id is...." + opinionTypeID + " history: " +
                 shortHistoryString + " concern " + concernString + " Disease: " + existingDiseaseString);
 
-        buttonMedical = (Button) findViewById(R.id.button_medical);
-        buttonLabResult = (Button) findViewById(R.id.button_lab_result);
-        buttonReport = (Button) findViewById(R.id.button_report);
-        buttonOthers = (Button) findViewById(R.id.button_others);
+        buttonMedical = (ImageButton) findViewById(R.id.button_medical);
+        buttonLabResult = (ImageButton) findViewById(R.id.button_lab_result);
+        buttonReport = (ImageButton) findViewById(R.id.button_report);
+        buttonOthers = (ImageButton) findViewById(R.id.button_others);
         buttonSubmit = (Button) findViewById(R.id.button_submit);
 
         buttonMedical.setOnClickListener(this);
@@ -244,18 +245,18 @@ public class MedicalReports extends AppCompatActivity implements View.OnClickLis
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == MEDICAL_CODE && resultCode == RESULT_OK) {
             medicalFileUri = data.getStringExtra(FilePickerActivity.RESULT_FILE_PATH);
-            buttonMedical.setBackgroundColor(getResources().getColor(R.color.green_button_color));
+            buttonMedical.setBackgroundDrawable(ContextCompat.getDrawable(AppGlobals.getContext(), R.drawable.ic_uploaded));
         } else if (requestCode == LAB_CODE && resultCode == RESULT_OK) {
             labResultFileUri = data.getStringExtra(FilePickerActivity.RESULT_FILE_PATH);
-            buttonLabResult.setBackgroundColor(getResources().getColor(R.color.green_button_color));
+            buttonLabResult.setBackgroundDrawable(ContextCompat.getDrawable(AppGlobals.getContext(), R.drawable.ic_uploaded));
 
         } else if (requestCode == REPORT_CODE && resultCode == RESULT_OK) {
             reportFileUri = data.getStringExtra(FilePickerActivity.RESULT_FILE_PATH);
-            buttonReport.setBackgroundColor(getResources().getColor(R.color.green_button_color));
+            buttonReport.setBackgroundDrawable(ContextCompat.getDrawable(AppGlobals.getContext(), R.drawable.ic_uploaded));
 
         } else if (requestCode == OTHER_CODE && resultCode == RESULT_OK) {
             otherFileUri = data.getStringExtra(FilePickerActivity.RESULT_FILE_PATH);
-            buttonOthers.setBackgroundColor(getResources().getColor(R.color.green_button_color));
+            buttonOthers.setBackgroundDrawable(ContextCompat.getDrawable(AppGlobals.getContext(), R.drawable.ic_uploaded));
         }
     }
 
