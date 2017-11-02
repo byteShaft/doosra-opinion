@@ -16,6 +16,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.Toast;
 
 import com.byteshaft.doosra.utils.AppGlobals;
 import com.byteshaft.doosra.utils.Helpers;
@@ -23,6 +24,9 @@ import com.byteshaft.requests.FormData;
 import com.byteshaft.requests.HttpRequest;
 import com.nbsp.materialfilepicker.MaterialFilePicker;
 import com.nbsp.materialfilepicker.ui.FilePickerActivity;
+import com.paytm.pgsdk.PaytmOrder;
+import com.paytm.pgsdk.PaytmPGService;
+import com.paytm.pgsdk.PaytmPaymentTransactionCallback;
 
 import java.net.HttpURLConnection;
 import java.util.ArrayList;
@@ -150,28 +154,33 @@ public class MedicalReports extends AppCompatActivity implements View.OnClickLis
     }
 
     private void dialogForPayment() {
-        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
-        alertDialogBuilder.setTitle("Request Submitted");
-        alertDialogBuilder.setMessage("Proceed for Payment")
-                .setCancelable(false).setPositiveButton("Pay",
-                new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        dialog.dismiss();
-                        startActivity(new Intent(MedicalReports.this, PaymentActivity.class));
-                        UserProfile.getInstance().finish();
-                        OpinionActivity.getInstance().finish();
-                        finish();
+        new android.os.Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(MedicalReports.this);
+                alertDialogBuilder.setTitle("Request Submitted");
+                alertDialogBuilder.setMessage("Proceed for Payment,<b> 2000 INR </b> will be deducted")
+                        .setCancelable(false).setPositiveButton("Pay",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                dialog.dismiss();
+                                doTransaction();
+//                        UserProfile.getInstance().finish();
+//                        OpinionActivity.getInstance().finish();
+//                        finish();
+                            }
+                        });
+                alertDialogBuilder.setNegativeButton("cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        Snackbar.make(findViewById(android.R.id.content), "your request will be ignored", Snackbar.LENGTH_SHORT);
+
                     }
                 });
-        alertDialogBuilder.setNegativeButton("cancel", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                Snackbar.make(findViewById(android.R.id.content), "your request will be ignored", Snackbar.LENGTH_SHORT);
-
+                AlertDialog alertDialog = alertDialogBuilder.create();
+                alertDialog.show();
             }
-        });
-        AlertDialog alertDialog = alertDialogBuilder.create();
-        alertDialog.show();
+        }, 1000);
     }
 
     private FormData getReportData(String medicalFile,
@@ -356,6 +365,98 @@ public class MedicalReports extends AppCompatActivity implements View.OnClickLis
                 .setNegativeButton(R.string.cancel, okListener)
                 .create()
                 .show();
+    }
+
+    public void doTransaction() {
+        PaytmPGService Service = PaytmPGService.getStagingService();
+
+        //Kindly create complete Map and checksum on your server side and then put it here in paramMap.
+
+        Map<String, String> paramMap = new HashMap<>();
+        paramMap.put("MID" , "");
+        paramMap.put("ORDER_ID" , "");
+        paramMap.put("CUST_ID" , "");
+        paramMap.put("INDUSTRY_TYPE_ID" , "Doctor opinion service");
+        paramMap.put("CHANNEL_ID" , "WAP");
+        paramMap.put("TXN_AMOUNT" , "1");
+        paramMap.put("WEBSITE" , "worldpressplg");
+        paramMap.put("CALLBACK_URL" , "https://pguat.paytm.com/paytmchecksum/paytmCallback.jsp");
+        paramMap.put("CHECKSUMHASH" , "w2QDRMgp1/BNdEnJEAPCIOmNgQvsi+BhpqijfM9KvFfRiPmGSt3Ddzw+oTaGCLneJwxFFq5mqTMwJXdQE2EzK4px2xruDqKZjHupz9yXev4=");
+        PaytmOrder Order = new PaytmOrder(paramMap);
+
+
+        Service.initialize(Order, null);
+
+        Service.startPaymentTransaction(this, true, true,
+                new PaytmPaymentTransactionCallback() {
+
+                    @Override
+                    public void someUIErrorOccurred(String inErrorMessage) {
+                        // Some UI Error Occurred in Payment Gateway Activity.
+                        // // This may be due to initialization of views in
+                        // Payment Gateway Activity or may be due to //
+                        // initialization of webview. // Error Message details
+                        // the error occurred.
+                        Toast.makeText(MedicalReports.this, inErrorMessage, Toast.LENGTH_SHORT).show();
+                        dialogForPayment();
+                    }
+
+                    @Override
+                    public void onTransactionResponse(Bundle inResponse) {
+                        Log.d("LOG", "Payment Transaction : " + inResponse);
+                        Toast.makeText(getApplicationContext(), "Payment Transaction response "+inResponse.toString(), Toast.LENGTH_LONG).show();
+                        UserProfile.getInstance().finish();
+                        OpinionActivity.getInstance().finish();
+                        finish();
+                    }
+
+                    @Override
+                    public void networkNotAvailable() {
+                        // If network is not
+                        // available, then this
+                        // method gets called.
+                        Toast.makeText(MedicalReports.this, "Check your internet connection", Toast.LENGTH_SHORT).show();
+                        dialogForPayment();
+                    }
+
+
+                    @Override
+                    public void clientAuthenticationFailed(String inErrorMessage) {
+                        // This method gets called if client authentication
+                        // failed. // Failure may be due to following reasons //
+                        // 1. Server error or downtime. // 2. Server unable to
+                        // generate checksum or checksum response is not in
+                        // proper format. // 3. Server failed to authenticate
+                        // that client. That is value of payt_STATUS is 2. //
+                        // Error Message describes the reason for failure.
+                        Toast.makeText(MedicalReports.this, inErrorMessage, Toast.LENGTH_SHORT).show();
+
+
+                    }
+
+                    @Override
+                    public void onErrorLoadingWebPage(int iniErrorCode,
+                                                      String inErrorMessage, String inFailingUrl) {
+                        Toast.makeText(MedicalReports.this, inErrorMessage,
+                                Toast.LENGTH_SHORT).show();
+
+                    }
+
+                    // had to be added: NOTE
+                    @Override
+                    public void onBackPressedCancelTransaction() {
+                        // TODO Auto-generated method stub
+                        Toast.makeText(MedicalReports.this, "Transaction cancelled",
+                                Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void onTransactionCancel(String inErrorMessage, Bundle inResponse) {
+                        Log.d("LOG", "Payment Transaction Failed " + inErrorMessage);
+                        Toast.makeText(getBaseContext(), "Payment Transaction Failed ", Toast.LENGTH_LONG).show();
+                    }
+
+                });
     }
 
 }

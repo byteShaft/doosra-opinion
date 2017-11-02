@@ -38,7 +38,6 @@
         <activity android:name=".AboutUs" />
         <activity android:name=".BOD" />
         <activity android:name=".HowItWorks" />
-        <activity android:name=".PaymentActivity" />
         <activity android:name=".OpinionDetail" />
 
         <activity
