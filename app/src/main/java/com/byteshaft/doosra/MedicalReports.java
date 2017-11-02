@@ -7,6 +7,7 @@ import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
@@ -137,6 +138,7 @@ public class MedicalReports extends AppCompatActivity implements View.OnClickLis
                         Helpers.alertDialog(MedicalReports.this,
                                 "Request Submitted!", "Your Request has been submitted", null);
                         dialogForPayment();
+                        break;
                 }
         }
     }
@@ -150,7 +152,7 @@ public class MedicalReports extends AppCompatActivity implements View.OnClickLis
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
         alertDialogBuilder.setTitle("Request Submitted");
         alertDialogBuilder.setMessage("Proceed for Payment")
-                .setCancelable(false).setPositiveButton("OK",
+                .setCancelable(false).setPositiveButton("Pay",
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         dialog.dismiss();
@@ -160,6 +162,13 @@ public class MedicalReports extends AppCompatActivity implements View.OnClickLis
                         finish();
                     }
                 });
+        alertDialogBuilder.setNegativeButton("cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                Snackbar.make(findViewById(android.R.id.content), "your request will be ignored", Snackbar.LENGTH_SHORT);
+
+            }
+        });
         AlertDialog alertDialog = alertDialogBuilder.create();
         alertDialog.show();
     }
