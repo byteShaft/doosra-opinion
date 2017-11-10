@@ -11,8 +11,12 @@ import android.support.v7.app.AlertDialog;
 import android.view.MotionEvent;
 import android.view.View;
 
+import com.byteshaft.doosra.braintree.ApiClient;
+import com.byteshaft.doosra.braintree.ApiClientRequestInterceptor;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
+
+import retrofit.RestAdapter;
 
 public class AppGlobals extends Application {
 
@@ -39,6 +43,9 @@ public class AppGlobals extends Application {
     public static final String KEY_USER_ID = "id";
     public static final String KEY_TOKEN = "token"; 
     public static ImageLoader sImageLoader;
+    private static final String SANDBOX_BASE_SERVER_URL = "https://braintree-sample-merchant.herokuapp.com";
+    private static final String PRODUCTION_BASE_SERVER_URL = "https://executive-sample-merchant.herokuapp.com";
+    private static ApiClient sApiClient;
 
     @Override
     public void onCreate() {
@@ -135,6 +142,18 @@ public class AppGlobals extends Application {
                 return false;
             }
         });
+    }
+
+    public static ApiClient getApiClient(Context context) {
+        if (sApiClient == null) {
+            sApiClient = new RestAdapter.Builder()
+                    .setEndpoint(SANDBOX_BASE_SERVER_URL)
+                    .setRequestInterceptor(new ApiClientRequestInterceptor())
+                    .build()
+                    .create(ApiClient.class);
+        }
+
+        return sApiClient;
     }
 }
 
