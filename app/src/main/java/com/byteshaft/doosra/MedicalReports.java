@@ -1,12 +1,14 @@
 package com.byteshaft.doosra;
 
 import android.Manifest;
+import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
@@ -15,7 +17,16 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.Toast;
 
+import com.braintreepayments.api.BraintreeFragment;
+import com.braintreepayments.api.PayPal;
+import com.braintreepayments.api.dropin.DropInActivity;
+import com.braintreepayments.api.dropin.DropInRequest;
+import com.braintreepayments.api.dropin.DropInResult;
+import com.braintreepayments.api.exceptions.InvalidArgumentException;
+import com.braintreepayments.api.interfaces.PaymentMethodNonceCreatedListener;
+import com.braintreepayments.api.models.PaymentMethodNonce;
 import com.byteshaft.doosra.utils.AppGlobals;
 import com.byteshaft.doosra.utils.Helpers;
 import com.byteshaft.requests.FormData;
@@ -23,8 +34,12 @@ import com.byteshaft.requests.HttpRequest;
 import com.nbsp.materialfilepicker.MaterialFilePicker;
 import com.nbsp.materialfilepicker.ui.FilePickerActivity;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.net.HttpURLConnection;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -58,7 +73,6 @@ public class MedicalReports extends AppCompatActivity implements View.OnClickLis
     private String reportFileUri;
     private String otherFileUri;
 
-
     private int opinionTypeID;
     private String name = AppGlobals.getStringFromSharedPreferences(AppGlobals.KEY_FIRST_NAME)
             + " " + AppGlobals.getStringFromSharedPreferences(AppGlobals.KEY_LAST_NAME);
@@ -69,6 +83,9 @@ public class MedicalReports extends AppCompatActivity implements View.OnClickLis
     private String shortHistoryString;
     private String existingDiseaseString;
     private String concernString;
+    private BraintreeFragment mBraintreeFragment;
+    private int currentOpinionId;
+    private String mAuthorization;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -91,12 +108,34 @@ public class MedicalReports extends AppCompatActivity implements View.OnClickLis
         buttonReport = (ImageButton) findViewById(R.id.button_report);
         buttonOthers = (ImageButton) findViewById(R.id.button_others);
         buttonSubmit = (Button) findViewById(R.id.button_submit);
-
         buttonMedical.setOnClickListener(this);
         buttonLabResult.setOnClickListener(this);
         buttonReport.setOnClickListener(this);
         buttonOthers.setOnClickListener(this);
         buttonSubmit.setOnClickListener(this);
+
+//        AppGlobals.getApiClient(this).getClientToken("",
+//                "m5hrg4dwnr27cjhj", new Callback<com.byteshaft.doosra.braintree.ClientToken>() {
+//                    @Override
+//                    public void success(com.byteshaft.doosra.braintree.ClientToken clientToken, Response response) {
+//                        if (TextUtils.isEmpty(clientToken.getClientToken())) {
+//                            Log.i("TAG", "empty");
+//                        } else {
+//                            Log.i("TAG", "SUCCESS");
+//                            mAuthorization = clientToken.getClientToken();
+//                        }
+//                    }
+//
+//                    @Override
+//                    public void failure(RetrofitError error) {
+//                        Log.i("TAG", "error");
+//                    }
+//                });
+        try {
+            mBraintreeFragment = BraintreeFragment.newInstance(this, "sandbox_ddqqfs9x_m5hrg4dwnr27cjhj");
+        } catch(InvalidArgumentException e) {
+            // the authorization provided was of an invalid form
+        }
     }
 
     @Override
@@ -132,12 +171,19 @@ public class MedicalReports extends AppCompatActivity implements View.OnClickLis
         switch (readyState) {
             case HttpRequest.STATE_DONE:
                 Helpers.dismissProgressDialog();
-                Log.i("TAG", "Response " + request.getResponseText());
                 switch (request.getStatus()) {
                     case HttpURLConnection.HTTP_CREATED:
-                        Helpers.alertDialog(MedicalReports.this,
-                                "Request Submitted!", "Your Request has been submitted", null);
+                        try {
+                            JSONObject jsonObject = new JSONObject(request.getResponseText());
+                            currentOpinionId = jsonObject.getInt("id");
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                        Toast.makeText(sInstance, "Your Request has been submitted", Toast.LENGTH_SHORT).show();
+//                        Helpers.alertDialog(MedicalReports.this,
+//                                "Request Submitted!", "Your Request has been submitted", null);
                         dialogForPayment();
+                        break;
                 }
         }
     }
@@ -148,21 +194,30 @@ public class MedicalReports extends AppCompatActivity implements View.OnClickLis
     }
 
     private void dialogForPayment() {
-        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
-        alertDialogBuilder.setTitle("Request Submitted");
-        alertDialogBuilder.setMessage("Proceed for Payment")
-                .setCancelable(false).setPositiveButton("OK",
-                new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        dialog.dismiss();
-                        startActivity(new Intent(MedicalReports.this, PaymentActivity.class));
-                        UserProfile.getInstance().finish();
-                        OpinionActivity.getInstance().finish();
-                        finish();
+        new android.os.Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(MedicalReports.this);
+                alertDialogBuilder.setTitle("Request Submitted");
+                alertDialogBuilder.setMessage("Proceed for Payment,2000 INR will be deducted")
+                        .setCancelable(false).setPositiveButton("Pay",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                dialog.dismiss();
+                                getTokenForPayment();
+                            }
+                        });
+                alertDialogBuilder.setNegativeButton("cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        Snackbar.make(findViewById(android.R.id.content), "your request will be ignored", Snackbar.LENGTH_SHORT);
+
                     }
                 });
-        AlertDialog alertDialog = alertDialogBuilder.create();
-        alertDialog.show();
+                AlertDialog alertDialog = alertDialogBuilder.create();
+                alertDialog.show();
+            }
+        }, 1000);
     }
 
     private FormData getReportData(String medicalFile,
@@ -257,6 +312,36 @@ public class MedicalReports extends AppCompatActivity implements View.OnClickLis
         } else if (requestCode == OTHER_CODE && resultCode == RESULT_OK) {
             otherFileUri = data.getStringExtra(FilePickerActivity.RESULT_FILE_PATH);
             buttonOthers.setBackgroundDrawable(ContextCompat.getDrawable(AppGlobals.getContext(), R.drawable.ic_uploaded));
+        } else    if (requestCode == 101) {
+            if (resultCode == Activity.RESULT_OK) {
+//                DropInResult result = data.getParcelableExtra(DropInResult.EXTRA_DROP_IN_RESULT);
+//                if (result.getPaymentMethodNonce() instanceof PayPalAccountNonce) {
+//                    PayPalAccountNonce payPalAccountNonce = (PayPalAccountNonce) result.getPaymentMethodNonce();
+//
+//                    // Access additional information
+//                    String email = payPalAccountNonce.getEmail();
+//                    String firstName = payPalAccountNonce.getFirstName();
+//                    String lastName = payPalAccountNonce.getLastName();
+//                    String phone = payPalAccountNonce.getPhone();
+//
+//                    // See PostalAddress.java for details
+//                    PostalAddress billingAddress = payPalAccountNonce.getBillingAddress();
+//                    PostalAddress shippingAddress = payPalAccountNonce.getShippingAddress();
+//                    Log.i("email" , email);
+//                }
+                DropInResult result = data.getParcelableExtra(DropInResult.EXTRA_DROP_IN_RESULT);
+                String paymentMethodNonce = result.getPaymentMethodNonce().getNonce();
+                // send paymentMethodNonce to your server
+                sendRequestToDoPayment(currentOpinionId, paymentMethodNonce);
+                Log.i("paymentMethodNonce" , paymentMethodNonce);
+            } else if (resultCode == Activity.RESULT_CANCELED) {
+                // canceled
+            } else {
+                // an error occurred, checked the returned exception
+                Exception exception = (Exception) data.getSerializableExtra(DropInActivity.EXTRA_ERROR);
+                Log.i("exception" , exception.getMessage());
+                exception.printStackTrace();
+            }
         }
     }
 
@@ -349,4 +434,119 @@ public class MedicalReports extends AppCompatActivity implements View.OnClickLis
                 .show();
     }
 
+    public void doTransaction(String token) {
+        mBraintreeFragment.addListener(new PaymentMethodNonceCreatedListener() {
+            @Override
+            public void onPaymentMethodNonceCreated(PaymentMethodNonce paymentMethodNonce) {
+                Log.i("TAG", "payment methid nounce");
+            }
+        });
+        DropInRequest dropInRequest = new DropInRequest()
+                .clientToken(token);
+        Log.i("TAG", "enabled "+ dropInRequest.isPayPalEnabled());
+        dropInRequest.amount("30");
+        dropInRequest.collectDeviceData(true);
+        dropInRequest.disableAndroidPay();
+        dropInRequest.requestThreeDSecureVerification(true);
+        dropInRequest.disableVenmo();
+        dropInRequest.tokenizationKey(token);
+        dropInRequest.paypalAdditionalScopes(Collections.singletonList(PayPal.SCOPE_ADDRESS));
+        startActivityForResult(dropInRequest.getIntent(this), 101);
+//        setupBraintreeAndStartExpressCheckout();
+    }
+
+    private void getTokenForPayment() {
+        HttpRequest request = new HttpRequest(this);
+        request.setOnReadyStateChangeListener(new HttpRequest.OnReadyStateChangeListener() {
+            @Override
+            public void onReadyStateChange(HttpRequest request, int readyState) {
+                switch (readyState) {
+                    case HttpRequest.STATE_DONE:
+                        Helpers.dismissProgressDialog();
+                        switch (request.getStatus()) {
+                            case HttpURLConnection.HTTP_OK:
+                                Log.i("TAG", "token " + request.getResponseText());
+                                try {
+                                    JSONObject jsonObject = new JSONObject(request.getResponseText());
+//                                    launchDropIn(jsonObject.getString("token"));
+                                    doTransaction(jsonObject.getString("token"));
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+                                break;
+                        }
+                }
+
+            }
+        });
+        request.setOnErrorListener(this);
+        request.open("GET", String.format("%spayments/token", AppGlobals.BASE_URL));
+        request.setRequestHeader("Authorization", "Token " +
+                AppGlobals.getStringFromSharedPreferences(AppGlobals.KEY_TOKEN));
+        Log.i(":TAG", "token " + AppGlobals.getStringFromSharedPreferences(AppGlobals.KEY_TOKEN));
+        request.send();
+    }
+
+    private void sendRequestToDoPayment(int opinionId, String paymentMethodNonce) {
+        HttpRequest request = new HttpRequest(this);
+        request.setOnReadyStateChangeListener(new HttpRequest.OnReadyStateChangeListener() {
+            @Override
+            public void onReadyStateChange(HttpRequest request, int readyState) {
+                switch (readyState) {
+                    case HttpRequest.STATE_DONE:
+                        Helpers.dismissProgressDialog();
+                        switch (request.getStatus()) {
+                            case HttpURLConnection.HTTP_OK:
+                                Log.i("TAG", "token " + request.getResponseText());
+                                try {
+                                    JSONObject jsonObject = new JSONObject(request.getResponseText());
+//                                    doTransaction(jsonObject.getString("token"));
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+                                break;
+                        }
+                }
+
+            }
+        });
+        request.setOnErrorListener(this);
+        request.open("POST", String.format("%spayments/pay", AppGlobals.BASE_URL));
+        request.setRequestHeader("Authorization", "Token " +
+                AppGlobals.getStringFromSharedPreferences(AppGlobals.KEY_TOKEN));
+        JSONObject jsonObject = new JSONObject();
+        try {
+            jsonObject.put("opinion", opinionId);
+            jsonObject.put("payment_method_nonce", paymentMethodNonce);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        request.send(jsonObject.toString());
+    }
+
+//    private void getToken() {
+//        AppGlobals.getApiClient(this).getClientToken("15",
+//                "m5hrg4dwnr27cjhj", new Callback<com.byteshaft.doosra.braintree.ClientToken>() {
+//                    @Override
+//                    public void success(com.byteshaft.doosra.braintree.ClientToken clientToken, Response response) {
+//                        if (TextUtils.isEmpty(clientToken.getClientToken())) {
+//                            Log.i("TAG", "empty");
+//                        } else {
+//                            Log.i("TAG", "SUCCESS");
+////                            doTransaction();
+//                            mAuthorization = clientToken.getClientToken();
+//                        }
+//                    }
+//
+//                    @Override
+//                    public void failure(RetrofitError error) {
+//                        Log.i("TAG", "error");
+//                    }
+//                });
+//        try {
+//            mBraintreeFragment = BraintreeFragment.newInstance(this, "sandbox_ddqqfs9x_m5hrg4dwnr27cjhj");
+//        } catch(InvalidArgumentException e) {
+//            // the authorization provided was of an invalid form
+//        }
+//    }
 }
