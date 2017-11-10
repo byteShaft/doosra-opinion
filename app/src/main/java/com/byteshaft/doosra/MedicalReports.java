@@ -523,30 +523,4 @@ public class MedicalReports extends AppCompatActivity implements View.OnClickLis
         }
         request.send(jsonObject.toString());
     }
-
-//    private void getToken() {
-//        AppGlobals.getApiClient(this).getClientToken("15",
-//                "m5hrg4dwnr27cjhj", new Callback<com.byteshaft.doosra.braintree.ClientToken>() {
-//                    @Override
-//                    public void success(com.byteshaft.doosra.braintree.ClientToken clientToken, Response response) {
-//                        if (TextUtils.isEmpty(clientToken.getClientToken())) {
-//                            Log.i("TAG", "empty");
-//                        } else {
-//                            Log.i("TAG", "SUCCESS");
-////                            doTransaction();
-//                            mAuthorization = clientToken.getClientToken();
-//                        }
-//                    }
-//
-//                    @Override
-//                    public void failure(RetrofitError error) {
-//                        Log.i("TAG", "error");
-//                    }
-//                });
-//        try {
-//            mBraintreeFragment = BraintreeFragment.newInstance(this, "sandbox_ddqqfs9x_m5hrg4dwnr27cjhj");
-//        } catch(InvalidArgumentException e) {
-//            // the authorization provided was of an invalid form
-//        }
-//    }
 }
