@@ -64,4 +64,5 @@
     <string name="about_us"><u>About Us</u></string>
     <string name="board_of_doctors"><u>Board of Doctors</u></string>
     <string name="processing_transaction">Processing Transaction</string>
+    <string name="offer_text">Actual price for opinion is 75$, we are offering 30$ as an introductory price. Paytm users can proceed thorough this contact number +919946371350</string>
 </resources>
