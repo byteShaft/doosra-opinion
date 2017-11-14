@@ -30,10 +30,9 @@ public class UserProfile extends AppCompatActivity {
     private TextView age;
     private TextView weight;
     private TextView height;
-
     private Button buttonNext;
-
     private int opinionTypeID;
+    private TextView opinionByType;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,18 +41,21 @@ public class UserProfile extends AppCompatActivity {
 
         setContentView(R.layout.activity_user_profile);
         opinionTypeID = getIntent().getIntExtra("id", 0);
+        String opinionName = getIntent().getStringExtra("name");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
-        userImage = (CircleImageView) findViewById(R.id.user_image);
-        shortHistory = (EditText) findViewById(R.id.short_history_edit_text);
-        existingDisease = (EditText) findViewById(R.id.disease_details_edit_text);
-        concern = (EditText) findViewById(R.id.concerns_details_edit_text);
-        buttonNext = (Button) findViewById(R.id.button_next);
-        fullName = (TextView) findViewById(R.id.tv_name);
-        age = (TextView) findViewById(R.id.tv_age);
-        weight = (TextView) findViewById(R.id.tv_weight);
-        height = (TextView) findViewById(R.id.tv_height);
+        userImage = findViewById(R.id.user_image);
+        shortHistory =  findViewById(R.id.short_history_edit_text);
+        existingDisease =  findViewById(R.id.disease_details_edit_text);
+        concern =  findViewById(R.id.concerns_details_edit_text);
+        buttonNext =  findViewById(R.id.button_next);
+        fullName =  findViewById(R.id.tv_name);
+        age =  findViewById(R.id.tv_age);
+        weight = findViewById(R.id.tv_weight);
+        height = findViewById(R.id.tv_height);
+        opinionByType = findViewById(R.id.text_by_opinion_type);
+        opinionByType.setText(getTextByOpinion(opinionName));
 
         fullName.setText(AppGlobals.getStringFromSharedPreferences(AppGlobals.KEY_FIRST_NAME) + " " +
                 AppGlobals.getStringFromSharedPreferences(AppGlobals.KEY_LAST_NAME));
@@ -66,6 +68,7 @@ public class UserProfile extends AppCompatActivity {
         concern.setTypeface(AppGlobals.typeface);
         existingDisease.setTypeface(AppGlobals.typeface);
         shortHistory.setTypeface(AppGlobals.typeface);
+        opinionByType.setTypeface(AppGlobals.typeface);
         fullName.setTypeface(AppGlobals.typeface);
         age.setTypeface(AppGlobals.typeface);
         weight.setTypeface(AppGlobals.typeface);
@@ -92,6 +95,18 @@ public class UserProfile extends AppCompatActivity {
                 AppGlobals.KEY_SERVER_IMAGE) != null) {
             String url = AppGlobals.getStringFromSharedPreferences(AppGlobals.KEY_SERVER_IMAGE);
             Helpers.getBitMap(url, userImage);
+        }
+    }
+
+    private String getTextByOpinion(String name) {
+        switch (name) {
+            case "Surgical opinion":
+                return getResources().getString(R.string.string_for_surgical);
+            case "Treatment opinion":
+                return getResources().getString(R.string.string_for_treatment);
+            case "Diagnostic opinion":
+                return getResources().getString(R.string.string_for_diagnostic);
+            default: return "";
         }
     }
 
