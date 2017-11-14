@@ -61,7 +61,6 @@ public class OpinionActivity extends AppCompatActivity {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
-                System.out.println("test test");
                 if (AppGlobals.isLogin()) {
                     AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(OpinionActivity.this);
                     alertDialogBuilder.setTitle("Offer!");
