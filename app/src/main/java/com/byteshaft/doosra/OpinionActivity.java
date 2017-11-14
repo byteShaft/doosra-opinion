@@ -64,7 +64,7 @@ public class OpinionActivity extends AppCompatActivity {
                 if (AppGlobals.isLogin()) {
                     AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(OpinionActivity.this);
                     alertDialogBuilder.setTitle("Offer!");
-                    alertDialogBuilder.setMessage("Actual price is 5000INR, we are offering  introductory price 2000INR")
+                    alertDialogBuilder.setMessage(R.string.offer_text)
                             .setCancelable(false).setPositiveButton("OK",
                             new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int id) {
