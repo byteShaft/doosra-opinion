@@ -53,6 +53,7 @@
                 <data android:scheme="com.byteshaft.doosra.braintree" />
             </intent-filter>
         </activity>
+        <activity android:name="com.paytm.pgsdk.PaytmPGActivity"/>
 
     </application>
 

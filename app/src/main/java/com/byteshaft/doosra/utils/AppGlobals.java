@@ -11,23 +11,27 @@ import android.support.v7.app.AlertDialog;
 import android.view.MotionEvent;
 import android.view.View;
 
-import com.byteshaft.doosra.braintree.ApiClient;
-import com.byteshaft.doosra.braintree.ApiClientRequestInterceptor;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 
-import retrofit.RestAdapter;
+import java.security.KeyManagementException;
+import java.security.NoSuchAlgorithmException;
+import java.security.cert.CertificateException;
+import java.security.cert.X509Certificate;
+
+import javax.net.ssl.HttpsURLConnection;
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.TrustManager;
+import javax.net.ssl.X509TrustManager;
+
 
 public class AppGlobals extends Application {
 
     private static final String IS_FIRST_TIME_LAUNCH = "IsFirstTimeLaunch";
     private static Context sContext;
-
     public static Typeface typeface;
     public static Typeface typefaceForHeading;
-
     public static final String SERVER_IP = "http://139.59.167.40";
-    public static final String SERVER_IP_FOR_IMAGE = "http://139.59.167.40/";
     public static final String BASE_URL = String.format("%s/api/", SERVER_IP);
     public static final String KEY_FIRST_NAME = "first_name";
     public static final String KEY_LAST_NAME = "last_name";
@@ -43,9 +47,7 @@ public class AppGlobals extends Application {
     public static final String KEY_USER_ID = "id";
     public static final String KEY_TOKEN = "token"; 
     public static ImageLoader sImageLoader;
-    private static final String SANDBOX_BASE_SERVER_URL = "https://braintree-sample-merchant.herokuapp.com";
-    private static final String PRODUCTION_BASE_SERVER_URL = "https://executive-sample-merchant.herokuapp.com";
-    private static ApiClient sApiClient;
+    
 
     @Override
     public void onCreate() {
@@ -144,16 +146,34 @@ public class AppGlobals extends Application {
         });
     }
 
-    public static ApiClient getApiClient(Context context) {
-        if (sApiClient == null) {
-            sApiClient = new RestAdapter.Builder()
-                    .setEndpoint(SANDBOX_BASE_SERVER_URL)
-                    .setRequestInterceptor(new ApiClientRequestInterceptor())
-                    .build()
-                    .create(ApiClient.class);
-        }
+    private static void disableSSLCertificateChecking() {
+        TrustManager[] trustAllCerts = new TrustManager[] { new X509TrustManager() {
+            public X509Certificate[] getAcceptedIssuers() {
+                return null;
+            }
 
-        return sApiClient;
+            @Override
+            public void checkClientTrusted(X509Certificate[] arg0, String arg1) throws CertificateException {
+                // Not implemented
+            }
+
+            @Override
+            public void checkServerTrusted(X509Certificate[] arg0, String arg1) throws CertificateException {
+                // Not implemented
+            }
+        } };
+
+        try {
+            SSLContext sc = SSLContext.getInstance("TLS");
+
+            sc.init(null, trustAllCerts, new java.security.SecureRandom());
+
+            HttpsURLConnection.setDefaultSSLSocketFactory(sc.getSocketFactory());
+        } catch (KeyManagementException e) {
+            e.printStackTrace();
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        }
     }
 }
 

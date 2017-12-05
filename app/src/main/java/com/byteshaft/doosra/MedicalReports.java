@@ -19,30 +19,28 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
-import com.braintreepayments.api.BraintreeFragment;
-import com.braintreepayments.api.PayPal;
 import com.braintreepayments.api.dropin.DropInActivity;
-import com.braintreepayments.api.dropin.DropInRequest;
 import com.braintreepayments.api.dropin.DropInResult;
-import com.braintreepayments.api.exceptions.InvalidArgumentException;
-import com.braintreepayments.api.interfaces.PaymentMethodNonceCreatedListener;
-import com.braintreepayments.api.models.PaymentMethodNonce;
 import com.byteshaft.doosra.utils.AppGlobals;
 import com.byteshaft.doosra.utils.Helpers;
 import com.byteshaft.requests.FormData;
 import com.byteshaft.requests.HttpRequest;
 import com.nbsp.materialfilepicker.MaterialFilePicker;
 import com.nbsp.materialfilepicker.ui.FilePickerActivity;
+import com.paytm.pgsdk.PaytmMerchant;
+import com.paytm.pgsdk.PaytmOrder;
+import com.paytm.pgsdk.PaytmPGService;
+import com.paytm.pgsdk.PaytmPaymentTransactionCallback;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.net.HttpURLConnection;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 
 import static android.os.Build.VERSION_CODES.M;
 
@@ -83,9 +81,10 @@ public class MedicalReports extends AppCompatActivity implements View.OnClickLis
     private String shortHistoryString;
     private String existingDiseaseString;
     private String concernString;
-    private BraintreeFragment mBraintreeFragment;
     private int currentOpinionId;
-    private String mAuthorization;
+    //paytm
+    private int randomInt = 0;
+    private PaytmPGService service = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -113,35 +112,146 @@ public class MedicalReports extends AppCompatActivity implements View.OnClickLis
         buttonReport.setOnClickListener(this);
         buttonOthers.setOnClickListener(this);
         buttonSubmit.setOnClickListener(this);
+        Random randomGenerator = new Random();
+        randomInt = randomGenerator.nextInt(1000000000);
 
-//        AppGlobals.getApiClient(this).getClientToken("",
-//                "m5hrg4dwnr27cjhj", new Callback<com.byteshaft.doosra.braintree.ClientToken>() {
-//                    @Override
-//                    public void success(com.byteshaft.doosra.braintree.ClientToken clientToken, Response response) {
-//                        if (TextUtils.isEmpty(clientToken.getClientToken())) {
-//                            Log.i("TAG", "empty");
-//                        } else {
-//                            Log.i("TAG", "SUCCESS");
-//                            mAuthorization = clientToken.getClientToken();
-//                        }
-//                    }
-//
-//                    @Override
-//                    public void failure(RetrofitError error) {
-//                        Log.i("TAG", "error");
-//                    }
-//                });
-        try {
-            mBraintreeFragment = BraintreeFragment.newInstance(this, "sandbox_ddqqfs9x_m5hrg4dwnr27cjhj");
-        } catch(InvalidArgumentException e) {
-            // the authorization provided was of an invalid form
-        }
+        service = PaytmPGService.getStagingService();
+    }
+
+    private void doPayment() {
+        PaytmMerchant merchant = new PaytmMerchant(
+                "http://139.59.167.40/api/generatechecksum.cgi",
+                "http://139.59.167.40/api/verifychecksum.cgi");
+
+        //below parameter map is required to construct PaytmOrder object, Merchant should replace below map values with his own values
+
+        Map<String, String> paramMap = new HashMap<>();
+        //these are mandatory parameters
+        paramMap.put("ORDER_ID", "ORDER"+String.valueOf(randomInt));
+        paramMap.put("MID", "JBRFoo44539086147111");
+        paramMap.put("EMAIL" , AppGlobals.getStringFromSharedPreferences(AppGlobals.KEY_EMAIL));
+        paramMap.put("MOBILE_NO" , "919722008882");
+        paramMap.put("CUST_ID", "CUST"+
+                AppGlobals.getStringFromSharedPreferences(AppGlobals.KEY_USER_ID));
+        paramMap.put("CHANNEL_ID", "WAP");
+        paramMap.put("INDUSTRY_TYPE_ID", "Retail");
+        paramMap.put("WEBSITE", "www.okkro.com");
+        paramMap.put("TXN_AMOUNT", "2");
+        paramMap.put("THEME", "merchant");
+
+        PaytmOrder order = new PaytmOrder(paramMap);
+        service.initialize(order, merchant, null);
+        service.enableLog(getApplicationContext());
+        service.startPaymentTransaction(this, true, true,
+                new PaytmPaymentTransactionCallback() {
+                    @Override
+                    public void someUIErrorOccurred(String inErrorMessage) {
+                        // Some UI Error Occurred in Payment Gateway Activity.
+                        // // This may be due to initialization of views in
+                        // Payment Gateway Activity or may be due to //
+                        // initialization of webview. // Error Message details
+                        // the error occurred.
+                        Toast.makeText(getApplicationContext(), "Ui/Webview error occured.", Toast.LENGTH_LONG).show();
+
+                    }
+
+                    @Override
+                    public void onTransactionSuccess(Bundle inResponse) {
+                        // After successful transaction this method gets called.
+                        // // Response bundle contains the merchant response
+                        // parameters.
+                        Log.d("LOG", "Payment Transaction is successful " + inResponse);
+                        Toast.makeText(getApplicationContext(), "Payment Transaction is successful ", Toast.LENGTH_LONG).show();
+                    }
+
+                    @Override
+                    public void onTransactionFailure(String inErrorMessage,
+                                                     Bundle inResponse) {
+                        // This method gets called if transaction failed. //
+                        // Here in this case transaction is completed, but with
+                        // a failure. // Error Message describes the reason for
+                        // failure. // Response bundle contains the merchant
+                        // response parameters.
+                        Log.d("LOG", "Payment Transaction Failed " + inErrorMessage);
+                        Toast.makeText(getBaseContext(), "Payment Transaction Failed ", Toast.LENGTH_LONG).show();
+                        recreate();
+                    }
+
+                    @Override
+                    public void networkNotAvailable() { // If network is not
+                        // available, then this
+                        // method gets called.
+                        Toast.makeText(getBaseContext(), "No Internet connection.", Toast.LENGTH_LONG).show();
+
+                    }
+
+                    @Override
+                    public void clientAuthenticationFailed(String inErrorMessage) {
+                        // This method gets called if client authentication
+                        // failed. // Failure may be due to following reasons //
+                        // 1. Server error or downtime. // 2. Server unable to
+                        // generate checksum or checksum response is not in
+                        // proper format. // 3. Server failed to authenticate
+                        // that client. That is value of payt_STATUS is 2. //
+                        // Error Message describes the reason for failure.
+                        Log.e("TAG", "clientAuthenticationFailed");
+                        Toast.makeText(getBaseContext(), "Client Authentication Failed.", Toast.LENGTH_LONG).show();
+
+                    }
+
+                    @Override
+                    public void onErrorLoadingWebPage(int iniErrorCode,
+                                                      String inErrorMessage, String inFailingUrl) {
+                        Log.e("TAG", "onErrorLoadingWebPage");
+
+                    }
+
+                    // had to be added: NOTE
+                    @Override
+                    public void onBackPressedCancelTransaction() {
+                        // TODO Auto-generated method stub
+                    }
+
+                });
     }
 
     @Override
     public boolean onSupportNavigateUp() {
         onBackPressed();
         return true;
+    }
+
+    private void getCheckSum() {
+        HttpRequest request = new HttpRequest(getApplicationContext());
+        request.setOnReadyStateChangeListener(new HttpRequest.OnReadyStateChangeListener() {
+            @Override
+            public void onReadyStateChange(HttpRequest request, int readyState) {
+                switch (readyState) {
+                    case HttpRequest.STATE_DONE:
+                        Helpers.dismissProgressDialog();
+                        switch (request.getStatus()) {
+                            case HttpURLConnection.HTTP_OK:
+                                Log.i("TAG", request.getResponseText());
+                                try {
+                                    JSONObject jsonObject = new JSONObject(request.getResponseText());
+
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+                        }
+                }
+            }
+        });
+        request.setOnErrorListener(new HttpRequest.OnErrorListener() {
+            @Override
+            public void onError(HttpRequest request, int readyState, short error, Exception exception) {
+
+            }
+        });
+        request.open("POST", String.format("%sgeneratechecksum.cgi", AppGlobals.BASE_URL));
+        request.setRequestHeader("Authorization", "Token " +
+                AppGlobals.getStringFromSharedPreferences(AppGlobals.KEY_TOKEN));
+        request.send();
     }
 
     private void submitReport(String medicalFile,
@@ -182,6 +292,7 @@ public class MedicalReports extends AppCompatActivity implements View.OnClickLis
                         Toast.makeText(sInstance, "Your Request has been submitted", Toast.LENGTH_SHORT).show();
 //                        Helpers.alertDialog(MedicalReports.this,
 //                                "Request Submitted!", "Your Request has been submitted", null);
+//                        dialogForPayment();
                         dialogForPayment();
                         break;
                 }
@@ -199,12 +310,12 @@ public class MedicalReports extends AppCompatActivity implements View.OnClickLis
             public void run() {
                 AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(MedicalReports.this);
                 alertDialogBuilder.setTitle("Request Submitted");
-                alertDialogBuilder.setMessage("Proceed for Payment,2000 INR will be deducted")
+                alertDialogBuilder.setMessage(getResources().getString(R.string.offer_text))
                         .setCancelable(false).setPositiveButton("Pay",
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
                                 dialog.dismiss();
-                                getTokenForPayment();
+                                doPayment();
                             }
                         });
                 alertDialogBuilder.setNegativeButton("cancel", new DialogInterface.OnClickListener() {
@@ -219,6 +330,37 @@ public class MedicalReports extends AppCompatActivity implements View.OnClickLis
             }
         }, 1000);
     }
+
+//    public void onBuyPressed() {
+//        /*
+//         * PAYMENT_INTENT_SALE will cause the payment to complete immediately.
+//         * Change PAYMENT_INTENT_SALE to
+//         *   - PAYMENT_INTENT_AUTHORIZE to only authorize payment and capture funds later.
+//         *   - PAYMENT_INTENT_ORDER to create a payment for authorization and capture
+//         *     later via calls from your server.
+//         *
+//         * Also, to include additional payment details and an item list, see getStuffToBuy() below.
+//         */
+//        PayPalPayment thingToBuy = getThingToBuy(PayPalPayment.PAYMENT_INTENT_SALE);
+//
+//        /*
+//         * See getStuffToBuy(..) for examples of some available payment options.
+//         */
+//
+//        Intent intent = new Intent(this, PaymentActivity.class);
+//
+//        // send the same configuration for restart resiliency
+//        intent.putExtra(PayPalService.EXTRA_PAYPAL_CONFIGURATION, config);
+//
+//        intent.putExtra(PaymentActivity.EXTRA_PAYMENT, thingToBuy);
+//
+//        startActivityForResult(intent, REQUEST_CODE_PAYMENT);
+//    }
+//
+//    private PayPalPayment getThingToBuy(String paymentIntent) {
+//        return new PayPalPayment(new BigDecimal("30.00"), "USD", "Doosra opinion medical services",
+//                paymentIntent);
+//    }
 
     private FormData getReportData(String medicalFile,
                                    String labFile,
@@ -434,58 +576,59 @@ public class MedicalReports extends AppCompatActivity implements View.OnClickLis
                 .show();
     }
 
-    public void doTransaction(String token) {
-        mBraintreeFragment.addListener(new PaymentMethodNonceCreatedListener() {
-            @Override
-            public void onPaymentMethodNonceCreated(PaymentMethodNonce paymentMethodNonce) {
-                Log.i("TAG", "payment methid nounce");
-            }
-        });
-        DropInRequest dropInRequest = new DropInRequest()
-                .clientToken(token);
-        Log.i("TAG", "enabled "+ dropInRequest.isPayPalEnabled());
-        dropInRequest.amount("30");
-        dropInRequest.collectDeviceData(true);
-        dropInRequest.disableAndroidPay();
-        dropInRequest.requestThreeDSecureVerification(true);
-        dropInRequest.disableVenmo();
-        dropInRequest.tokenizationKey(token);
-        dropInRequest.paypalAdditionalScopes(Collections.singletonList(PayPal.SCOPE_ADDRESS));
-        startActivityForResult(dropInRequest.getIntent(this), 101);
-//        setupBraintreeAndStartExpressCheckout();
-    }
+//    public void doTransaction(String token) {
+//        mBraintreeFragment.addListener(new PaymentMethodNonceCreatedListener() {
+//            @Override
+//            public void onPaymentMethodNonceCreated(PaymentMethodNonce paymentMethodNonce) {
+//                Log.i("TAG", "payment methid nounce");
+//            }
+//        });
+//        DropInRequest dropInRequest = new DropInRequest()
+//                .clientToken(token);
+//        Log.i("TAG", "enabled "+ dropInRequest.isPayPalEnabled());
+//        dropInRequest.amount("30");
+//        dropInRequest.collectDeviceData(true);
+//        dropInRequest.disableAndroidPay();
+//        dropInRequest.requestThreeDSecureVerification(true);
+//        dropInRequest.disableVenmo();
+//        dropInRequest.tokenizationKey(token);
+//        dropInRequest.paypalAdditionalScopes(Collections.singletonList(PayPal.SCOPE_ADDRESS));
+//        startActivityForResult(dropInRequest.getIntent(this), 101);
+////        setupBraintreeAndStartExpressCheckout();
+//    }
 
-    private void getTokenForPayment() {
-        HttpRequest request = new HttpRequest(this);
-        request.setOnReadyStateChangeListener(new HttpRequest.OnReadyStateChangeListener() {
-            @Override
-            public void onReadyStateChange(HttpRequest request, int readyState) {
-                switch (readyState) {
-                    case HttpRequest.STATE_DONE:
-                        Helpers.dismissProgressDialog();
-                        switch (request.getStatus()) {
-                            case HttpURLConnection.HTTP_OK:
-                                Log.i("TAG", "token " + request.getResponseText());
-                                try {
-                                    JSONObject jsonObject = new JSONObject(request.getResponseText());
-//                                    launchDropIn(jsonObject.getString("token"));
-                                    doTransaction(jsonObject.getString("token"));
-                                } catch (JSONException e) {
-                                    e.printStackTrace();
-                                }
-                                break;
-                        }
-                }
-
-            }
-        });
-        request.setOnErrorListener(this);
-        request.open("GET", String.format("%spayments/token", AppGlobals.BASE_URL));
-        request.setRequestHeader("Authorization", "Token " +
-                AppGlobals.getStringFromSharedPreferences(AppGlobals.KEY_TOKEN));
-        Log.i(":TAG", "token " + AppGlobals.getStringFromSharedPreferences(AppGlobals.KEY_TOKEN));
-        request.send();
-    }
+//    private void getTokenForPayment() {
+//        HttpRequest request = new HttpRequest(this);
+//        request.setOnReadyStateChangeListener(new HttpRequest.OnReadyStateChangeListener() {
+//            @Override
+//            public void onReadyStateChange(HttpRequest request, int readyState) {
+//                switch (readyState) {
+//                    case HttpRequest.STATE_DONE:
+//                        Helpers.dismissProgressDialog();
+//                        switch (request.getStatus()) {
+//                            case HttpURLConnection.HTTP_OK:
+//                                Log.i("TAG", "token " + request.getResponseText());
+//                                try {
+//                                    JSONObject jsonObject = new JSONObject(request.getResponseText());
+////                                    launchDropIn(jsonObject.getString("token"));
+////                                    doTransaction(jsonObject.getString("token"));
+//
+//                                } catch (JSONException e) {
+//                                    e.printStackTrace();
+//                                }
+//                                break;
+//                        }
+//                }
+//
+//            }
+//        });
+//        request.setOnErrorListener(this);
+//        request.open("GET", String.format("%spayments/token", AppGlobals.BASE_URL));
+//        request.setRequestHeader("Authorization", "Token " +
+//                AppGlobals.getStringFromSharedPreferences(AppGlobals.KEY_TOKEN));
+//        Log.i(":TAG", "token " + AppGlobals.getStringFromSharedPreferences(AppGlobals.KEY_TOKEN));
+//        request.send();
+//    }
 
     private void sendRequestToDoPayment(int opinionId, String paymentMethodNonce) {
         HttpRequest request = new HttpRequest(this);
