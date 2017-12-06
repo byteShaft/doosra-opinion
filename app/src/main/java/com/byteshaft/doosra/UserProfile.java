@@ -25,7 +25,6 @@ public class UserProfile extends AppCompatActivity {
     private EditText existingDisease;
     private EditText concern;
     private CircleImageView userImage;
-
     private TextView fullName;
     private TextView age;
     private TextView weight;
@@ -63,7 +62,6 @@ public class UserProfile extends AppCompatActivity {
         age.setText("Age: " + AppGlobals.getStringFromSharedPreferences(AppGlobals.KEY_USER_AGE) + " Years");
         weight.setText("Weight: " + AppGlobals.getStringFromSharedPreferences(AppGlobals.KEY_WEIGHT) + " kg");
         height.setText("Height: " + AppGlobals.getStringFromSharedPreferences(AppGlobals.KEY_HEIGHT) + " ft");
-
 
         concern.setTypeface(AppGlobals.typeface);
         existingDisease.setTypeface(AppGlobals.typeface);

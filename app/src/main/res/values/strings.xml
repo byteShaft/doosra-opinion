@@ -64,9 +64,11 @@
     <string name="about_us"><u>About Us</u></string>
     <string name="board_of_doctors"><u>Board of Doctors</u></string>
     <string name="processing_transaction">Processing Transaction</string>
-    <string name="offer_text">Actual price for opinion is 75$, we are offering 30$ as an introductory price. Paytm users can proceed thorough this contact number +919946371350</string>
+    <string name="offer_text">Actual price for opinion is 5000INR, we are offering 2000INR as an introductory price.</string>
     <string name="string_for_surgical">you can avail this option when you are concerned about Whether the advised surgery is actually needed or not.</string>
     <string name="string_for_treatment">You can go for this when there is a confusion regarding non-surgical treatment modalities like chemo-radio-Pharmaw – Laser – interventional- cardiological therapies. </string>
     <string name="string_for_diagnostic">Used when there is diagnostic dilemma that is a confusion regarding diagnosis or where there is no diagnostic consensus has been made.
-</string>
+
+    </string>
+    <string name="error_text">There was some error please try again.</string>
 </resources>
