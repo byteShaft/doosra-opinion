@@ -85,6 +85,7 @@ public class MedicalReports extends AppCompatActivity implements View.OnClickLis
     //paytm
     private int randomInt = 0;
     private PaytmPGService service = null;
+    String checksum = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -102,11 +103,11 @@ public class MedicalReports extends AppCompatActivity implements View.OnClickLis
         System.out.println("Id is...." + opinionTypeID + " history: " +
                 shortHistoryString + " concern " + concernString + " Disease: " + existingDiseaseString);
 
-        buttonMedical = (ImageButton) findViewById(R.id.button_medical);
-        buttonLabResult = (ImageButton) findViewById(R.id.button_lab_result);
-        buttonReport = (ImageButton) findViewById(R.id.button_report);
-        buttonOthers = (ImageButton) findViewById(R.id.button_others);
-        buttonSubmit = (Button) findViewById(R.id.button_submit);
+        buttonMedical = findViewById(R.id.button_medical);
+        buttonLabResult = findViewById(R.id.button_lab_result);
+        buttonReport = findViewById(R.id.button_report);
+        buttonOthers = findViewById(R.id.button_others);
+        buttonSubmit = findViewById(R.id.button_submit);
         buttonMedical.setOnClickListener(this);
         buttonLabResult.setOnClickListener(this);
         buttonReport.setOnClickListener(this);
@@ -114,33 +115,24 @@ public class MedicalReports extends AppCompatActivity implements View.OnClickLis
         buttonSubmit.setOnClickListener(this);
         Random randomGenerator = new Random();
         randomInt = randomGenerator.nextInt(1000000000);
-
-        service = PaytmPGService.getStagingService();
     }
 
-    private void doPayment() {
-        PaytmMerchant merchant = new PaytmMerchant(
-                "http://139.59.167.40/api/generatechecksum.cgi",
-                "http://139.59.167.40/api/verifychecksum.cgi");
-
+    private void doPayment(final int opinionID) {
+        service = PaytmPGService.getStagingService();
         //below parameter map is required to construct PaytmOrder object, Merchant should replace below map values with his own values
-
         Map<String, String> paramMap = new HashMap<>();
         //these are mandatory parameters
-        paramMap.put("ORDER_ID", "ORDER"+String.valueOf(randomInt));
+        paramMap.put("ORDER_ID", "ORDER" + randomInt);
         paramMap.put("MID", "JBRFoo44539086147111");
-        paramMap.put("EMAIL" , AppGlobals.getStringFromSharedPreferences(AppGlobals.KEY_EMAIL));
-        paramMap.put("MOBILE_NO" , "919722008882");
-        paramMap.put("CUST_ID", "CUST"+
-                AppGlobals.getStringFromSharedPreferences(AppGlobals.KEY_USER_ID));
+        paramMap.put("CUST_ID", "CUST" + AppGlobals.getStringFromSharedPreferences(AppGlobals.KEY_USER_ID));
         paramMap.put("CHANNEL_ID", "WAP");
         paramMap.put("INDUSTRY_TYPE_ID", "Retail");
-        paramMap.put("WEBSITE", "www.okkro.com");
-        paramMap.put("TXN_AMOUNT", "2");
-        paramMap.put("THEME", "merchant");
-
+        paramMap.put("WEBSITE", "APP_STAGING");
+        paramMap.put("TXN_AMOUNT", "10.00");
+        paramMap.put("CHECKSUMHASH", checksum);
+        paramMap.put("CALLBACK_URL", "https://pguat.paytm.com/paytmchecksum/paytmCallback.jsp");
         PaytmOrder order = new PaytmOrder(paramMap);
-        service.initialize(order, merchant, null);
+        service.initialize(order, null);
         service.enableLog(getApplicationContext());
         service.startPaymentTransaction(this, true, true,
                 new PaytmPaymentTransactionCallback() {
@@ -155,26 +147,64 @@ public class MedicalReports extends AppCompatActivity implements View.OnClickLis
 
                     }
 
-                    @Override
-                    public void onTransactionSuccess(Bundle inResponse) {
-                        // After successful transaction this method gets called.
-                        // // Response bundle contains the merchant response
-                        // parameters.
-                        Log.d("LOG", "Payment Transaction is successful " + inResponse);
-                        Toast.makeText(getApplicationContext(), "Payment Transaction is successful ", Toast.LENGTH_LONG).show();
-                    }
+//                    @Override
+//                    public void onTransactionSuccess(Bundle inResponse) {
+//                        // After successful transaction this method gets called.
+//                        // // Response bundle contains the merchant response
+//                        // parameters.
+//                        Log.d("LOG", "Payment Transaction is successful " + inResponse);
+//                        Toast.makeText(getApplicationContext(), "Payment Transaction is successful ", Toast.LENGTH_LONG).show();
+//                    }
+//
+//                    @Override
+//                    public void onTransactionFailure(String inErrorMessage,
+//                                                     Bundle inResponse) {
+//                        // This method gets called if transaction failed. //
+//                        // Here in this case transaction is completed, but with
+//                        // a failure. // Error Message describes the reason for
+//                        // failure. // Response bundle contains the merchant
+//                        // response parameters.
+//                        Log.d("LOG", "Payment Transaction Failed " + inErrorMessage);
+//                        Toast.makeText(getBaseContext(), "Payment Transaction Failed ", Toast.LENGTH_LONG).show();
+//                        recreate();
+//                    }
 
                     @Override
-                    public void onTransactionFailure(String inErrorMessage,
-                                                     Bundle inResponse) {
-                        // This method gets called if transaction failed. //
-                        // Here in this case transaction is completed, but with
-                        // a failure. // Error Message describes the reason for
-                        // failure. // Response bundle contains the merchant
-                        // response parameters.
-                        Log.d("LOG", "Payment Transaction Failed " + inErrorMessage);
-                        Toast.makeText(getBaseContext(), "Payment Transaction Failed ", Toast.LENGTH_LONG).show();
-                        recreate();
+                    public void onTransactionResponse(Bundle bundle) {
+                        Toast.makeText(MedicalReports.this, "Success!", Toast.LENGTH_SHORT).show();
+                        Log.i("TAG", "user id " + AppGlobals.getStringFromSharedPreferences(AppGlobals.KEY_USER_ID));
+                        Log.i("TAG", "------------------" + bundle.toString());
+                        currentOpinionId = 0;
+                        if (bundle.getString("STATUS").equals("TXN_SUCCESS")) {
+                            updateServerAboutPayment(opinionID);
+                            UserProfile.getInstance().finish();
+                            OpinionActivity.getInstance().finish();
+                            finish();
+                        } else {
+                            AlertDialog.Builder alertDialogBuilder =
+                                    new AlertDialog.Builder(MedicalReports.this);
+                            alertDialogBuilder.setTitle("Payment Failed!");
+                            alertDialogBuilder.setMessage(getResources().getString(R.string.error_text))
+                                    .setCancelable(false).setPositiveButton("Try again",
+                                    new DialogInterface.OnClickListener() {
+                                        public void onClick(DialogInterface dialog, int id) {
+                                            dialog.dismiss();
+                                            getCheckSum(opinionID);
+                                        }
+                                    });
+                            alertDialogBuilder.setNegativeButton("cancel", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
+                                    Snackbar.make(findViewById(android.R.id.content), "your request will be ignored", Snackbar.LENGTH_SHORT);
+
+                                }
+                            });
+                            AlertDialog alertDialog = alertDialogBuilder.create();
+                            alertDialog.show();
+                            Toast.makeText(MedicalReports.this, "there was some error", Toast.LENGTH_SHORT).show();
+                            recreate();
+                        }
+
                     }
 
                     @Override
@@ -212,29 +242,29 @@ public class MedicalReports extends AppCompatActivity implements View.OnClickLis
                         // TODO Auto-generated method stub
                     }
 
+                    @Override
+                    public void onTransactionCancel(String s, Bundle bundle) {
+
+                    }
+
                 });
     }
 
-    @Override
-    public boolean onSupportNavigateUp() {
-        onBackPressed();
-        return true;
-    }
-
-    private void getCheckSum() {
+    private void getCheckSum(final int opinionid) {
         HttpRequest request = new HttpRequest(getApplicationContext());
         request.setOnReadyStateChangeListener(new HttpRequest.OnReadyStateChangeListener() {
             @Override
             public void onReadyStateChange(HttpRequest request, int readyState) {
                 switch (readyState) {
                     case HttpRequest.STATE_DONE:
-                        Helpers.dismissProgressDialog();
                         switch (request.getStatus()) {
                             case HttpURLConnection.HTTP_OK:
+                                Log.i("TAG", request.getResponseURL());
                                 Log.i("TAG", request.getResponseText());
                                 try {
                                     JSONObject jsonObject = new JSONObject(request.getResponseText());
-
+                                    checksum = jsonObject.getString("CHECKSUMHASH");
+                                    doPayment(opinionid);
                                 } catch (JSONException e) {
                                     e.printStackTrace();
                                 }
@@ -248,10 +278,50 @@ public class MedicalReports extends AppCompatActivity implements View.OnClickLis
 
             }
         });
-        request.open("POST", String.format("%sgeneratechecksum.cgi", AppGlobals.BASE_URL));
+        String param="ORDER_ID=" +"ORDER" +randomInt+
+                "&MID=JBRFoo44539086147111"+
+                "&CUST_ID="+"CUST"+AppGlobals.getStringFromSharedPreferences(AppGlobals.KEY_USER_ID)+
+                "&CHANNEL_ID=WAP&INDUSTRY_TYPE_ID=Retail&WEBSITE=APP_STAGING&TXN_AMOUNT=10.00&CALLBACK_URL=https://pguat.paytm.com/paytmchecksum/paytmCallback.jsp";
+        System.out.println(param);
+        request.open("GET", "http://139.59.167.40/api/generatechecksum.cgi?"+param);
+        request.send();
+    }
+
+    private void updateServerAboutPayment(int opinionID) {
+        HttpRequest request = new HttpRequest(MedicalReports.this);
+        request.setOnReadyStateChangeListener(new HttpRequest.OnReadyStateChangeListener() {
+            @Override
+            public void onReadyStateChange(HttpRequest request, int readyState) {
+                switch (readyState) {
+                    case HttpRequest.STATE_DONE:
+                        switch (request.getStatus()) {
+                            case HttpURLConnection.HTTP_OK:
+                        }
+                }
+
+            }
+        });
+        request.setOnErrorListener(new HttpRequest.OnErrorListener() {
+            @Override
+            public void onError(HttpRequest request, int readyState, short error, Exception exception) {
+
+            }
+        });
+        request.open("POST", String.format("%spayments/pay", AppGlobals.BASE_URL));
         request.setRequestHeader("Authorization", "Token " +
                 AppGlobals.getStringFromSharedPreferences(AppGlobals.KEY_TOKEN));
-        request.send();
+        JSONObject jsonObject = new JSONObject();
+        try {
+            jsonObject.put("opinion", opinionID);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        request.send(jsonObject.toString());
+    }
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return true;
     }
 
     private void submitReport(String medicalFile,
@@ -293,7 +363,7 @@ public class MedicalReports extends AppCompatActivity implements View.OnClickLis
 //                        Helpers.alertDialog(MedicalReports.this,
 //                                "Request Submitted!", "Your Request has been submitted", null);
 //                        dialogForPayment();
-                        dialogForPayment();
+                        dialogForPayment(currentOpinionId);
                         break;
                 }
         }
@@ -304,7 +374,7 @@ public class MedicalReports extends AppCompatActivity implements View.OnClickLis
         Helpers.dismissProgressDialog();
     }
 
-    private void dialogForPayment() {
+    private void dialogForPayment(final int opinionid) {
         new android.os.Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -315,7 +385,7 @@ public class MedicalReports extends AppCompatActivity implements View.OnClickLis
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
                                 dialog.dismiss();
-                                doPayment();
+                                getCheckSum(opinionid);
                             }
                         });
                 alertDialogBuilder.setNegativeButton("cancel", new DialogInterface.OnClickListener() {

@@ -44,7 +44,7 @@ dependencies {
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
     compile 'com.braintreepayments.api:drop-in:3.1.0'
     compile 'com.google.android.gms:play-services-wallet:10.2.6'
-    compile files('libs/PGSDK_v1.0.jar')
+    compile files('libs/PGSDK_V2.1.jar')
 //    compile files("libs/checksum_2.0.0.jar")
 //    compile 'com.braintreepayments.api:braintree:2.+'
 //    compile 'com.squareup.retrofit:retrofit:1.9.0'

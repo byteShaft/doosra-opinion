@@ -12,6 +12,7 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -74,7 +75,7 @@ public class MainActivity extends AppCompatActivity
         headerView = navigationView.getHeaderView(0);
         TextView name = headerView.findViewById(R.id.name);
         TextView email = headerView.findViewById(R.id.email);
-
+        Log.i("TAG", "Token " + AppGlobals.getStringFromSharedPreferences(AppGlobals.KEY_TOKEN));
         userImage = headerView.findViewById(R.id.nav_imageView);
         name.setText(AppGlobals.getStringFromSharedPreferences(AppGlobals.KEY_FIRST_NAME) + " " +
                 AppGlobals.getStringFromSharedPreferences(AppGlobals.KEY_LAST_NAME));
