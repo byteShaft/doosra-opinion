@@ -52,7 +52,6 @@ public class OpinionActivity extends AppCompatActivity {
         listView = findViewById(R.id.opinion_list);
 
         opinionArrayList = new ArrayList<>();
-
         // set typeface
         motoLineOne.setTypeface(AppGlobals.typeface);
         motoLineTwo.setTypeface(AppGlobals.typeface);
