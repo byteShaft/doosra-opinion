@@ -48,17 +48,17 @@ public class MainActivity extends AppCompatActivity
 //        }
         sInstance = this;
         setContentView(R.layout.activity_main2);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         View headerView;
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.setDrawerListener(toggle);
         toggle.syncState();
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        NavigationView navigationView =  findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
         navigationView.getMenu().getItem(0).setChecked(true);
 
@@ -80,6 +80,9 @@ public class MainActivity extends AppCompatActivity
         name.setText(AppGlobals.getStringFromSharedPreferences(AppGlobals.KEY_FIRST_NAME) + " " +
                 AppGlobals.getStringFromSharedPreferences(AppGlobals.KEY_LAST_NAME));
         email.setText(AppGlobals.getStringFromSharedPreferences(AppGlobals.KEY_EMAIL));
+
+        name.setTypeface(AppGlobals.typeface);
+        email.setTypeface(AppGlobals.typeface);
 
         if (AppGlobals.isLogin() && AppGlobals.getStringFromSharedPreferences(AppGlobals.KEY_SERVER_IMAGE) != null) {
             String url = AppGlobals.getStringFromSharedPreferences(AppGlobals.KEY_SERVER_IMAGE);
