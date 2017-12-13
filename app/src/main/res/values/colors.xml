@@ -7,9 +7,12 @@
 
     <color name="green_button_color">#4ca64c</color>
     <color name="blue_button_color">#69d2f9</color>
-    <color name="text_color">#0026ca</color>
+    <color name="text_color">#288dd7</color>
 
     <color name="screen_background_color">#efefef</color>
     <color name="light_green">#54a954</color>
+    <color name="black_color">#242424</color>
 
+    <color name="blue_box_color">#97bff2</color>
+    <color name="green_box_color">#54a954</color>
 </resources>

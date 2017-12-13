@@ -8,14 +8,14 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
         android:gravity="center">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:gravity="center"
             android:orientation="vertical">
 
@@ -29,10 +29,15 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/logo"
-                android:layout_marginTop="10dp"
-                android:text="Doosra"
+                android:layout_marginTop="20dp"
+                android:text="D o o s r a "
+                android:shadowColor="@android:color/black"
+                android:shadowDx="-1"
+                android:shadowDy="-1"
+                android:shadowRadius="1"
+                android:textAllCaps="true"
                 android:textColor="@color/text_color"
-                android:textSize="30sp"
+                android:textSize="38sp"
                 android:textStyle="bold" />
 
             <TextView
@@ -41,9 +46,9 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:text="@string/splash_screen_txt"
-                android:textColor="@color/text_color"
-                android:textSize="20sp"
-                android:textStyle="bold" />
+                android:textAllCaps="true"
+                android:textColor="@android:color/black"
+                android:textSize="24sp" />
 
         </LinearLayout>
     </RelativeLayout>

@@ -33,7 +33,7 @@
                 android:layout_marginTop="10dp"
                 android:text="Medical Second"
                 android:textAllCaps="true"
-                android:textColor="@color/text_color"
+                android:textColor="@color/black_color"
                 android:textSize="20sp" />
 
             <TextView
@@ -44,7 +44,7 @@
                 android:layout_toRightOf="@+id/line_part_one"
                 android:text=" (Doosra)"
                 android:textAllCaps="true"
-                android:textColor="@color/text_color"
+                android:textColor="@color/black_color"
                 android:textSize="20sp"
                 android:textStyle="bold" />
 
@@ -57,7 +57,7 @@
             android:layout_marginTop="10dp"
             android:text="Opinion At Your Finger"
             android:textAllCaps="true"
-            android:textColor="@color/text_color"
+            android:textColor="@color/black_color"
             android:textSize="20sp" />
     </LinearLayout>
 
@@ -81,8 +81,7 @@
                 android:layout_height="130dp"
                 android:text="How it Works"
                 android:textAllCaps="false"
-                android:textSize="12sp"
-                android:textStyle="bold"
+                android:textSize="16sp"
                 android:theme="@style/ButtonGreen" />
 
             <Button
@@ -91,8 +90,7 @@
                 android:layout_height="130dp"
                 android:text="About Us"
                 android:textAllCaps="false"
-                android:textSize="12sp"
-                android:textStyle="bold"
+                android:textSize="16sp"
                 android:theme="@style/MyButton" />
 
         </LinearLayout>
@@ -107,12 +105,10 @@
                 android:id="@+id/button_board_of_doctors"
                 android:layout_width="130dp"
                 android:layout_height="130dp"
-                android:backgroundTint="@color/blue_button_color"
                 android:text="Board of Doctors"
                 android:textAllCaps="false"
-                android:textColor="@android:color/white"
-                android:textSize="12sp"
-                android:textStyle="bold" />
+                android:textSize="16sp"
+                android:theme="@style/MyButton" />
 
             <Button
                 android:id="@+id/button_get_a_second_opinion"
@@ -120,8 +116,7 @@
                 android:layout_height="130dp"
                 android:text="Get a Second opinion"
                 android:textAllCaps="false"
-                android:textSize="18sp"
-                android:textStyle="bold"
+                android:textSize="16sp"
                 android:theme="@style/ButtonGreen" />
         </LinearLayout>
 

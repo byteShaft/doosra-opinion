@@ -46,17 +46,17 @@ public class OpinionActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         sInstance = this;
         setContentView(R.layout.activity_opinion);
-        tvAppName = (TextView) findViewById(R.id.app_name_doosra);
-        motoLineOne = (TextView) findViewById(R.id.text_line_one);
-        motoLineTwo = (TextView) findViewById(R.id.text_line_two);
-        listView = (ListView) findViewById(R.id.opinion_list);
+        tvAppName = findViewById(R.id.app_name_doosra);
+        motoLineOne = findViewById(R.id.text_line_one);
+        motoLineTwo = findViewById(R.id.text_line_two);
+        listView = findViewById(R.id.opinion_list);
 
         opinionArrayList = new ArrayList<>();
 
         // set typeface
         motoLineOne.setTypeface(AppGlobals.typeface);
         motoLineTwo.setTypeface(AppGlobals.typeface);
-        tvAppName.setTypeface(AppGlobals.typefaceForHeading);
+        tvAppName.setTypeface(AppGlobals.typeface);
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
