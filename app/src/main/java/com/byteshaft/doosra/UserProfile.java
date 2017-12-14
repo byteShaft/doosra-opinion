@@ -45,12 +45,12 @@ public class UserProfile extends AppCompatActivity {
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
         userImage = findViewById(R.id.user_image);
-        shortHistory =  findViewById(R.id.short_history_edit_text);
-        existingDisease =  findViewById(R.id.disease_details_edit_text);
-        concern =  findViewById(R.id.concerns_details_edit_text);
-        buttonNext =  findViewById(R.id.button_next);
-        fullName =  findViewById(R.id.tv_name);
-        age =  findViewById(R.id.tv_age);
+        shortHistory = findViewById(R.id.short_history_edit_text);
+        existingDisease = findViewById(R.id.disease_details_edit_text);
+        concern = findViewById(R.id.concerns_details_edit_text);
+        buttonNext = findViewById(R.id.button_next);
+        fullName = findViewById(R.id.tv_name);
+        age = findViewById(R.id.tv_age);
         weight = findViewById(R.id.tv_weight);
         height = findViewById(R.id.tv_height);
         opinionByType = findViewById(R.id.text_by_opinion_type);
@@ -60,8 +60,8 @@ public class UserProfile extends AppCompatActivity {
                 AppGlobals.getStringFromSharedPreferences(AppGlobals.KEY_LAST_NAME));
 
         age.setText("Age: " + AppGlobals.getStringFromSharedPreferences(AppGlobals.KEY_USER_AGE) + " Years");
-        weight.setText("Weight: " + AppGlobals.getStringFromSharedPreferences(AppGlobals.KEY_WEIGHT) + " kg");
-        height.setText("Height: " + AppGlobals.getStringFromSharedPreferences(AppGlobals.KEY_HEIGHT) + " ft");
+        weight.setText("Weight:" + AppGlobals.getStringFromSharedPreferences(AppGlobals.KEY_WEIGHT) + " kg");
+        height.setText("Height:" + AppGlobals.getStringFromSharedPreferences(AppGlobals.KEY_HEIGHT) + " ft");
 
         concern.setTypeface(AppGlobals.typeface);
         existingDisease.setTypeface(AppGlobals.typeface);
@@ -104,7 +104,8 @@ public class UserProfile extends AppCompatActivity {
                 return getResources().getString(R.string.string_for_treatment);
             case "Diagnostic opinion":
                 return getResources().getString(R.string.string_for_diagnostic);
-            default: return "";
+            default:
+                return "";
         }
     }
 

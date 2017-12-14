@@ -27,7 +27,6 @@ import com.byteshaft.requests.FormData;
 import com.byteshaft.requests.HttpRequest;
 import com.nbsp.materialfilepicker.MaterialFilePicker;
 import com.nbsp.materialfilepicker.ui.FilePickerActivity;
-import com.paytm.pgsdk.PaytmMerchant;
 import com.paytm.pgsdk.PaytmOrder;
 import com.paytm.pgsdk.PaytmPGService;
 import com.paytm.pgsdk.PaytmPaymentTransactionCallback;
@@ -278,12 +277,12 @@ public class MedicalReports extends AppCompatActivity implements View.OnClickLis
 
             }
         });
-        String param="ORDER_ID=" +"ORDER" +randomInt+
-                "&MID=JBRFoo44539086147111"+
-                "&CUST_ID="+"CUST"+AppGlobals.getStringFromSharedPreferences(AppGlobals.KEY_USER_ID)+
+        String param = "ORDER_ID=" + "ORDER" + randomInt +
+                "&MID=JBRFoo44539086147111" +
+                "&CUST_ID=" + "CUST" + AppGlobals.getStringFromSharedPreferences(AppGlobals.KEY_USER_ID) +
                 "&CHANNEL_ID=WAP&INDUSTRY_TYPE_ID=Retail&WEBSITE=APP_STAGING&TXN_AMOUNT=10.00&CALLBACK_URL=https://pguat.paytm.com/paytmchecksum/paytmCallback.jsp";
         System.out.println(param);
-        request.open("GET", "http://139.59.167.40/api/generatechecksum.cgi?"+param);
+        request.open("GET", "http://139.59.167.40/api/generatechecksum.cgi?" + param);
         request.send();
     }
 
@@ -318,6 +317,7 @@ public class MedicalReports extends AppCompatActivity implements View.OnClickLis
         }
         request.send(jsonObject.toString());
     }
+
     @Override
     public boolean onSupportNavigateUp() {
         onBackPressed();
@@ -363,10 +363,16 @@ public class MedicalReports extends AppCompatActivity implements View.OnClickLis
 //                        Helpers.alertDialog(MedicalReports.this,
 //                                "Request Submitted!", "Your Request has been submitted", null);
 //                        dialogForPayment();
-                        dialogForPayment(currentOpinionId);
+                        dialogForPayment();
                         break;
                 }
         }
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        finish();
     }
 
     @Override
@@ -374,27 +380,30 @@ public class MedicalReports extends AppCompatActivity implements View.OnClickLis
         Helpers.dismissProgressDialog();
     }
 
-    private void dialogForPayment(final int opinionid) {
+    private void dialogForPayment() {
         new android.os.Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
                 AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(MedicalReports.this);
                 alertDialogBuilder.setTitle("Request Submitted");
-                alertDialogBuilder.setMessage(getResources().getString(R.string.offer_text))
-                        .setCancelable(false).setPositiveButton("Pay",
+                alertDialogBuilder.setMessage(getResources().getString(R.string.offer_text_paytm))
+                        .setCancelable(false).setPositiveButton("OK",
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
                                 dialog.dismiss();
-                                getCheckSum(opinionid);
+                                startActivity(new Intent(MedicalReports.this, MainActivity.class));
+                                finish();
+
+//                                getCheckSum(opinionid);
                             }
                         });
-                alertDialogBuilder.setNegativeButton("cancel", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        Snackbar.make(findViewById(android.R.id.content), "your request will be ignored", Snackbar.LENGTH_SHORT);
-
-                    }
-                });
+//                alertDialogBuilder.setNegativeButton("cancel", new DialogInterface.OnClickListener() {
+//                    @Override
+//                    public void onClick(DialogInterface dialogInterface, int i) {
+//                        Snackbar.make(findViewById(android.R.id.content), "your request will be ignored", Snackbar.LENGTH_SHORT);
+//
+//                    }
+//                });
                 AlertDialog alertDialog = alertDialogBuilder.create();
                 alertDialog.show();
             }
@@ -524,7 +533,7 @@ public class MedicalReports extends AppCompatActivity implements View.OnClickLis
         } else if (requestCode == OTHER_CODE && resultCode == RESULT_OK) {
             otherFileUri = data.getStringExtra(FilePickerActivity.RESULT_FILE_PATH);
             buttonOthers.setBackgroundDrawable(ContextCompat.getDrawable(AppGlobals.getContext(), R.drawable.ic_uploaded));
-        } else    if (requestCode == 101) {
+        } else if (requestCode == 101) {
             if (resultCode == Activity.RESULT_OK) {
 //                DropInResult result = data.getParcelableExtra(DropInResult.EXTRA_DROP_IN_RESULT);
 //                if (result.getPaymentMethodNonce() instanceof PayPalAccountNonce) {
@@ -545,13 +554,13 @@ public class MedicalReports extends AppCompatActivity implements View.OnClickLis
                 String paymentMethodNonce = result.getPaymentMethodNonce().getNonce();
                 // send paymentMethodNonce to your server
                 sendRequestToDoPayment(currentOpinionId, paymentMethodNonce);
-                Log.i("paymentMethodNonce" , paymentMethodNonce);
+                Log.i("paymentMethodNonce", paymentMethodNonce);
             } else if (resultCode == Activity.RESULT_CANCELED) {
                 // canceled
             } else {
                 // an error occurred, checked the returned exception
                 Exception exception = (Exception) data.getSerializableExtra(DropInActivity.EXTRA_ERROR);
-                Log.i("exception" , exception.getMessage());
+                Log.i("exception", exception.getMessage());
                 exception.printStackTrace();
             }
         }

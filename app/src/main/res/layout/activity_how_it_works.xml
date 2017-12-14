@@ -31,7 +31,6 @@
         android:scrollbars="vertical"
         android:text=""
         android:textAlignment="gravity"
-        android:textColor="@android:color/black"
-        android:textSize="20sp" />
+        android:textColor="@android:color/black" />
 
 </RelativeLayout>

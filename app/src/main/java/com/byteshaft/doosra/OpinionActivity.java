@@ -27,7 +27,7 @@ import java.util.ArrayList;
 
 public class OpinionActivity extends AppCompatActivity {
 
-    private static OpinionActivity sInstance;
+    public static OpinionActivity sInstance;
 
     public static OpinionActivity getInstance() {
         return sInstance;
