@@ -13,11 +13,11 @@ import com.byteshaft.doosra.utils.Helpers;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class UserProfile extends AppCompatActivity {
+public class GetOpinionDetailsActivity extends AppCompatActivity {
 
-    private static UserProfile sInstance;
+    private static GetOpinionDetailsActivity sInstance;
 
-    public static UserProfile getInstance() {
+    public static GetOpinionDetailsActivity getInstance() {
         return sInstance;
     }
 
@@ -38,7 +38,7 @@ public class UserProfile extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         sInstance = this;
 
-        setContentView(R.layout.activity_user_profile);
+        setContentView(R.layout.activity_get_opinion_details);
         opinionTypeID = getIntent().getIntExtra("id", 0);
         String opinionName = getIntent().getStringExtra("name");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -80,7 +80,7 @@ public class UserProfile extends AppCompatActivity {
                 String existingDiseaseString = existingDisease.getText().toString();
                 String concernString = concern.getText().toString();
 
-                Intent intent = new Intent(UserProfile.this, MedicalReports.class);
+                Intent intent = new Intent(GetOpinionDetailsActivity.this, MedicalReports.class);
                 intent.putExtra("id", opinionTypeID);
                 intent.putExtra("short_history", shortHistoryString);
                 intent.putExtra("existing_disease", existingDiseaseString);

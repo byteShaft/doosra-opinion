@@ -176,7 +176,7 @@ public class MedicalReports extends AppCompatActivity implements View.OnClickLis
                         currentOpinionId = 0;
                         if (bundle.getString("STATUS").equals("TXN_SUCCESS")) {
                             updateServerAboutPayment(opinionID);
-                            UserProfile.getInstance().finish();
+                            GetOpinionDetailsActivity.getInstance().finish();
                             OpinionActivity.getInstance().finish();
                             finish();
                         } else {

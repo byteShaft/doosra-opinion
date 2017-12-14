@@ -69,7 +69,7 @@ public class OpinionActivity extends AppCompatActivity {
                                 public void onClick(DialogInterface dialog, int id) {
                                     dialog.dismiss();
                                     DiagnosisOpinion opinion = opinionArrayList.get(position);
-                                    Intent intent = new Intent(OpinionActivity.this, UserProfile.class);
+                                    Intent intent = new Intent(OpinionActivity.this, GetOpinionDetailsActivity.class);
                                     intent.putExtra("name", opinion.getOpinionName());
                                     intent.putExtra("id", opinion.getId());
                                     startActivity(intent);
