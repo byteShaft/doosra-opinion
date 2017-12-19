@@ -1,96 +1,102 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content">
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:background="@color/screen_background_color">
 
-        <LinearLayout
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:id="@+id/buttons_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:padding="10dp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="Medical Summary"
+                    android:textSize="20sp" />
+
+                <ImageButton
+                    android:id="@+id/button_medical"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/ic_upload"
+                    android:text="+ Upload" />
+
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:gravity="center"
+                    android:text="Lab Result"
+                    android:textSize="20sp" />
+
+                <ImageButton
+                    android:id="@+id/button_lab_result"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/ic_upload"
+                    android:text="+ Upload" />
+
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:gravity="center"
+                    android:text="X-Rays/Scan Reports/Images"
+                    android:textSize="20sp" />
+
+                <ImageButton
+                    android:id="@+id/button_report"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/ic_upload"
+                    android:text="+ Upload" />
+
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:gravity="center"
+                    android:text="Others Reports"
+                    android:textSize="20sp" />
+
+                <ImageButton
+                    android:id="@+id/button_others"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/ic_upload"
+                    android:text="+ Upload" />
+
+            </LinearLayout>
+        </ScrollView>
+
+        <Button
+            android:id="@+id/button_submit"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:layout_centerVertical="true"
-            android:padding="10dp"
-            android:gravity="center"
-            android:orientation="vertical">
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:text="Medical Summary"
-                android:textSize="20sp" />
-
-            <ImageButton
-                android:id="@+id/button_medical"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:layout_marginTop="10dp"
-                android:background="@drawable/ic_upload"
-                android:text="+ Upload" />
-
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:gravity="center"
-                android:text="Lab Result"
-                android:textSize="20sp" />
-
-            <ImageButton
-                android:id="@+id/button_lab_result"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:layout_marginTop="10dp"
-                android:background="@drawable/ic_upload"
-                android:text="+ Upload" />
-
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:gravity="center"
-                android:text="X-Rays/Scan Reports/Images"
-                android:textSize="20sp" />
-
-            <ImageButton
-                android:id="@+id/button_report"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:layout_marginTop="10dp"
-                android:background="@drawable/ic_upload"
-                android:text="+ Upload" />
-
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:gravity="center"
-                android:text="Others Reports"
-                android:textSize="20sp" />
-
-            <ImageButton
-                android:id="@+id/button_others"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:layout_marginTop="10dp"
-                android:background="@drawable/ic_upload"
-                android:text="+ Upload" />
-
-            <Button
-                android:id="@+id/button_submit"
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:layout_alignParentBottom="true"
-                android:text="Submit"
-                android:textAllCaps="true"
-                android:theme="@style/MyButton" />
-        </LinearLayout>
+            android:layout_alignParentBottom="true"
+            android:text="Submit"
+            android:textAllCaps="true"
+            android:theme="@style/MyButton" />
     </RelativeLayout>
-</ScrollView>
+</RelativeLayout>

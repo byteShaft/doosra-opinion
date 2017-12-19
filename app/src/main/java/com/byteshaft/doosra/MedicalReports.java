@@ -20,7 +20,6 @@ import android.widget.ImageButton;
 import android.widget.Toast;
 
 import com.braintreepayments.api.dropin.DropInActivity;
-import com.braintreepayments.api.dropin.DropInResult;
 import com.byteshaft.doosra.utils.AppGlobals;
 import com.byteshaft.doosra.utils.Helpers;
 import com.byteshaft.requests.FormData;
@@ -370,12 +369,6 @@ public class MedicalReports extends AppCompatActivity implements View.OnClickLis
     }
 
     @Override
-    protected void onPause() {
-        super.onPause();
-        finish();
-    }
-
-    @Override
     public void onError(HttpRequest request, int readyState, short error, Exception exception) {
         Helpers.dismissProgressDialog();
     }
@@ -551,11 +544,11 @@ public class MedicalReports extends AppCompatActivity implements View.OnClickLis
 //                    PostalAddress shippingAddress = payPalAccountNonce.getShippingAddress();
 //                    Log.i("email" , email);
 //                }
-                DropInResult result = data.getParcelableExtra(DropInResult.EXTRA_DROP_IN_RESULT);
-                String paymentMethodNonce = result.getPaymentMethodNonce().getNonce();
-                // send paymentMethodNonce to your server
-                sendRequestToDoPayment(currentOpinionId, paymentMethodNonce);
-                Log.i("paymentMethodNonce", paymentMethodNonce);
+//                DropInResult result = data.getParcelableExtra(DropInResult.EXTRA_DROP_IN_RESULT);
+//                String paymentMethodNonce = result.getPaymentMethodNonce().getNonce();
+//                // send paymentMethodNonce to your server
+//                sendRequestToDoPayment(currentOpinionId, paymentMethodNonce);
+//                Log.i("paymentMethodNonce", paymentMethodNonce);
             } else if (resultCode == Activity.RESULT_CANCELED) {
                 // canceled
             } else {
