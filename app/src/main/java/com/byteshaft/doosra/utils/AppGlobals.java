@@ -29,6 +29,7 @@ public class AppGlobals extends Application {
 
     private static final String IS_FIRST_TIME_LAUNCH = "IsFirstTimeLaunch";
     private static Context sContext;
+    public static Typeface typefaceSecondary;
     public static Typeface typeface;
     public static Typeface typefaceForHeading;
     public static final String SERVER_IP = "http://139.59.167.40";
@@ -45,7 +46,7 @@ public class AppGlobals extends Application {
     public static final String KEY_LOGIN = "login";
     public static final String KEY_EMAIL = "email";
     public static final String KEY_USER_ID = "id";
-    public static final String KEY_TOKEN = "token"; 
+    public static final String KEY_TOKEN = "token";
     public static ImageLoader sImageLoader;
     
 
@@ -55,8 +56,9 @@ public class AppGlobals extends Application {
         sImageLoader = ImageLoader.getInstance();
         sImageLoader.init(ImageLoaderConfiguration.createDefault(getApplicationContext()));
         sContext = getApplicationContext();
+        typefaceSecondary = Typeface.createFromAsset(getApplicationContext().getAssets(), "fonts/EngraversGothicBT.ttf");
         typefaceForHeading = Typeface.createFromAsset(getApplicationContext().getAssets(), "fonts/pixchrome.ttf");
-        typeface = Typeface.createFromAsset(getApplicationContext().getAssets(), "fonts/forApp.ttf");
+        typeface = Typeface.createFromAsset(getApplicationContext().getAssets(), "fonts/EngraversGothicBT.ttf");
     }
 
     public static void loginState(boolean type) {

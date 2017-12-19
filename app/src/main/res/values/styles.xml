@@ -9,12 +9,12 @@
     </style>
 
     <style name="MyButton" parent="Widget.AppCompat.Button.Colored">
-        <item name="colorButtonNormal">@color/blue_button_color</item>
+        <item name="colorButtonNormal">@color/blue_box_color</item>
         <item name="android:textColor">@android:color/white</item>
     </style>
 
     <style name="ButtonGreen" parent="Widget.AppCompat.Button.Colored">
-        <item name="colorButtonNormal">@color/green_button_color</item>
+        <item name="colorButtonNormal">@color/green_box_color</item>
         <item name="android:textColor">@android:color/white</item>
     </style>
 

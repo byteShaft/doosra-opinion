@@ -43,19 +43,19 @@ public class Dashboard extends Fragment implements View.OnClickListener {
         lineTwo = mBaseView.findViewById(R.id.line_part_two);
         appName = mBaseView.findViewById(R.id.app_name_doosra);
 
-        lineOne.setTypeface(AppGlobals.typeface);
-        lineTwo.setTypeface(AppGlobals.typeface);
-        appName.setTypeface(AppGlobals.typeface);
+        lineOne.setTypeface(AppGlobals.typefaceSecondary);
+        lineTwo.setTypeface(AppGlobals.typefaceSecondary);
+        appName.setTypeface(AppGlobals.typefaceSecondary);
 
         buttonHowItWorks = mBaseView.findViewById(R.id.button_how_it_works);
         buttonAboutUs = mBaseView.findViewById(R.id.button_about_us);
         buttonBoD = mBaseView.findViewById(R.id.button_board_of_doctors);
         buttonGetSecOpinion = mBaseView.findViewById(R.id.button_get_a_second_opinion);
 
-        buttonHowItWorks.setTypeface(AppGlobals.typeface);
-        buttonAboutUs.setTypeface(AppGlobals.typeface);
-        buttonBoD.setTypeface(AppGlobals.typeface);
-        buttonGetSecOpinion.setTypeface(AppGlobals.typeface);
+        buttonHowItWorks.setTypeface(AppGlobals.typefaceSecondary);
+        buttonAboutUs.setTypeface(AppGlobals.typefaceSecondary);
+        buttonBoD.setTypeface(AppGlobals.typefaceSecondary);
+        buttonGetSecOpinion.setTypeface(AppGlobals.typefaceSecondary);
 
         buttonHowItWorks.setOnClickListener(this);
         buttonAboutUs.setOnClickListener(this);

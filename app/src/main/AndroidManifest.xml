@@ -28,7 +28,7 @@
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen" />
         <activity android:name=".accounts.AccountManager" />
-        <activity android:name=".UserProfile" />
+        <activity android:name=".GetOpinionDetailsActivity" />
         <activity android:name=".MedicalReports" />
 
         <activity

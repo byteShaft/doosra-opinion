@@ -32,7 +32,7 @@
                 android:layout_marginTop="10dp"
                 android:text="Medical Second"
                 android:textAllCaps="true"
-                android:textColor="@color/text_color"
+                android:textColor="@color/black_color"
                 android:textSize="20sp" />
 
             <TextView
@@ -43,7 +43,7 @@
                 android:layout_toRightOf="@+id/text_line_one"
                 android:text=" (Doosra)"
                 android:textAllCaps="true"
-                android:textColor="@color/text_color"
+                android:textColor="@color/black_color"
                 android:textSize="20sp"
                 android:textStyle="bold" />
 
@@ -56,7 +56,7 @@
             android:layout_marginTop="10dp"
             android:text="Opinion At Your Finger"
             android:textAllCaps="true"
-            android:textColor="@color/text_color"
+            android:textColor="@color/black_color"
             android:textSize="20sp" />
     </LinearLayout>
 

@@ -27,7 +27,7 @@ import java.util.ArrayList;
 
 public class OpinionActivity extends AppCompatActivity {
 
-    private static OpinionActivity sInstance;
+    public static OpinionActivity sInstance;
 
     public static OpinionActivity getInstance() {
         return sInstance;
@@ -46,17 +46,16 @@ public class OpinionActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         sInstance = this;
         setContentView(R.layout.activity_opinion);
-        tvAppName = (TextView) findViewById(R.id.app_name_doosra);
-        motoLineOne = (TextView) findViewById(R.id.text_line_one);
-        motoLineTwo = (TextView) findViewById(R.id.text_line_two);
-        listView = (ListView) findViewById(R.id.opinion_list);
+        tvAppName = findViewById(R.id.app_name_doosra);
+        motoLineOne = findViewById(R.id.text_line_one);
+        motoLineTwo = findViewById(R.id.text_line_two);
+        listView = findViewById(R.id.opinion_list);
 
         opinionArrayList = new ArrayList<>();
-
         // set typeface
         motoLineOne.setTypeface(AppGlobals.typeface);
         motoLineTwo.setTypeface(AppGlobals.typeface);
-        tvAppName.setTypeface(AppGlobals.typefaceForHeading);
+        tvAppName.setTypeface(AppGlobals.typeface);
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -70,7 +69,7 @@ public class OpinionActivity extends AppCompatActivity {
                                 public void onClick(DialogInterface dialog, int id) {
                                     dialog.dismiss();
                                     DiagnosisOpinion opinion = opinionArrayList.get(position);
-                                    Intent intent = new Intent(OpinionActivity.this, UserProfile.class);
+                                    Intent intent = new Intent(OpinionActivity.this, GetOpinionDetailsActivity.class);
                                     intent.putExtra("name", opinion.getOpinionName());
                                     intent.putExtra("id", opinion.getId());
                                     startActivity(intent);

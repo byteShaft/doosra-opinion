@@ -21,7 +21,7 @@ public class SplashScreen extends Activity {
         des = findViewById(R.id.app_name_des);
 
         logo.setTypeface(AppGlobals.typefaceForHeading);
-        des.setTypeface(AppGlobals.typeface);
+        des.setTypeface(AppGlobals.typefaceSecondary);
 
         new Handler().postDelayed(new Runnable() {
             @Override

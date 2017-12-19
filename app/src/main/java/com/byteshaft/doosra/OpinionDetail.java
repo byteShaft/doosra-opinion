@@ -11,6 +11,10 @@ import com.byteshaft.doosra.utils.AppGlobals;
 
 public class OpinionDetail extends AppCompatActivity implements View.OnClickListener {
 
+    public static OpinionDetail sInstance;
+    public static OpinionDetail getInstance() {
+        return sInstance;
+    }
     private TextView tvName;
     //    private TextView tvType;
     private TextView tvW;
@@ -23,7 +27,6 @@ public class OpinionDetail extends AppCompatActivity implements View.OnClickList
     private TextView tvShortHistoryText;
     private TextView tvDisease;
     private TextView tvDiseaseText;
-
 
     private String opinionType;
     private String userName;
@@ -42,11 +45,12 @@ public class OpinionDetail extends AppCompatActivity implements View.OnClickList
     private Button xrayFileButton;
     private Button otherFileButton;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        sInstance = this;
         setContentView(R.layout.activity_opinion_detail);
-
         opinionType = getIntent().getStringExtra("type_name");
         setTitle(opinionType);
 
@@ -63,10 +67,10 @@ public class OpinionDetail extends AppCompatActivity implements View.OnClickList
         medicalFile = getIntent().getStringExtra("medical_file");
 
 
-        medicalFileButton = (Button) findViewById(R.id.medical_summary);
-        labFileButton = (Button) findViewById(R.id.lab_result_button);
-        xrayFileButton = (Button) findViewById(R.id.xray_button);
-        otherFileButton = (Button) findViewById(R.id.other_button);
+        medicalFileButton = findViewById(R.id.medical_summary);
+        labFileButton = findViewById(R.id.lab_result_button);
+        xrayFileButton = findViewById(R.id.xray_button);
+        otherFileButton = findViewById(R.id.other_button);
 
         if (xrayFile.contains("null")) {
             xrayFileButton.setVisibility(View.GONE);
@@ -86,18 +90,18 @@ public class OpinionDetail extends AppCompatActivity implements View.OnClickList
         xrayFileButton.setOnClickListener(this);
         otherFileButton.setOnClickListener(this);
 
-        tvName = (TextView) findViewById(R.id.tv_name);
+        tvName = findViewById(R.id.tv_name);
 //        tvType = (TextView) findViewById(R.id.tv_type);
-        tvW = (TextView) findViewById(R.id.tv_w);
-        tvWeight = (TextView) findViewById(R.id.weigh_);
-        tvH = (TextView) findViewById(R.id.tv_h);
-        tvHeight = (TextView) findViewById(R.id.height_);
-        tvConcern = (TextView) findViewById(R.id.tv_concern);
-        tvConcernText = (TextView) findViewById(R.id.concern_);
-        tvShortHistory = (TextView) findViewById(R.id.tv_history);
-        tvShortHistoryText = (TextView) findViewById(R.id.history_);
-        tvDisease = (TextView) findViewById(R.id.tv_disease);
-        tvDiseaseText = (TextView) findViewById(R.id.disease_);
+        tvW = findViewById(R.id.tv_w);
+        tvWeight = findViewById(R.id.weigh_);
+        tvH = findViewById(R.id.tv_h);
+        tvHeight = findViewById(R.id.height_);
+        tvConcern = findViewById(R.id.tv_concern);
+        tvConcernText = findViewById(R.id.concern_);
+        tvShortHistory = findViewById(R.id.tv_history);
+        tvShortHistoryText = findViewById(R.id.history_);
+        tvDisease = findViewById(R.id.tv_disease);
+        tvDiseaseText = findViewById(R.id.disease_);
 
         tvName.setText(userName);
 //        tvType.setText(opinionType);
