@@ -391,7 +391,8 @@ public class MedicalReports extends AppCompatActivity implements View.OnClickLis
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
                                 dialog.dismiss();
-                                startActivity(new Intent(MedicalReports.this, MainActivity.class));
+                                GetOpinionDetailsActivity.getInstance().finish();
+                                OpinionActivity.getInstance().finish();
                                 finish();
 
 //                                getCheckSum(opinionid);
