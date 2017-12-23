@@ -78,14 +78,14 @@ public class Helpers {
             DisplayImageOptions options;
             options = new DisplayImageOptions.Builder()
                     .showImageOnFail(R.mipmap.ic_launcher)
-                    .showImageOnLoading(R.drawable.ic_user_placeholder)
+                    .showImageOnLoading(R.mipmap.ic_launcher)
                     .imageScaleType(ImageScaleType.IN_SAMPLE_INT)
                     .cacheInMemory(false)
                     .cacheOnDisc(false).considerExifParams(true).build();
             animateFirstListener = new AnimateFirstDisplayListener();
             sImageLoader.displayImage(url, circleImageView, options, animateFirstListener);
         } else {
-            circleImageView.setImageResource(R.drawable.ic_user_placeholder);
+            circleImageView.setImageResource(R.mipmap.ic_launcher);
         }
     }
 
