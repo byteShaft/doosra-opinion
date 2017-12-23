@@ -67,7 +67,11 @@ public class MainActivity extends AppCompatActivity
         if (AppGlobals.isLogin()) {
             login_logout.setTitle("Logout");
             login_logout.setIcon(getResources().getDrawable(R.drawable.ic_logout));
+            menu.findItem(R.id.nav_history).setVisible(true);
+            menu.findItem(R.id.nav_edit_save).setVisible(true);
         } else {
+            menu.findItem(R.id.nav_history).setVisible(false);
+            menu.findItem(R.id.nav_edit_save).setVisible(false);
             login_logout.setTitle("Login");
             login_logout.setIcon(getResources().getDrawable(R.drawable.ic_login));
         }
