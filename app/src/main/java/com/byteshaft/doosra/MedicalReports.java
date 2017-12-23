@@ -17,6 +17,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.braintreepayments.api.dropin.DropInActivity;
@@ -62,6 +63,11 @@ public class MedicalReports extends AppCompatActivity implements View.OnClickLis
     private ImageButton buttonOthers;
     private Button buttonSubmit;
 
+    private TextView tvMedical;
+    private TextView tvLab;
+    private TextView tvXray;
+    private TextView tvOther;
+
     private HttpRequest request;
 
     private String medicalFileUri;
@@ -101,6 +107,16 @@ public class MedicalReports extends AppCompatActivity implements View.OnClickLis
         System.out.println("Id is...." + opinionTypeID + " history: " +
                 shortHistoryString + " concern " + concernString + " Disease: " + existingDiseaseString);
 
+        tvLab = findViewById(R.id.tv_lab);
+        tvMedical = findViewById(R.id.tv_medical);
+        tvXray = findViewById(R.id.tv_xray);
+        tvOther = findViewById(R.id.tv_others);
+
+        tvLab.setTypeface(AppGlobals.typeface);
+        tvMedical.setTypeface(AppGlobals.typeface);
+        tvXray.setTypeface(AppGlobals.typeface);
+        tvOther.setTypeface(AppGlobals.typeface);
+        buttonSubmit.setTypeface(AppGlobals.typeface);
         buttonMedical = findViewById(R.id.button_medical);
         buttonLabResult = findViewById(R.id.button_lab_result);
         buttonReport = findViewById(R.id.button_report);

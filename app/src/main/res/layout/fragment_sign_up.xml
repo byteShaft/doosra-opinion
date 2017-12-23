@@ -178,7 +178,7 @@
                         android:layout_height="wrap_content"
                         android:hint="Weight (kg)"
                         android:inputType="numberDecimal"
-                        android:maxLength="4" />
+                        android:maxLength="3" />
                 </android.support.design.widget.TextInputLayout>
             </RelativeLayout>
         </LinearLayout>

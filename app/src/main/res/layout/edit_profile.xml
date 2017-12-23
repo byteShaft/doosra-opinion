@@ -154,8 +154,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="Height (ft)"
-                        android:inputType="number"
-                        android:maxLength="3" />
+                        android:inputType="numberDecimal"
+                        android:maxLength="5" />
                 </android.support.design.widget.TextInputLayout>
 
             </RelativeLayout>
