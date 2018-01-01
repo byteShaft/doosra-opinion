@@ -61,7 +61,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:text="Opinion At Your Finger"
+                android:text="@string/opinion_at_your_fingertips"
                 android:textAllCaps="true"
                 android:textColor="@color/black_color"
                 android:textSize="20sp" />
@@ -89,7 +89,7 @@
                     android:layout_height="130dp"
                     android:text="How it Works"
                     android:textAllCaps="false"
-                    android:textSize="16sp"
+                    android:textSize="18sp"
                     android:theme="@style/ButtonGreen" />
 
                 <Button
@@ -98,7 +98,7 @@
                     android:layout_height="130dp"
                     android:text="About Us"
                     android:textAllCaps="false"
-                    android:textSize="16sp"
+                    android:textSize="18sp"
                     android:theme="@style/MyButton" />
 
             </LinearLayout>
@@ -115,7 +115,7 @@
                     android:layout_height="130dp"
                     android:text="Board of Doctors"
                     android:textAllCaps="false"
-                    android:textSize="16sp"
+                    android:textSize="18sp"
                     android:theme="@style/MyButton" />
 
                 <Button
@@ -124,7 +124,7 @@
                     android:layout_height="130dp"
                     android:text="Get a Second opinion"
                     android:textAllCaps="false"
-                    android:textSize="16sp"
+                    android:textSize="18sp"
                     android:theme="@style/ButtonGreen" />
             </LinearLayout>
         </LinearLayout>
